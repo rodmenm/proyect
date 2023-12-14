@@ -11,15 +11,14 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form>
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
+    <button onclick="login()">Iniciar sesión con Keycloak</button>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-
-      <button type="submit">Login</button>
-    </form>
+    <script>
+        function login() {
+            // Redirigir al servidor de autorización de Keycloak
+            window.location.href = 'URL_DEL_SERVIDOR_DE_KEYCLOAK/realms/TU_REALM/protocol/openid-connect/auth?client_id=CLIENT_ID&redirect_uri=URL_DE_REDIRECCION&response_type=code&scope=openid';
+        }
+    </script>
   </div>
 </body>
 
