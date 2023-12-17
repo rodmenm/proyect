@@ -30,8 +30,8 @@ app.use(keycloak.middleware());
 // Importamos las rutas
 var indexRouterProtected = require("./routes_protected/index");
 var indexRouter = require("./routes/index");
-app.use("/", indexRouter);
-app.use("/logged", keycloak.protect(), indexRouterProtected);
+app.get("/", indexRouter);
+app.get("/logged", keycloak.protect(), indexRouterProtected);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
