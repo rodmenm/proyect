@@ -1,0 +1,17 @@
+version: '3'
+services:
+    server:
+        image: server
+        ports:
+        - "3000:3000"
+    database:
+        image: quay.io/keycloak/keycloak:23.0.4
+        environment:
+        - KEYCLOAK_ADMIN=admin
+        - KEYCLOAK_ADMIN_PASSWORD=admin
+        ports:
+        - "8080:8080"
+        command:
+        - start-dev
+        
+        
