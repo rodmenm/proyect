@@ -1,10 +1,10 @@
 {
-  "realm": "arsysdev",
+  "realm": "arsys-dev",
   "auth-server-url": "http://localhost:8080/",
   "ssl-required": "external",
-  "resource": "arsys",
+  "resource": "arsys-client",
   "credentials": {
-    "secret": "1kw346bU8V1QxDnsdg9aiSV7ttBuiT4R"
+    "secret": "Pt0a2EjzNL3fleHQkMI7G2jwI4U3NAUk"
   },
   "confidential-port": 0
 }
