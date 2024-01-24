@@ -5,7 +5,7 @@ FROM node:12.18.1-slim
 WORKDIR /usr/src/app
 
 # Copia el archivo package.json e package-lock.json (si existen)
-COPY app .
+COPY server .
 
 # Instala las dependencias
 RUN npm install
