@@ -12,6 +12,7 @@ SOLO FUNCIONA EN LINUX
 -Una vez realizado esto seleccionamos nuestro cliente y le damos al boton que pone action. Luego le damos a donde pone “donwload adapter config” y copiamos todo el texto y lo pegamos en nuestra fichero keycloak.json de forma que solo aparezca lo que hemos pegado.
 -Crear un usuario y ponerle credenciales. En nuestro caso “user” y “xxxx”
 -Realizar “docker-compose down” y incluir en docker-compose.yml la imagen del servidor node.
+-Realizar "docker build -t server ."
 -Realizar “docker-compose up” y ya solo se podra acceder a la página logged mediante el usuario creado
 
 
