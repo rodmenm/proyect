@@ -8,9 +8,10 @@ SOLO FUNCIONA EN LINUX<br>
 -DESABILITAR SSL PETICIONES EXTERNAS<br>
 -Una vez cargado entrar a localhost:8080<br>
 -Crear un realm nuevo y dentro de ese realm realizar las siguientes modificaciones.<br>
+-En Realm Settings poner "Require SSL" como none<br>
 -Crear un nuevo cliente activando “Client authentication” y establecer estos parametros <br>
-    -Valid redirect URIs -> http://localhost:3000/* (así habilitamos poder acceder a las demas rutas)<br>
-    -Web origins -> http://localhost:3000 (asi solo se puede acceder a la pagina de logueo desde nuestra web)<br>
+    -Valid redirect URIs -> http://82.223.101.114:3000/* (así habilitamos poder acceder a las demas rutas)<br>
+    -Web origins -> http://82.223.101.114:3000 (asi solo se puede acceder a la pagina de logueo desde nuestra web)<br>
 -Una vez realizado esto seleccionamos nuestro cliente y le damos al boton que pone action. Luego le damos a donde pone “donwload adapter config” y copiamos todo el texto y lo pegamos en nuestra fichero keycloak.json de forma que solo aparezca lo que hemos pegado.<br>
 -Crear un usuario y ponerle credenciales. En nuestro caso “user” y “xxxx”<br>
 -Realizar “docker-compose down” y incluir en docker-compose.yml la imagen del servidor node.<br>
@@ -18,8 +19,8 @@ SOLO FUNCIONA EN LINUX<br>
 -Realizar “docker-compose up” y ya solo se podra acceder a la página logged mediante el usuario creado<br>
 <br>
 DESHABILITAR SSL PETICIONES EXTERNAS<br>
-Ejecutar "docker exec -it {ID contenedor} bash"<br>
+Ejecutar " docker exec -it proyect-database-1 bash"<br>
 Ejecutar "cd opt/keycloak/bin"<br>
 Ejecutar "./kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin"<br>
 Ejecutar "./kcadm.sh update realms/master -s sslRequired=NONE"<br>
-Salir del contenedor y reiniciarlo<br>
+Salir del contenedor con "exit"<br>

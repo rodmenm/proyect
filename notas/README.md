@@ -1,3 +1,1 @@
-Cuando se inicie por primera vez, ejecutar el docker-compose solo con el servicio de keycloak (database), crear un realm y luego un cliente Y BAJARSE EL KEYCLOAK.JSON del cliente. Una vez realizado esto se puede proceder a crear la imagen del servidor y luego incluirla en el docker-compose
-
-
+ESte docker-compose es el que se tiene que ejecutar una vez creada la imagen a partir del keycloak.json requerido. Una vez haya sido creado y includio en el directorio "server" se ha de utilizar este docker-compose. El que se incluye inicialmente en el archivo raiz solo se utiliza hasta que se obtenga el json

@@ -2,7 +2,8 @@ version: '3'
 services:
     server:
         image: server
-        network_mode: "host"
+        ports:
+        - "3000:3000"
     database:
         image: quay.io/keycloak/keycloak:23.0.4
         environment:
