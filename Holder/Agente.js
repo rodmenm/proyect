@@ -28,6 +28,7 @@ export class Agente {
   constructor(config) {
     this.config = config;
     this.agent = null;
+    this.initialize();
   }
 
   async initialize() {
