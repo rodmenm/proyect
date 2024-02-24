@@ -12,10 +12,7 @@ export class Holder_gen extends Agente {
     );
   }
 
-  async requestAndStoreCredentials(
-    resolvedCredentialOffer,
-    credentialsToRequest
-  ) {
+  async requestAndStoreCredentials(resolvedCredentialOffer,credentialsToRequest) {
     const credentials =
       await this.agent.modules.openId4VcHolder.acceptCredentialOfferUsingPreAuthorizedCode(
         resolvedCredentialOffer,

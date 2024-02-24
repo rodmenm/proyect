@@ -1,5 +1,8 @@
 import { Holder_gen } from './Holder_gen.js'; 
-
+import {
+  KeyDerivationMethod,
+  DidCommMimeType,
+} from "@aries-framework/core";
 
 const agentConfig = {
     label: "agente", // Nombre del agente
@@ -13,7 +16,7 @@ const agentConfig = {
       },
     },
     endpoints: ["http://localhost:4000"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
-    logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos
+    // logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos
     didCommMimeType: DidCommMimeType.V1, // Tipo MIME para el intercambio de mensajes
     useDidSovPrefixWhereAllowed: true,  // Indicación para usar el prefijo did:sov en los mensajes si está permitido
     useDidKeyInProtocols: true,
