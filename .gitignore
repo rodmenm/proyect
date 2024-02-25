@@ -1,5 +1,4 @@
 server/node_modules/
 server/keycloak.json
-Holder/node_modules/
-Issuer/node_modules/
-Verifier/node_modules/
+IdentityProvider/node_modules/
+

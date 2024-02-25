@@ -1,10 +1,10 @@
-import { Agente } from "./Agente.js";
+import { Agente } from "./../Agente.js";
 
 export class Holder_gen extends Agente {
   constructor(config, modules = {}) {
     super(config, modules);
   }
-
+  /*
   async resolveCredentialOffer(credentialOffer) {
     return await this.agent.modules.openId4VcHolder.resolveCredentialOffer(
       credentialOffer
@@ -76,5 +76,5 @@ export class Holder_gen extends Agente {
 
     return submissionResult.serverResponse;
   }
-
+  */
 }

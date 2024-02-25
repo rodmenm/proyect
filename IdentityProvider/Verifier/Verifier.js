@@ -1,4 +1,5 @@
-import { Holder_gen } from "./Holder_gen.js";
+import './../shim.js'
+import { Verifier_gen } from "./Verifier_gen.js";
 import {
   Agent,
   DidsModule,
@@ -58,12 +59,13 @@ const agentConfig = {
 };
 
 
-const holderFinal = new Holder_gen(agentConfig, modules);
+const VerifierFinal = new Verifier_gen(agentConfig, modules);
 
 
-await holderFinal.agent.initialize();
+await VerifierFinal.agent.initialize();
 
 console.log("");
-console.log(holderFinal.agent);
+console.log(VerifierFinal.agent);
 
-await holderFinal.agent.shutdown();
+await VerifierFinal.agent.shutdown();
+console.log("Agente finalizado");

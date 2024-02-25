@@ -7,7 +7,6 @@
     "@aries-framework/core": "^0.4.2",
     "@aries-framework/indy-vdr": "^0.4.0",
     "@aries-framework/node": "^0.4.2",
-    "@credo-ts/core": "^0.5.0-alpha.101",
     "@hyperledger/anoncreds-nodejs": "^0.1.0",
     "@hyperledger/aries-askar-nodejs": "^0.1.0",
     "@hyperledger/indy-vdr-nodejs": "^0.1.0",
@@ -25,7 +24,9 @@
     "@cosmjs/crypto": "npm:@cosmjs-rn/crypto@^0.27.1"
   },
   "scripts": {
-    "start": "node Verifier.js"
+    "Holder": "node Holder/Holder.js",
+    "Issuer": "node Issuer/Issuer.js",
+    "Verifier": "node Verifier/Verifier.js"
   },
   "type": "module"
 }

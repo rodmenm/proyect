@@ -1,4 +1,5 @@
 import { Agent } from "@aries-framework/core";
+
 import { agentDependencies } from "@aries-framework/node";
 
 export class Agente {

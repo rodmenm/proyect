@@ -1,10 +1,11 @@
-import { Agente } from "./Agente.js";
+import { Agente } from "./../Agente.js";
 
 export class Issuer_gen extends Agente {
   constructor(config, modules = {}) {
     super(config, modules);
   }
 
+  /*
   async createCredentialRequest(credentialRequest) {
     const {
       credentialRequestRecord,
@@ -31,4 +32,5 @@ export class Issuer_gen extends Agente {
     await this.agent.shutdown();
     process.exit(0);
   }
+  */
 }

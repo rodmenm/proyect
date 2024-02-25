@@ -1,4 +1,5 @@
-import { Verifier_gen } from "./Verifier.js";
+import './../shim.js'
+import { Holder_gen } from "./Holder_gen.js";
 import {
   Agent,
   DidsModule,
@@ -22,7 +23,6 @@ import {
   IndyVdrModule,
 } from "@aries-framework/indy-vdr";
 import { indyVdr } from "@hyperledger/indy-vdr-nodejs";
-import { Verifier_gen } from "./Verifier_gen.js";
 
 
 const bcovrin = `{"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"138.197.138.255","client_port":9702,"node_ip":"138.197.138.255","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}
@@ -59,12 +59,13 @@ const agentConfig = {
 };
 
 
-const VerifierFinal = new Verifier_gen(agentConfig, modules);
+const holderFinal = new Holder_gen(agentConfig, modules);
 
 
-await VerifierFinal.agent.initialize();
+await holderFinal.agent.initialize();
 
 console.log("");
-console.log(VerifierFinal.agent);
+console.log(holderFinal.agent);
 
-await VerifierFinal.agent.shutdown();
+await holderFinal.agent.shutdown();
+console.log("Agente finalizado");

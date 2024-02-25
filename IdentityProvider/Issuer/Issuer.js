@@ -1,3 +1,4 @@
+import './../shim.js'
 import { Issuer_gen } from "./Issuer_gen.js";
 import {
   Agent,
@@ -67,3 +68,4 @@ console.log("");
 console.log(issuerFinal.agent);
 
 await issuerFinal.agent.shutdown();
+console.log("Agente finalizado");
