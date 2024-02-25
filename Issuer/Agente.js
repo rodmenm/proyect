@@ -5,12 +5,6 @@ import {
   DidCommMimeType,
 } from "@aries-framework/core";
 
-
-
-
-
-
-
 import { agentDependencies } from "@aries-framework/node";
 import { AskarModule } from "@aries-framework/askar";
 import { ariesAskar } from "@hyperledger/aries-askar-nodejs";

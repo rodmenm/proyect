@@ -1,5 +1,4 @@
 import { Agente } from "./Agente.js";
-import { W3cJwtVerifiableCredential, W3cJsonLdVerifiableCredential } from 'some-lib';
 
 export class Issuer_gen extends Agente {
   constructor(config, modules = {}) {

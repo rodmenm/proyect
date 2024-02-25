@@ -1,32 +1,5 @@
-import {
-  Agent,
-  DidsModule,
-  KeyDerivationMethod,
-  DidCommMimeType,
-} from "@aries-framework/core";
-
-
-
-
-
-
-
+import { Agent } from "@aries-framework/core";
 import { agentDependencies } from "@aries-framework/node";
-import { AskarModule } from "@aries-framework/askar";
-import { ariesAskar } from "@hyperledger/aries-askar-nodejs";
-import {
-  CheqdAnonCredsRegistry,
-  CheqdDidRegistrar,
-  CheqdDidResolver,
-  CheqdModule,
-  CheqdModuleConfig,
-} from "@aries-framework/cheqd";
-import { AnonCredsModule } from "@aries-framework/anoncreds";
-import {
-  IndyVdrAnonCredsRegistry,
-  IndyVdrModule,
-} from "@aries-framework/indy-vdr";
-import { indyVdr } from "@hyperledger/indy-vdr-nodejs";
 
 export class Agente {
   constructor(config, modules) {

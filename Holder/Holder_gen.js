@@ -77,9 +77,4 @@ export class Holder_gen extends Agente {
     return submissionResult.serverResponse;
   }
 
-  async exit() {
-    console.log(Output.Exit);
-    await this.agent.shutdown();
-    process.exit(0);
-  }
 }

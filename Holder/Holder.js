@@ -66,4 +66,4 @@ await holderFinal.agent.initialize();
 console.log("");
 console.log(holderFinal.agent);
 
-await holderFinal.exit();
+await holderFinal.agent.shutdown();

@@ -66,4 +66,4 @@ await issuerFinal.agent.initialize();
 console.log("");
 console.log(issuerFinal.agent);
 
-await issuerFinal.exit();
+await issuerFinal.agent.shutdown();
