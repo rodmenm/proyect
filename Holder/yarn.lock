@@ -62,7 +62,7 @@
     rxjs "^7.2.0"
     tsyringe "^4.8.0"
 
-"@aries-framework/core@0.4.2":
+"@aries-framework/core@^0.4.2", "@aries-framework/core@0.4.2":
   version "0.4.2"
   resolved "https://registry.npmjs.org/@aries-framework/core/-/core-0.4.2.tgz"
   integrity sha512-2qmDRkxD5vnPlcMjVTqu/Wxog9bUVU+tSr+7mgANgJ9q170FuoSuChU7WA5VCKEdmbRIM4BmvsnTlU8Y+iQ07A==
