@@ -1,4 +1,4 @@
-import { Holder_gen } from "./Holder_gen.js";
+import { Issuer_gen } from "./Issuer_gen.js";
 import {
   Agent,
   DidsModule,
@@ -58,12 +58,12 @@ const agentConfig = {
 };
 
 
-const holderFinal = new Holder_gen(agentConfig, modules);
+const issuerFinal = new Issuer_gen(agentConfig, modules);
 
 
-await holderFinal.agent.initialize();
+await issuerFinal.agent.initialize();
 
 console.log("");
-console.log(holderFinal.agent);
+console.log(issuerFinal.agent);
 
-await holderFinal.exit();
+await issuerFinal.exit();

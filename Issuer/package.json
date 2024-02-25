@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@aries-framework/anoncreds": "^0.4.0",
+    "@aries-framework/anoncreds-rs": "^0.4.0",
+    "@aries-framework/askar": "^0.4.0",
+    "@aries-framework/cheqd": "^0.4.2",
+    "@aries-framework/core": "^0.4.2",
+    "@aries-framework/indy-vdr": "^0.4.0",
+    "@aries-framework/node": "^0.4.2",
+    "@credo-ts/core": "^0.5.0-alpha.101",
+    "@hyperledger/anoncreds-nodejs": "^0.1.0",
+    "@hyperledger/aries-askar-nodejs": "^0.1.0",
+    "@hyperledger/indy-vdr-nodejs": "^0.1.0",
+    "buffer": "^6.0.3"
+  },
+  "overrides": {
+    "ref-napi": "npm:@2060.io/ref-napi",
+    "@cosmjs/amino": "npm:@cosmjs-rn/amino@^0.27.1",
+    "@cosmjs/encoding": "npm:@cosmjs-rn/encoding@^0.27.1",
+    "@cosmjs/math": "npm:@cosmjs-rn/math@^0.27.1",
+    "@cosmjs/stargate": "npm:@cosmjs-rn/stargate@^0.27.1",
+    "@cosmjs/tendermint-rpc": "npm:@cosmjs-rn/tendermint-rpc@^0.27.1",
+    "@cosmjs/utils": "npm:@cosmjs-rn/utils@^0.27.1",
+    "@cosmjs/proto-signing": "npm:@cosmjs-rn/proto-signing@^0.27.1",
+    "@cosmjs/crypto": "npm:@cosmjs-rn/crypto@^0.27.1"
+  },
+  "scripts": {
+    "start": "node Issuer.js"
+  },
+  "type": "module"
+}
