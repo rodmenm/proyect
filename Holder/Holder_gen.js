@@ -1,9 +1,8 @@
 import { Agente } from "./Agente.js";
 
 export class Holder_gen extends Agente {
-  constructor(config) {
-    super(config);
-
+  constructor(config, modules = {}) {
+    super(config, modules);
   }
 
   async resolveCredentialOffer(credentialOffer) {
@@ -12,7 +11,10 @@ export class Holder_gen extends Agente {
     );
   }
 
-  async requestAndStoreCredentials(resolvedCredentialOffer,credentialsToRequest) {
+  async requestAndStoreCredentials(
+    resolvedCredentialOffer,
+    credentialsToRequest
+  ) {
     const credentials =
       await this.agent.modules.openId4VcHolder.acceptCredentialOfferUsingPreAuthorizedCode(
         resolvedCredentialOffer,
@@ -80,5 +82,4 @@ export class Holder_gen extends Agente {
     await this.agent.shutdown();
     process.exit(0);
   }
-
 }
