@@ -10,7 +10,11 @@
     "@hyperledger/anoncreds-nodejs": "^0.1.0",
     "@hyperledger/aries-askar-nodejs": "^0.1.0",
     "@hyperledger/indy-vdr-nodejs": "^0.1.0",
-    "buffer": "^6.0.3"
+    "buffer": "^6.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "nodemon": "^3.0.2"
   },
   "overrides": {
     "ref-napi": "npm:@2060.io/ref-napi",
@@ -24,6 +28,7 @@
     "@cosmjs/crypto": "npm:@cosmjs-rn/crypto@^0.27.1"
   },
   "scripts": {
+    "start": "nodemon App/app.js",
     "Holder": "node Holder/Holder.js",
     "Issuer": "node Issuer/Issuer.js",
     "Verifier": "node Verifier/Verifier.js"

@@ -1,6 +1,13 @@
 version: '3'
 services:
-    database:
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile_server
+        container_name: server
+        ports:
+        - "3000:3000"
+    keycloak:
         image: quay.io/keycloak/keycloak:23.0.4
         environment:
         - KEYCLOAK_ADMIN=admin
@@ -9,5 +16,13 @@ services:
         - "8080:8080"
         command:
         - start-dev
+        container_name: keycloak
+    idp:
+        build:
+            context: .
+            dockerfile: Dockerfile_idp
+        container_name: idp
+        ports:
+        - "4000:4000"
         
         

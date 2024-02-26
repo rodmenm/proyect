@@ -24,11 +24,6 @@
 - Una vez realizado esto seleccionamos nuestro cliente y le damos al boton que pone action. Luego le damos a donde pone “donwload adapter config” y copiamos todo el texto y lo pegamos en nuestra fichero keycloak.json de forma que solo aparezca lo que hemos pegado.
 - Crear un usuario y ponerle credenciales. En nuestro caso “user” y “xxxx”
 - Parar docker-compose e incluir en docker-compose.yml la imagen del servidor node.
-- Construir imagen del servidor con:
-
-```bash
- docker build -t server .
- ```
 - Levantar nuevamente docker-compose y ya solo se podra acceder a la página logged mediante el usuario creado
 - Prerequisitos Parte Holder ( por completar)
 
@@ -36,7 +31,7 @@
 Ejecutar:
 
 ```bash
-docker exec -it proyect-database-1 bash
+docker exec -it keycloak bash
 cd opt/keycloak/bin
 ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user admin
 ./kcadm.sh update realms/master -s sslRequired=NONE
