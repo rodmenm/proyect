@@ -5,6 +5,12 @@ export class Issuer_gen extends Agente {
     super(config, modules);
   }
 
+  createLegacyInvitation = async (agent) => {
+    const { invitation } = await agent.oob.createLegacyInvitation();
+
+    return invitation.toUrl({ domain: "https://example.org" });
+  };
+
   /*
   async createCredentialRequest(credentialRequest) {
     const {

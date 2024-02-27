@@ -4,6 +4,13 @@ export class Holder_gen extends Agente {
   constructor(config, modules = {}) {
     super(config, modules);
   }
+
+  receiveInvitation = async (agent, invitationUrl) => {
+    const { outOfBandRecord } = await agent.oob.receiveInvitationFromUrl(invitationUrl);
+  
+    return outOfBandRecord;
+  };
+  
   /*
   async resolveCredentialOffer(credentialOffer) {
     return await this.agent.modules.openId4VcHolder.resolveCredentialOffer(

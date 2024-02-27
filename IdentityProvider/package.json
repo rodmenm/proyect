@@ -29,9 +29,7 @@
   },
   "scripts": {
     "start": "nodemon App/app.js",
-    "Holder": "node Holder/Holder.js",
-    "Issuer": "node Issuer/Issuer.js",
-    "Verifier": "node Verifier/Verifier.js"
+    "prueba": "node Pruebas.js"
   },
   "type": "module"
 }
