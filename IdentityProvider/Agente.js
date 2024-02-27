@@ -7,7 +7,6 @@ export class Agente {
     this.config = config;
     this.modules = modules;
     this.agent = null;
-    this.add();
   }
 
   async add() {

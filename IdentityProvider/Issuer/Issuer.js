@@ -41,7 +41,7 @@ const modules = {
 };
 
 const agentConfig = {
-  label: "agente", // Nombre del agente
+  label: "I_agente", // Nombre del agente
   walletConfig: {
     id: "wallet", // ID de la cartera
     key: "testkey000000000000000000000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
