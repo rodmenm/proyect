@@ -62,7 +62,6 @@ const agentConfig = {
 export class VerifierFinal {
   constructor() {
     this.verifierFinal = null;
-    this.initializeVerifier();
   }
 
   initializeVerifier = async () => {

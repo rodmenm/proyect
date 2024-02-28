@@ -24,6 +24,8 @@ import { AnonCredsRsModule } from "@aries-framework/anoncreds-rs";
 import { anoncreds } from "@hyperledger/anoncreds-nodejs";
 import {
   IndyVdrAnonCredsRegistry,
+  IndyVdrIndyDidRegistrar,
+  IndyVdrIndyDidResolver,
   IndyVdrModule,
 } from "@aries-framework/indy-vdr";
 import { indyVdr } from "@hyperledger/indy-vdr-nodejs";
@@ -46,13 +48,13 @@ const modules = {
     anoncreds,
   }),
   anoncreds: new AnonCredsModule({
-    registries: [new IndyVdrAnonCredsRegistry()],
+    registries: [new IndyVdrAnonCredsRegistry(), new CheqdAnonCredsRegistry()],
   }),
 
   // Configuración Dids
   dids: new DidsModule({
-    registrars: [new CheqdDidRegistrar()],
-    resolvers: [new CheqdDidResolver()],
+    registrars: [new IndyVdrIndyDidRegistrar(), new CheqdDidRegistrar()],
+    resolvers: [new IndyVdrIndyDidResolver(), new CheqdDidResolver()],
   }),
 
   // Configuración Indy Vdr
@@ -105,7 +107,6 @@ const agentConfig = {
 export class HolderFinal {
   constructor() {
     this.holderFinal = null;
-    this.initializeHolder();
   }
 
   initializeHolder = async () => {
