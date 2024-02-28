@@ -1,16 +1,20 @@
 const modules = {
-  // Configuración Askar OBLGATORIO SIEMPRE
+  // Configuración Askar
   askar: new AskarModule({
     ariesAskar,
   }),
-
   // Configuracion de conexiones
   connections: new ConnectionsModule({ autoAcceptConnections: true }),
 
-  // Configuración AnonCreds NO FUNCIONA
+  // Configuración AnonCreds
+  anoncredsRs: new AnonCredsRsModule({
+    anoncreds,
+  }),
   anoncreds: new AnonCredsModule({
-    registries: [new CheqdAnonCredsRegistry()],
-  }), 
+    // Here we add an Indy VDR registry as an example, any AnonCreds registry
+    // can be used
+    registries: [new IndyVdrAnonCredsRegistry()],
+  }),
 
   // Configuración Dids
   dids: new DidsModule({

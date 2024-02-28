@@ -20,6 +20,8 @@ import {
   CheqdModuleConfig,
 } from "@aries-framework/cheqd";
 import { AnonCredsModule } from "@aries-framework/anoncreds";
+import { AnonCredsRsModule } from "@aries-framework/anoncreds-rs";
+import { anoncreds } from "@hyperledger/anoncreds-nodejs";
 import {
   IndyVdrAnonCredsRegistry,
   IndyVdrModule,
@@ -38,6 +40,46 @@ const modules = {
   }),
   // Configuracion de conexiones
   connections: new ConnectionsModule({ autoAcceptConnections: true }),
+
+  // Configuración AnonCreds
+  anoncredsRs: new AnonCredsRsModule({
+    anoncreds,
+  }),
+  anoncreds: new AnonCredsModule({
+    registries: [new IndyVdrAnonCredsRegistry()],
+  }),
+
+  // Configuración Dids
+  dids: new DidsModule({
+    registrars: [new CheqdDidRegistrar()],
+    resolvers: [new CheqdDidResolver()],
+  }),
+
+  // Configuración Indy Vdr
+  indyVdr: new IndyVdrModule({
+    indyVdr,
+    networks: [
+      {
+        isProduction: false,
+        indyNamespace: "bcovrin:test",
+        genesisTransactions: bcovrin,
+        connectOnStartup: true,
+      },
+    ],
+  }),
+
+  // Configuración cheqd
+  cheqd: new CheqdModule(
+    new CheqdModuleConfig({
+      networks: [
+        {
+          network: "testnet",
+          cosmosPayerSeed:
+            "robust across amount corn curve panther opera wish toe ring bleak empower wreck party abstract glad average muffin picnic jar squeeze annual long aunt",
+        },
+      ],
+    })
+  ),
 };
 
 const agentConfig = {
@@ -46,9 +88,10 @@ const agentConfig = {
     id: "wallet", // ID de la cartera
     key: "testkey000000000000000000000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
     keyDerivationMethod: KeyDerivationMethod.Argon2IMod, // Método de derivación de clave
-    /*storage: {
-      type: "postgres_storage", // Tipo de almacenamiento de la cartera
-    },*/ // POR IMPLENETAR
+    storage: {
+      type: "sqlite", // Tipo de almacenamiento: SQLite
+      database: "holder.db", // Ruta al archivo de base de datos SQLite
+    },
   },
   // endpoints: ["http://localhost:4000"], Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
   // logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos

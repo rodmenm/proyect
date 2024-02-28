@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@aries-framework/anoncreds": "^0.4.0",
-    "@aries-framework/anoncreds-rs": "^0.4.0",
+    "@aries-framework/anoncreds-rs": "^0.4.2",
     "@aries-framework/askar": "^0.4.0",
     "@aries-framework/cheqd": "^0.4.2",
     "@aries-framework/core": "^0.4.2",
