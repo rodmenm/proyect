@@ -90,17 +90,17 @@ export class Agente {
     return did;
   }*/
 
-  async update_did() {
+  async update_did(did_param, id_param, type_param) {
     const did = await this.agent.dids.update({
-      did: "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411",
+      did: "did:cheqd:testnet:698cbe3a-1e6b-4ae7-86d8-e5441a69ae61",
       secret: {
         verificationMethod: {
-          id: "key-2",
-          type: "JsonWebKey2020",
+          id: "key-1",
+          type: "Ed25519VerificationKey2020",
         },
       },
       didDocument: {
-        id: "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411",
+        id: "diasdasdasdasdasdee-4483-98c5-f03760816411",
         controller: ["did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411"],
         verificationMethod: [
           {
@@ -124,20 +124,13 @@ export class Agente {
         ],
       },
     });
-    if (did.didState.state == "failed") {
-      console.log("DID NO ACTUALIZADO, Error: ");
-      console.log(did.didState.reason);
-    } else {
-      console.log("DID creado correctamente");
-    }
+
     return did;
   }
-  async delete_did(did_param, id_param, type_param) {
+  async delete_did(did_param) {
     await this.agent.dids.deactivate({
-      did: "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411",
-      options: {
-        versionId: "3.0",
-      },
+      did: did_param,
+
     });
   }
 }

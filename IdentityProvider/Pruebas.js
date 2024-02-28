@@ -5,8 +5,14 @@ import { Agent } from "@aries-framework/core";
 
 const kk = new HolderFinal();
 await kk.initializeHolder();
-const pp = await kk.holderFinal.create_did();
-console.log(pp);
+
 const tt = await kk.holderFinal.agent.dids.getCreatedDids();
+const pp = tt[0];
+/*const pp = await kk.holderFinal.update_did();
+console.log(pp);
+
+
+*/
+
 console.log(tt);
 console.log(tt.length);
