@@ -2,7 +2,7 @@ export const index = (req, res) => {
   res.render("index");
 };
 
-export async function res_did(req, res) {
+export async function res_did(req, res) { //NO VA
   try {
     Holder = global.Holder;
     let didDoc = await Holder.holderFinal.agent.dids.resolve({
@@ -12,7 +12,7 @@ export async function res_did(req, res) {
     res.send(didDoc);
   } catch (error) {
     console.error("Error al resolver el DID:", error);
-    res.status(500).send("Error al resolver el DID" + error);
+    res.status(500).send("Error al resolver el DID: " + error);
   }
 }
 
@@ -36,7 +36,7 @@ export async function crear_did(req, res) {
     res.send(did);
   } catch (error) {
     console.error("Error al crear el DID:", error);
-    res.status(500).send("Error al crear el DID");
+    res.status(500).send("Error al crear el DID: " + error);
   }
 }
 
@@ -58,7 +58,7 @@ export async function update_did(req, res) {
     res.send(req.body.didDocument);
   } catch (error) {
     console.error("Error al actualizar el DID:", error);
-    res.status(500).send("Error al actualizar el DID");
+    res.status(500).send("Error al actualizar el DID: " + error);
   }
 }
 
@@ -75,10 +75,10 @@ export async function deac_did(req, res) {
       secret: req.body.secret,
     });
     console.log("DID desactivado correctamente");
-    res.send("Deactivated did:" + did);
+    res.send("Deactivated " + req.body.did_url);
   } catch (error) {
     console.error("Error al desactivar el DID:", error);
-    res.status(500).send("Error al desactivar el DID");
+    res.status(500).send("Error al desactivar el DID: " + error);
   }
 }
 
@@ -90,11 +90,11 @@ export async function dids_creados(req, res) {
     res.send(dids);
   } catch (error) {
     console.error("Error al mostrar los DIDS:", error);
-    res.status(500).send("Error al mostrar los DIDS");
+    res.status(500).send("Error al mostrar los DIDS: " + error);
   }
 }
 
-export async function import_did(req, res) {
+export async function import_did(req, res) { // NO VA
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.dids.import({
@@ -106,7 +106,7 @@ export async function import_did(req, res) {
     console.log("DID importado correctamente");
     res.send("DID importado correctamente");
   } catch (error) {
-    console.error("Error al mostrar los DIDS:", error);
-    res.status(500).send("Error al mostrar los DIDS");
+    console.error("Error al importar el DID:", error);
+    res.status(500).send("Error al importar el DID: " + error);
   }
 }
