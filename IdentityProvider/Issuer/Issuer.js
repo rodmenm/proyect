@@ -38,19 +38,61 @@ const modules = {
   }),
   // Configuracion de conexiones
   connections: new ConnectionsModule({ autoAcceptConnections: true }),
+
+  // Configuración AnonCreds
+  anoncredsRs: new AnonCredsRsModule({
+    anoncreds,
+  }),
+  anoncreds: new AnonCredsModule({
+    registries: [new IndyVdrAnonCredsRegistry(), new CheqdAnonCredsRegistry()],
+  }),
+
+  // Configuración Dids
+  dids: new DidsModule({
+    registrars: [new IndyVdrIndyDidRegistrar(), new CheqdDidRegistrar()],
+    resolvers: [new IndyVdrIndyDidResolver(), new CheqdDidResolver()],
+  }),
+
+  // Configuración Indy Vdr
+  indyVdr: new IndyVdrModule({
+    indyVdr,
+    networks: [
+      {
+        isProduction: false,
+        indyNamespace: "bcovrin:test",
+        genesisTransactions: bcovrin,
+        connectOnStartup: true,
+      },
+    ],
+  }),
+
+  // Configuración cheqd
+  cheqd: new CheqdModule(
+    new CheqdModuleConfig({
+      networks: [
+        {
+          network: "testnet",
+          cosmosPayerSeed:
+            "robust across amount corn curve panther opera wish toe ring bleak empower wreck party abstract glad average muffin picnic jar squeeze annual long aunt",
+        },
+      ],
+    })
+  ),
 };
 
+
 const agentConfig = {
-  label: "I_agente", // Nombre del agente
+  label: "I_agente", 
   walletConfig: {
-    id: "wallet", // ID de la cartera
-    key: "testkey000000000000000000000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
+    id: "Issuer_wallet", 
+    key: "issuertestkey0000", 
     keyDerivationMethod: KeyDerivationMethod.Argon2IMod, // Método de derivación de clave
-    /*storage: {
-      type: "postgres_storage", // Tipo de almacenamiento de la cartera
-    },*/ // POR IMPLENETAR
+    storage: {
+      type: "sqlite", 
+      database: "holder.db"
+    },
   },
-  endpoints: ["http://localhost:4002"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
+  endpoints: ["http://localhost:5000"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
   // logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos
   didCommMimeType: DidCommMimeType.V1, // Tipo MIME para el intercambio de mensajes
   useDidSovPrefixWhereAllowed: true, // Indicación para usar el prefijo did:sov en los mensajes si está permitido
@@ -75,7 +117,7 @@ export class IssuerFinal {
 
     // Registra `Http` con inbound transport
     Finalissuer.agent.registerInboundTransport(
-      new HttpInboundTransport({ port: 4002 })
+      new HttpInboundTransport({ port: 5000 })
     );
 
     await Finalissuer.agent.initialize();

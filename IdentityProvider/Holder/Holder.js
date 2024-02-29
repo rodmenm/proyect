@@ -87,8 +87,8 @@ const modules = {
 const agentConfig = {
   label: "H_agente", // Nombre del agente
   walletConfig: {
-    id: "wallet", // ID de la cartera
-    key: "testkey000000000000000000000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
+    id: "Wallet_prueba", // ID de la cartera
+    key: "Sale_furbo?", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
     keyDerivationMethod: KeyDerivationMethod.Argon2IMod, // Método de derivación de clave
     storage: {
       type: "sqlite", // Tipo de almacenamiento: SQLite

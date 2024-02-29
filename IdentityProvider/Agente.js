@@ -1,6 +1,15 @@
-import { Agent, KeyType } from "@aries-framework/core";
+import { Agent, KeyType, TypedArrayEncoder } from "@aries-framework/core";
 
 import { agentDependencies } from "@aries-framework/node";
+
+// Define una semilla que se utilizará para generar claves criptográficas
+const seed = TypedArrayEncoder.fromString(`Sale_furbo?`); // Debe mantenerse seguro en producción!
+
+// Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
+const unqualifiedIndyDid = `poner_aqui_lo_que_se_quiera_para generar_un_did_no_reconocido`;
+
+// Construye el DID de Indy completo utilizando el DID no calificado
+const indyDid = `did:indy:bcovrin:test:${unqualifiedIndyDid}`;
 
 export class Agente {
   constructor(config, modules) {
@@ -34,7 +43,6 @@ export class Agente {
           type: "Ed25519VerificationKey2020",
         },
       },
-      // Un parámetro opcional methodSpecificIdAlgo
       options: {
         network: "testnet",
         methodSpecificIdAlgo: "uuid",
@@ -90,47 +98,38 @@ export class Agente {
     return did;
   }*/
 
-  async update_did(did_param, id_param, type_param) {
+  async update_did(did_url, did_document) {
+    // Por completar
     const did = await this.agent.dids.update({
-      did: "did:cheqd:testnet:698cbe3a-1e6b-4ae7-86d8-e5441a69ae61",
-      secret: {
-        verificationMethod: {
-          id: "key-1",
-          type: "Ed25519VerificationKey2020",
-        },
-      },
-      didDocument: {
-        id: "diasdasdasdasdasdee-4483-98c5-f03760816411",
-        controller: ["did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411"],
-        verificationMethod: [
-          {
-            id: "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411#key-1",
-            type: "Ed25519VerificationKey2020",
-            controller:
-              "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411",
-            publicKeyMultibase:
-              "z6MknkzLUEP5cxqqsaysNMWoh8NJRb3YsowTCj2D6yhwyEdj",
-          },
-        ],
-        authentication: [
-          "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411#key-1",
-        ],
-        service: [
-          {
-            id: "did:cheqd:testnet:b84817b8-43ee-4483-98c5-f03760816411#rand",
-            type: "rand",
-            serviceEndpoint: "https://rand.in",
-          },
-        ],
-      },
+      did: did_url,
+      didDocument: did_document,
     });
 
     return did;
   }
-  async delete_did(did_param) {
+  async delete_did(did_url) {
+    // No borra, solo desactiva
     await this.agent.dids.deactivate({
-      did: did_param,
-
+      did: did_url,
     });
   }
+
+  async import_did(did_url,did_document, privateKeys, overwrite) {
+    try {
+      // Importa un DID existente utilizando el agente
+      await this.agent.dids.import({
+        // Los parametros a pasar son (did,didDocument, privateKeys, overwrite)
+        did: did_url, // DID que se importará
+        didDocument: did_document,
+        privateKeys: privateKeys,
+        overwrite: overwrite, // Indica si se debe sobrescribir el DID si ya existe
+      });
+      console.log("DID importado correctamente");
+    } catch (error) {
+      console.log("DID NO IMPORTADO, ERROR:");
+      console.log(error);
+    }
+  }
+
+
 }

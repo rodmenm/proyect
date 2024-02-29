@@ -1,19 +1,188 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Identity Provider</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Identity Provider</h1>
-        <div class="options">
-            <button>Botón 1</button>
-            <button>Botón 2</button>
-            <button>Botón 3</button>
-        </div>
+      <h1>Identity Provider</h1>
+      <h2>DID options</h2>
     </div>
-</body>
+    <div class="options">
+      <div class="form">
+        <h3>Resolve Did</h3>
+        Extrae un didDocument a partir de un did
+        <form action="http://localhost:4000/resolve_did" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="did_url"
+            placeholder="did_url (essential)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="options"
+            placeholder="options (optional)"
+          />
+          <br />
+          <button type="submit">Resolve Did</button>
+        </form>
+      </div>
+
+      <div class="form">
+        <h3>Crear Did</h3>
+        <form action="http://localhost:4000/crear_did" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="did_url"
+            placeholder="did_url (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="options"
+            placeholder="options (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="secret"
+            placeholder="secret (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="didDocument"
+            placeholder="didDocument (optional)"
+          />
+          <br />
+          <button type="submit">Crear Did</button>
+        </form>
+      </div>
+
+      <div class="form">
+        <h3>Actualizar Did</h3>
+        <form action="http://localhost:4000/update_did" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="did_url"
+            placeholder="did_url (essential)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="didDocument"
+            placeholder="didDocument (essential)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="options"
+            placeholder="options (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="secret"
+            placeholder="secret (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="didDocumentOperation"
+            placeholder="didDocumentOperation (optional)"
+          />
+          <br />
+          <button type="submit">Actualizar Did</button>
+        </form>
+      </div>
+
+      <div class="form">
+        <h3>Desactivar Did</h3>
+        <form action="http://localhost:4000/deactivate_did" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="did_url"
+            placeholder="did_url (essential)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="options"
+            placeholder="options (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="secret"
+            placeholder="secret (optional)"
+          />
+          <br />
+          <button type="submit">Desactivar Did</button>
+        </form>
+      </div>
+
+      <div class="form">
+        <h3>Dids creados</h3>
+        <form action="http://localhost:4000/dids_creados" method="POST">
+          <br />
+          <button type="submit">Mostrar Dids</button>
+        </form>
+      </div>
+
+      <div class="form">
+        <h3>Importar Did</h3>
+        Importa un Did creado de manera "extraoficial"
+        <form action="http://localhost:4000/deactivate_did" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="did_url"
+            placeholder="did_url (essential)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="did_document"
+            placeholder="did_document (optional)"
+          />
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="privateKeys"
+            placeholder="privateKeys (optional)"
+          />
+          <br />
+          <input
+          type="text"
+          class="mar"
+          name="overwrite"
+          placeholder="overwrite (optional)"
+        />
+        <br />
+          <button type="submit">Importar Did</button>
+        </form>
+      </div>
+
+    </div>
+  </body>
 </html>

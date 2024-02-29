@@ -43,14 +43,14 @@ const modules = {
 const agentConfig = {
   label: "V_agente", // Nombre del agente
   walletConfig: {
-    id: "wallet", // ID de la cartera
-    key: "testkey000000000000000000000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
+    id: "Verfier_wallet", // ID de la cartera
+    key: "verfiertestkey0000", // Clave de la cartera (debe ser una contraseña segura en un entorno real)
     keyDerivationMethod: KeyDerivationMethod.Argon2IMod, // Método de derivación de clave
     /*storage: {
       type: "postgres_storage", // Tipo de almacenamiento de la cartera
     },*/ // POR IMPLENETAR
   },
-  endpoints: ["http://localhost:4003"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
+  endpoints: ["http://localhost:6000"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
   // logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos
   didCommMimeType: DidCommMimeType.V1, // Tipo MIME para el intercambio de mensajes
   useDidSovPrefixWhereAllowed: true, // Indicación para usar el prefijo did:sov en los mensajes si está permitido
@@ -75,7 +75,7 @@ export class VerifierFinal {
 
     // Registra `Http` con inbound transport
     Finalverifier.agent.registerInboundTransport(
-      new HttpInboundTransport({ port: 4002 })
+      new HttpInboundTransport({ port: 6000 })
     );
 
     await Finalverifier.agent.initialize();
