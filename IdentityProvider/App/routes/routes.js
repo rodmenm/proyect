@@ -1,5 +1,13 @@
 import express from "express";
-import { index, crear_did } from "../controllers/mainController.js";
+import {
+  index,
+  res_did,
+  crear_did,
+  update_did,
+  deac_did,
+  dids_creados,
+  import_did,
+} from "../controllers/mainController.js";
 
 const router = express.Router();
 
@@ -8,45 +16,33 @@ router.get("/", index);
 // DIDS
 // Resolve a did to a did document.
 router.post("/resolve_did", (req, res, next) => {
-  // options opcional
-  res_did(req.body.res_did_url, req.body.res_options)(req, res, next);
+  res_did(req, res);
 });
 
 // Create, register and store a did and did document.                                                       | options
 router.post("/crear_did", (req, res, next) => {
-    crear_did(req, res);
+  crear_did(req, res);
 });
 
 // Update an existing did document. did_url -> entrada a actualizar, did_document -> salida actualizada     | secret, didDocumentOperation
 router.post("/update_did", (req, res, next) => {
-  update_did(
-    req.body.did_url,
-    req.body.did_document,
-    req.body.options,               // optional
-    req.body.secret,                // optional essential si no hay did_doc
-    req.body.didDocumentOperation   // optional
-  )(req, res, next);
+  update_did(req, res, next);
 });
 
 // Deactivate an existing did.
 router.post("/deactivate_did", (req, res, next) => {
-    // options y secret optional 
-  deac_did(req.body.did_url, req.body.options, req.body.secret)(req, res, next);
+  // options y secret optional
+  deac_did(req, res, next);
 });
 
 // Get a list of all dids created by the agent
 router.post("/dids_creados", (req, res, next) => {
-  dids_creados()(req, res, next);
+  dids_creados(req, res, next);
 });
 
 // Importa un did que fue creado de una forma no natural
 router.post("/import_did", (req, res, next) => {
-  import_did(
-    req.body.did_url,
-    req.body.did_document,
-    req.body.privateKeys,
-    req.body.overwrite
-  )(req, res, next);
+  import_did(req, res, next);
 });
 
 /**
