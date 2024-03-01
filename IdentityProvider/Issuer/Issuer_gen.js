@@ -35,7 +35,12 @@ export class Issuer_gen extends Agente {
         process.exit(0);
       }
     });
+
+
+    
   };
+
+  
 
   /*
   async createCredentialRequest(credentialRequest) {

@@ -2,11 +2,10 @@ import {
   KeyType,
   TypedArrayEncoder,
   KeyDerivationMethod,
-
 } from "@aries-framework/core";
 
 // Define una semilla que se utilizará para generar claves criptográficas
-const seed = TypedArrayEncoder.fromString(`Shhesecreto`); // Debe mantenerse seguro en producción!
+const seed = TypedArrayEncoder.fromString(`walletestkey`); // Debe mantenerse seguro en producción!
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
 const unqualifiedIndyDid = `poner_aqui_parte_final_did_no_reconocido`;
@@ -69,6 +68,7 @@ export async function crear_did(req, res) {
 }
 
 export async function update_did(req, res) {
+  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.dids.update({
@@ -123,6 +123,7 @@ export async function dids_creados(req, res) {
 }
 
 export async function import_did(req, res) {
+  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.dids.import({
@@ -149,43 +150,46 @@ export async function cre_wallet(req, res) {
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.create(walletConfig);
-    console.log("Wallet creada correctamente")
-    res.redirect('/');
+    console.log("Wallet creada correctamente");
+    res.redirect("/");
   } catch (error) {
     console.error("Wallet no creada ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function ini_wallet(req, res) { 
+export async function ini_wallet(req, res) {
+  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.initialize(walletConfig);
-    console.log("Wallet inicializada correctamente")
+    console.log("Wallet inicializada correctamente");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function cre_op_wallet(req, res) { //NO VA
+export async function cre_op_wallet(req, res) {
+  //NO VA
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.createAndOpen(walletConfig);
-    console.log("Wallet creada y abierta correctamente")
-    res.redirect('/');
+    console.log("Wallet creada y abierta correctamente");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function op_wallet(req, res) { 
+export async function op_wallet(req, res) {
+  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.open(walletConfig);
-    console.log("Wallet abierta correctamente")
-    res.redirect('/');
+    console.log("Wallet abierta correctamente");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
@@ -196,15 +200,15 @@ export async function cl_wallet(req, res) {
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.close(walletConfig);
-    console.log("Wallet cerrada correctamente")
-    res.redirect('/');
+    console.log("Wallet cerrada correctamente");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function gnonce(req, res) { 
+export async function gnonce(req, res) {
   try {
     Holder = global.Holder;
     let nonce = await Holder.holderFinal.agent.wallet.generateNonce(
@@ -222,15 +226,16 @@ export async function del_wallet(req, res) {
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.delete();
-    console.log("Wallet borrada correctamente")
-    res.redirect('/');
+    console.log("Wallet borrada correctamente");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function exp_wallet(req, res) { //NO VA
+export async function exp_wallet(req, res) {
+  //NO VA
   try {
     res.send("Not implemented yet");
   } catch (error) {
@@ -239,7 +244,8 @@ export async function exp_wallet(req, res) { //NO VA
   }
 }
 
-export async function imp_wallet(req, res) { //NO VA
+export async function imp_wallet(req, res) {
+  //NO VA
   try {
     res.send("Not implemented yet");
   } catch (error) {
@@ -248,7 +254,7 @@ export async function imp_wallet(req, res) { //NO VA
   }
 }
 
-export async function save_wallet(req, res) { 
+export async function save_wallet(req, res) {
   try {
     if (req.body.id) {
       global.w_id = req.body.id;
@@ -258,26 +264,27 @@ export async function save_wallet(req, res) {
       global.w_key = req.body.key;
       walletConfig = req.body.key;
     }
-    console.log("Datos guardados")
-    res.redirect('/');
+    console.log("Datos guardados");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);
   }
 }
 
-export async function cre_key(req, res) { //NO VA
+export async function cre_key(req, res) {
+  //NO VA
   try {
     Holder = global.Holder;
     let key = await Holder.holderFinal.agent.wallet.createKey({
       KeyType: KeyType.Ed25519,
       seed: seed,
       // privateKey: global.w_key
-        });
+    });
     console.log(key);
     res.send(key);
-    console.log("Key generada")
-    res.redirect('/');
+    console.log("Key generada");
+    res.redirect("/");
   } catch (error) {
     console.error("Error ", error);
     res.status(500).send("Error " + error);

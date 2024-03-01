@@ -3,10 +3,11 @@ import express from "express";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
-import { HolderFinal } from "./../Holder/Holder.js";
-import bodyParser from 'body-parser';
+import bodyParser from "body-parser";
 
-// import { IssuerFinal } from "./../Issuer/Issuer.js";
+import { HolderFinal } from "./../Holder/Holder.js";
+import { IssuerFinal } from "./../Issuer/Issuer.js";
+
 // import { VerifierFinal } from "./../Verifier/Verifier.js";
 
 // Obtener la ruta del directorio actual
@@ -22,11 +23,33 @@ global.w_key = "walletkeycrear0000";
 // Creamos un Verifier y un Issuer por defecto
 let Holder = new HolderFinal();
 await Holder.initializeHolder();
-global.Holder = Holder
+global.Holder = Holder;
 
 let Issuer = new IssuerFinal();
 await Issuer.initializeIssuer();
-global.Issuer = Issuer
+
+async function issuer_did() {
+  try {
+    let did = await Issuer.issuerFinal.agent.dids.create({
+      method: "cheqd",
+      secret: {
+        verificationMethod: {
+          id: "key-1",
+          type: "Ed25519VerificationKey2020",
+        },
+      },
+      options: {
+        network: "testnet",
+        methodSpecificIdAlgo: "uuid",
+      },
+    });
+    console.log("DID creado correctamente");
+  } catch (error) {
+    console.error("Error al crear el DID:", error);
+  }
+}
+await issuer_did();
+global.Issuer = Issuer;
 
 // let Verifier = new VerifierFinal();
 // await Verifier.initializeVerifier();
@@ -51,9 +74,8 @@ app.use(
 
 // Importamos las rutas
 app.get("/*", routes);
-app.post("/*", routes)
+app.post("/*", routes);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
 });
-
