@@ -20,8 +20,12 @@ import {
   CheqdModuleConfig,
 } from "@aries-framework/cheqd";
 import { AnonCredsModule } from "@aries-framework/anoncreds";
+import { AnonCredsRsModule } from "@aries-framework/anoncreds-rs";
+import { anoncreds } from "@hyperledger/anoncreds-nodejs";
 import {
   IndyVdrAnonCredsRegistry,
+  IndyVdrIndyDidRegistrar,
+  IndyVdrIndyDidResolver,
   IndyVdrModule,
 } from "@aries-framework/indy-vdr";
 import { indyVdr } from "@hyperledger/indy-vdr-nodejs";
@@ -89,7 +93,7 @@ const agentConfig = {
     keyDerivationMethod: KeyDerivationMethod.Argon2IMod, // Método de derivación de clave
     storage: {
       type: "sqlite", 
-      database: "holder.db"
+      database: "issuer.db"
     },
   },
   endpoints: ["http://localhost:5000"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente

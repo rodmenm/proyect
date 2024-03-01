@@ -158,31 +158,72 @@
             placeholder="did_url (essential)"
           />
           <br />
-          <input
-            type="text"
-            class="mar"
-            name="did_document"
-            placeholder="did_document (optional)"
-          />
-          <br />
-          <input
-            type="text"
-            class="mar"
-            name="privateKeys"
-            placeholder="privateKeys (optional)"
-          />
-          <br />
-          <input
-          type="text"
-          class="mar"
-          name="overwrite"
-          placeholder="overwrite (optional)"
-        />
-        <br />
           <button type="submit">Importar Did</button>
         </form>
       </div>
+    </div>
 
+    <div class="container">
+      <h2>Wallet Options</h2>
+    </div>
+
+    <div class="formita">
+      <div class="options_flat">
+        <form action="http://localhost:4000/cre_wallet" method="POST">
+          <button type="submit">Create Wallet</button>
+        </form>
+        <form action="http://localhost:4000/ini_wallet" method="POST">
+          <button type="submit">Initialize Wallet</button>
+        </form>
+        <form action="http://localhost:4000/cre_op_wallet" method="POST">
+          <button type="submit">Create and Ini Wallet</button>
+        </form>
+        <form action="http://localhost:4000/op_wallet" method="POST">
+          <button type="submit">Open Wallet</button>
+        </form>
+        <form action="http://localhost:4000/cl_wallet" method="POST">
+          <button type="submit">Close Wallet</button>
+        </form>
+        <form action="http://localhost:4000/gnonce" method="POST">
+          <button type="submit">Generate Nonce</button>
+        </form>
+        <form action="http://localhost:4000/del_wallet" method="POST">
+          <button type="submit">Delete Wallet</button>
+        </form>
+        <form action="http://localhost:4000/exp_wallet" method="POST">
+          <button type="submit">Export Wallet</button>
+        </form>
+        <form action="http://localhost:4000/imp_wallet" method="POST">
+          <button type="submit">Import Wallet</button>
+        </form>
+        <form action="http://localhost:4000/cre_key" method="POST">
+          <button type="submit">Create Key</button>
+        </form>
+      </div>
+      <div class="kk">Configure Wallet Options</div>
+      <div class="options_flat">
+        <form action="http://localhost:4000/save" method="POST">
+          <input
+            type="text"
+            class="mar"
+            name="id"
+            placeholder=<%= w_id %>
+          />
+          Wallet ID
+          <br />
+          <input
+            type="text"
+            class="mar"
+            name="key"
+            placeholder=<%= w_key %>
+          />
+           Wallet key
+          <br />
+          <div class="options_flat">
+            <button type="submit">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>

@@ -7,6 +7,7 @@ let kk = new HolderFinal();
 await kk.initializeHolder();
 const yy = await kk.holderFinal.import_did('did:cheqd:testnet:3f1bb734-a8c8-4e51-9a76-0d373a05d042');
 const tt = await kk.holderFinal.agent.dids.getCreatedDids();
+const mm = await kk.holderFinal.agent.wallet;
 
 // await kk.holderFinal.import_did("did:cheqd:testnet:afc2d43a-2105-4e77-a1f9-50f3803587f7");
 console.log(tt)

@@ -23,11 +23,24 @@ h1 {
   margin-bottom: 10px;
 }
 
+.kk {
+  text-align: center;
+}
+
 .options {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
   text-align: left;
+}
+
+.formita {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 2px solid gray;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .mar {
@@ -44,6 +57,14 @@ button {
   border: none;
   border-radius: 5px;
   text-align: center;
+}
+
+.options_flat {
+  display: flex;
+  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 button:hover {

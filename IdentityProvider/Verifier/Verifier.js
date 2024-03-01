@@ -1,5 +1,5 @@
 import "./../shim.js";
-import { Verifier_gen } from "./Verifier_gen.js";
+import { Issuer_gen } from "./Issuer_gen.js";
 import {
   Agent,
   DidsModule,
@@ -20,8 +20,12 @@ import {
   CheqdModuleConfig,
 } from "@aries-framework/cheqd";
 import { AnonCredsModule } from "@aries-framework/anoncreds";
+import { AnonCredsRsModule } from "@aries-framework/anoncreds-rs";
+import { anoncreds } from "@hyperledger/anoncreds-nodejs";
 import {
   IndyVdrAnonCredsRegistry,
+  IndyVdrIndyDidRegistrar,
+  IndyVdrIndyDidResolver,
   IndyVdrModule,
 } from "@aries-framework/indy-vdr";
 import { indyVdr } from "@hyperledger/indy-vdr-nodejs";

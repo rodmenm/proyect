@@ -16,15 +16,19 @@ const port = 4000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+global.w_id = "WalletCrear";
+global.w_key = "walletkeycrear0000";
 
 // Creamos un Verifier y un Issuer por defecto
 let Holder = new HolderFinal();
-// let Issuer = new IssuerFinal();
-// let Verifier = new VerifierFinal();
 await Holder.initializeHolder();
 global.Holder = Holder
-// await Issuer.initializeIssuer();
+
+let Issuer = new IssuerFinal();
+await Issuer.initializeIssuer();
+global.Issuer = Issuer
+
+// let Verifier = new VerifierFinal();
 // await Verifier.initializeVerifier();
 
 // Configuración de EJS como motor de plantillas

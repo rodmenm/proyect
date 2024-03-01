@@ -7,6 +7,17 @@ import {
   deac_did,
   dids_creados,
   import_did,
+  cre_wallet,
+  ini_wallet,
+  cre_op_wallet,
+  op_wallet,
+  cl_wallet,
+  gnonce,
+  del_wallet,
+  exp_wallet,
+  imp_wallet,
+  save_wallet,
+  cre_key
 } from "../controllers/mainController.js";
 
 const router = express.Router();
@@ -58,5 +69,50 @@ router.post("/import_did", (req, res, next) => {
  * By default, this method will throw an error if the did already exists in the wallet. You can override this behavior by setting
  * the `overwrite` option to `true`. This will update the did document in the record, and allows you to update the did over time.
  */
+
+router.post("/cre_wallet", (req, res, next) => {
+  cre_wallet(req, res, next);
+});
+
+router.post("/ini_wallet", (req, res, next) => {
+  ini_wallet(req, res, next);
+});
+
+router.post("/cre_op_wallet", (req, res, next) => {
+  cre_op_wallet(req, res, next);
+});
+
+router.post("/op_wallet", (req, res, next) => {
+  op_wallet(req, res, next);
+});
+
+router.post("/cl_wallet", (req, res, next) => {
+  cl_wallet(req, res, next);
+});
+
+router.post("/gnonce", (req, res, next) => {
+  gnonce(req, res, next);
+});
+
+router.post("/del_wallet", (req, res, next) => {
+  del_wallet(req, res, next);
+});
+
+router.post("/exp_wallet", (req, res, next) => {
+  exp_wallet(req, res, next);
+});
+
+router.post("/imp_wallet", (req, res, next) => {
+  imp_wallet(req, res, next);
+});
+
+router.post("/save", (req, res, next) => {
+  save_wallet(req, res, next);
+});
+
+router.post("/cre_key", (req, res, next) => {
+  cre_key(req, res, next);
+});
+
 
 export default router;
