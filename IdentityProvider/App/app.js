@@ -7,30 +7,17 @@ import bodyParser from "body-parser";
 
 import { HolderFinal } from "./../Holder/Holder.js";
 import { IssuerFinal } from "./../Issuer/Issuer.js";
-
-// import { VerifierFinal } from "./../Verifier/Verifier.js";
+import { VerifierFinal } from "./../Verifier/Verifier.js";
 
 // Obtener la ruta del directorio actual
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = 4000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-global.w_id = "WalletCrear";
-global.w_key = "walletkeycrear0000";
-
-// Creamos un Verifier y un Issuer por defecto
-let Holder = new HolderFinal();
-await Holder.initializeHolder();
-global.Holder = Holder;
-
-let Issuer = new IssuerFinal();
-await Issuer.initializeIssuer();
-
-async function issuer_did() {
+//FUNCIONES
+async function issuer_did() { //Crea un DID para el ISSUER
   try {
-    let did = await Issuer.issuerFinal.agent.dids.create({
+    await Issuer.issuerFinal.agent.dids.create({
       method: "cheqd",
       secret: {
         verificationMethod: {
@@ -43,16 +30,32 @@ async function issuer_did() {
         methodSpecificIdAlgo: "uuid",
       },
     });
-    console.log("DID creado correctamente");
+    console.log("Issuer DID creado correctamente");
   } catch (error) {
-    console.error("Error al crear el DID:", error);
+    console.error("Error al crear el Issuer DID:", error);
   }
 }
-await issuer_did();
-global.Issuer = Issuer;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+global.w_id = "WalletCrear";
+global.w_key = "walletkeycrear0000";
+
+// Creamos un Verifier y un Issuer por defecto
+let Holder = new HolderFinal();
+let Issuer = new IssuerFinal();
 // let Verifier = new VerifierFinal();
+
+await Holder.initializeHolder();
+await Issuer.initializeIssuer();
 // await Verifier.initializeVerifier();
+
+await issuer_did();
+global.Holder = Holder;
+global.Issuer = Issuer;
+// global.Verifier = Verifier;
+
+
 
 // Configuración de EJS como motor de plantillas
 app.set("view engine", "ejs");

@@ -1,5 +1,5 @@
 import "./../shim.js";
-import { Issuer_gen } from "./Issuer_gen.js";
+import { Verifier_gen } from "./Verifier_gen.js";
 import {
   Agent,
   DidsModule,

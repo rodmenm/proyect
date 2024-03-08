@@ -159,7 +159,6 @@ export async function cre_wallet(req, res) {
 }
 
 export async function ini_wallet(req, res) {
-  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.initialize(walletConfig);
@@ -171,7 +170,7 @@ export async function ini_wallet(req, res) {
 }
 
 export async function cre_op_wallet(req, res) {
-  //NO VA
+  //LA WALLET DEBE ESTAR CERRADA ANTES DE CORRER EL COMANDO
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.createAndOpen(walletConfig);
@@ -184,7 +183,6 @@ export async function cre_op_wallet(req, res) {
 }
 
 export async function op_wallet(req, res) {
-  // TESTEAR
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.open(walletConfig);
@@ -223,6 +221,7 @@ export async function gnonce(req, res) {
 }
 
 export async function del_wallet(req, res) {
+  // Borra wallet pero no su almacenamiento
   try {
     Holder = global.Holder;
     await Holder.holderFinal.agent.wallet.delete();
@@ -273,16 +272,14 @@ export async function save_wallet(req, res) {
 }
 
 export async function cre_key(req, res) {
-  //NO VA
   try {
     Holder = global.Holder;
-    let key = await Holder.holderFinal.agent.wallet.createKey({
-      KeyType: KeyType.Ed25519,
-      seed: seed,
-      // privateKey: global.w_key
+    const key = await Holder.holderFinal.agent.wallet.createKey({
+      seed: null,
+      privateKey: null,
+      keyType: "ed25519",
     });
     console.log(key);
-    res.send(key);
     console.log("Key generada");
     res.redirect("/");
   } catch (error) {

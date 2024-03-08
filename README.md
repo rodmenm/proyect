@@ -47,3 +47,6 @@ cd opt/keycloak/bin
 ```bash
 sudo npm install -g node-gyp
 ```
+
+### Identity Provider
+Las wallets creadas se encuentran en la ruta del contenedor /root/.afj/data/wallet
