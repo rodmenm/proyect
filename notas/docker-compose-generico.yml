@@ -17,12 +17,14 @@ services:
         command:
         - start-dev
         container_name: keycloak
-    IDP:
+    idp:
         build:
             context: .
-            dockerfile: Dockerfile_IDP
-        container_name: IDP
+            dockerfile: Dockerfile_idp
+        container_name: idp
         ports:
         - "4000:4000"
+        - "4002:4002"
+        - "4003:4003"
         
         
