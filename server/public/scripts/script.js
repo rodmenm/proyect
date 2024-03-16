@@ -3,5 +3,5 @@ function login() {
 }
 
 function logout() {
-  window.location.href = "http://localhost:3000/logout";
+  window.location.href = "http://localhost:3000/logo";
 }

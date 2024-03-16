@@ -1,15 +1,24 @@
-/* Estilos para el cuerpo de la página */
-body {
-  font-family: Arial, sans-serif;
+body{
   background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+
+.center {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
-  height: 100vh;
+  height: 50vh;
   margin: 0;
 }
 
-/* Estilos para el contenedor de inicio de sesión */
+.center2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
 .login-container {
   background-color: #fff;
   padding: 20px;
@@ -17,7 +26,6 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el botón de inicio de sesión */
 button {
   background-color: #4caf50;
   color: #fff;

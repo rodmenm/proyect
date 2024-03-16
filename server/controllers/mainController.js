@@ -6,9 +6,9 @@ exports.login = (req, res, next) => {
 };
 
 exports.logout = (req, res, next) => {
-  req.logout(); 
   req.session.destroy(); 
-  res.redirect(keycloakConfig.authServerUrl + "/realms/" + keycloakConfig.realm + "/protocol/openid-connect/logout");
+  res.redirect(keycloakConfig.auth-server-url + "/realms/" + keycloakConfig.realm + "/protocol/openid-connect/logout");
+  // res.redirect("http://34.175.236.187:8080/realms/" + keycloakConfig.realm + "/protocol/openid-connect/logout");
   // PONER IP SI SE HACE EN SERVIDOR EXTERNO
 };
 
