@@ -16,6 +16,7 @@ import {
   del_wallet,
   exp_wallet,
   imp_wallet,
+  save_wallet,
   cre_key,
 } from "../controllers/mainController.js";
 
@@ -106,6 +107,10 @@ router.post("/exp_wallet", (req, res, next) => {
 
 router.post("/imp_wallet", (req, res, next) => {
   imp_wallet(req, res, next);
+});
+
+router.post("/save", (req, res, next) => {
+  save_wallet(req, res, next);
 });
 
 router.post("/cre_key", (req, res, next) => {
