@@ -41,22 +41,6 @@ app.use(bodyParser.json());
 global.w_id = "WalletCrear";
 global.w_key = "walletkeycrear0000";
 
-// Creamos un Verifier y un Issuer por defecto
-let Holder = new HolderFinal();
-let Issuer = new IssuerFinal();
-// let Verifier = new VerifierFinal();
-
-await Holder.initializeHolder();
-await Issuer.initializeIssuer();
-// await Verifier.initializeVerifier();
-
-await issuer_did();
-global.Holder = Holder;
-global.Issuer = Issuer;
-// global.Verifier = Verifier;
-
-
-
 // Configuración de EJS como motor de plantillas
 app.set("view engine", "ejs");
 app.set("views", `${__dirname}/views`);
@@ -68,7 +52,7 @@ app.use(express.static(`${__dirname}/public`));
 const memoryStore = new session.MemoryStore();
 app.use(
   session({
-    secret: "dsofngsdjfngasdurgidbvilahbdfgila",
+    secret: "misecretosuperseguro",
     resave: false,
     saveUninitialized: true,
     store: memoryStore,

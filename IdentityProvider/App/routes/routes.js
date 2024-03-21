@@ -16,21 +16,21 @@ import {
   del_wallet,
   exp_wallet,
   imp_wallet,
-  save_wallet,
-  cre_key
+  cre_key,
 } from "../controllers/mainController.js";
 
 const router = express.Router();
 
 router.get("/", index);
 
-// DIDS
+// DIDS----------------------------------------------------------------------------------------------------
+
 // Resolve a did to a did document.
 router.post("/resolve_did", (req, res, next) => {
   res_did(req, res);
 });
 
-// Create, register and store a did and did document.                                                       | options
+// Create, register and store a did and did document.
 router.post("/crear_did", (req, res, next) => {
   crear_did(req, res);
 });
@@ -70,6 +70,8 @@ router.post("/import_did", (req, res, next) => {
  * the `overwrite` option to `true`. This will update the did document in the record, and allows you to update the did over time.
  */
 
+// WALLETS--------------------------------------------------------------------------------------
+
 router.post("/cre_wallet", (req, res, next) => {
   cre_wallet(req, res, next);
 });
@@ -106,13 +108,8 @@ router.post("/imp_wallet", (req, res, next) => {
   imp_wallet(req, res, next);
 });
 
-router.post("/save", (req, res, next) => {
-  save_wallet(req, res, next);
-});
-
 router.post("/cre_key", (req, res, next) => {
   cre_key(req, res, next);
 });
-
 
 export default router;

@@ -11,7 +11,7 @@ COPY IdentityProvider .
 RUN npm install
 
 # Expone el puerto en el que el servidor estará escuchando
-EXPOSE 4000 4002 4003
+EXPOSE 4000 5000 6000
 
 # Comando para ejecutar la aplicación
 CMD ["npm", "start"]
