@@ -9,30 +9,49 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1>Identity Provider</h1>
+  <div class="formita">
+    <div class="container">
+      <h1>Identity Provider</h1>
+    </div>
+    <div class="kk">Configure Agent Wallet Options</div>
+    <div class="options_flat">
+      <form action="http://localhost:4000/save" method="POST">
+        <input type="text" class="mar" name="id" placeholder=<%= w_id %> />
+        Wallet ID
+        <br />
+        <input type="text" class="mar" name="key" placeholder=<%= w_key %> />
+        Wallet key
+        <br />
+        <div class="options_flat">
+          <button type="submit">Save</button>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="kk">Configure Wallet Options</div>
-  <div class="options_flat">
-    <form action="http://localhost:4000/save" method="POST">
-      <input type="text" class="mar" name="id" placeholder=<%= w_id %> />
-      Wallet ID
-      <br />
-      <input type="text" class="mar" name="key" placeholder=<%= w_key %> />
-      Wallet key
-      <br />
-      <div class="options_flat">
-        <button type="submit">Save</button>
-      </div>
+
+  <div class="formita">
+    <div class="container">
+      <h2>Schema</h2>
+    </div>
+    <form action="http://localhost:4000/schema" method="POST">
+      <button type="submit">Register a Schema</button>
     </form>
   </div>
 
+
+
   <div class="container">
-    <h2>Wallet Options</h2>
+    <h2>Wallet Functions</h2>
   </div>
   <div class="formita">
     <div class="options_flat">
       <form action="http://localhost:4000/cre_wallet" method="POST">
+        <input type="text" class="mar" name="id" placeholder="Wallet distinta a la del agente" />
+        Wallet ID
+        <br />
+        <input type="text" class="mar" name="key" placeholder="Wallet distinta a la del agente" />
+        Wallet key
+        <br />
         <button type="submit">Create Wallet</button>
       </form>
       <form action="http://localhost:4000/ini_wallet" method="POST">

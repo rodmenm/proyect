@@ -18,6 +18,7 @@ import {
   imp_wallet,
   save_wallet,
   cre_key,
+  schem,
 } from "../controllers/mainController.js";
 
 const router = express.Router();
@@ -115,6 +116,10 @@ router.post("/save", (req, res, next) => {
 
 router.post("/cre_key", (req, res, next) => {
   cre_key(req, res, next);
+});
+
+router.post("/schema", (req, res, next) => {
+  schem(req, res, next);
 });
 
 export default router;

@@ -3,6 +3,9 @@ import {
   ConnectionsModule,
   KeyDerivationMethod,
   DidCommMimeType,
+  TypedArrayEncoder,
+  ConsoleLogger,
+  LogLevel,
 } from "@aries-framework/core";
 import { AskarModule } from "@aries-framework/askar";
 import { ariesAskar } from "@hyperledger/aries-askar-nodejs";
@@ -78,6 +81,11 @@ export const modules = {
   ),
 };
 
+// Define una semilla que se utilizará para generar claves criptográficas
+export const semilla = TypedArrayEncoder.fromString(
+  `misemilladebemantenerseensecreto`
+); // Debe mantenerse seguro en producción!
+
 export const Holder_agentConfig = {
   label: "H_agente", // Nombre del agente
   walletConfig: {
@@ -89,8 +97,8 @@ export const Holder_agentConfig = {
       database: "holder.db", // Ruta al archivo de base de datos SQLite
     },
   },
+  logger: new ConsoleLogger(LogLevel.info),
   // endpoints: ["http://localhost:4000"], Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
-  // logger: new ConsoleLogger(LogLevel.info), // Configuración del registro de eventos
   didCommMimeType: DidCommMimeType.V1, // Tipo MIME para el intercambio de mensajes
   useDidSovPrefixWhereAllowed: true, // Indicación para usar el prefijo did:sov en los mensajes si está permitido
   useDidKeyInProtocols: true,
@@ -103,33 +111,35 @@ export const Issuer_agentConfig = {
   walletConfig: {
     id: "Issuer_wallet",
     key: "issuertestkey0000",
-    keyDerivationMethod: KeyDerivationMethod.Argon2IMod, 
+    keyDerivationMethod: KeyDerivationMethod.Argon2IMod,
     storage: {
       type: "sqlite",
       database: "issuer.db",
     },
   },
-  endpoints: ["http://localhost:5000"], 
-  didCommMimeType: DidCommMimeType.V1, 
-  useDidSovPrefixWhereAllowed: true, 
+  logger: new ConsoleLogger(LogLevel.info),
+  endpoints: ["http://localhost:5000"],
+  didCommMimeType: DidCommMimeType.V1,
+  useDidSovPrefixWhereAllowed: true,
   useDidKeyInProtocols: true,
   autoUpdateStorageOnStartup: false,
 };
 
 export const Verifier_agentConfig = {
-  label: "V_agente", 
+  label: "V_agente",
   walletConfig: {
-    id: "Verfier_wallet", 
-    key: "verfiertestkey0000", 
-    keyDerivationMethod: KeyDerivationMethod.Argon2IMod, 
+    id: "Verfier_wallet",
+    key: "verfiertestkey0000",
+    keyDerivationMethod: KeyDerivationMethod.Argon2IMod,
     storage: {
       type: "sqlite",
       database: "verifier.db",
     },
   },
-  endpoints: ["http://localhost:6000"], 
-  didCommMimeType: DidCommMimeType.V1, 
-  useDidSovPrefixWhereAllowed: true, 
+  logger: new ConsoleLogger(LogLevel.info),
+  endpoints: ["http://localhost:6000"],
+  didCommMimeType: DidCommMimeType.V1,
+  useDidSovPrefixWhereAllowed: true,
   useDidKeyInProtocols: true,
   autoUpdateStorageOnStartup: false,
 };

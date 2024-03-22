@@ -31,7 +31,7 @@ export class IssuerFinal {
   };
 
   shutdownIssuer = async () => {
-    await issuerFinal.agent.shutdown();
+    await this.issuerFinal.agent.shutdown();
     console.log("Agente finalizado");
   };
 }

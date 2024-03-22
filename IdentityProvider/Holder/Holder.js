@@ -26,7 +26,7 @@ export class HolderFinal {
   };
 
   shutdownHolder = async () => {
-    await holderFinal.agent.shutdown();
+    await this.holderFinal.agent.shutdown();
     console.log("Agente finalizado");
   };
 }

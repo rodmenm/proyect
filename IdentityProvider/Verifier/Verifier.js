@@ -31,7 +31,7 @@ export class VerifierFinal {
   };
 
   shutdownVerifier = async () => {
-    await VerifierFinal.agent.shutdown();
+    await this.VerifierFinal.agent.shutdown();
     console.log("Agente finalizado");
   };
 }
