@@ -21,6 +21,11 @@ export class HolderFinal {
     // Registra `Http` con outbound transport
     Finalholder.agent.registerOutboundTransport(new HttpOutboundTransport());
 
+    // Registra `Http` con inbound transport
+    Finalholder.agent.registerInboundTransport(
+      new HttpInboundTransport({ port: 5000 })
+    );
+
     await Finalholder.agent.initialize();
     this.holderFinal = Finalholder;
   };

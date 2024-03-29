@@ -122,4 +122,8 @@ router.post("/schema", (req, res, next) => {
   schem(req, res, next);
 });
 
+router.post("/cred", (req, res, next) => {
+  cred(req, res, next);
+});
+
 export default router;

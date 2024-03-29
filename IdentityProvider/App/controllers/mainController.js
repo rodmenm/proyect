@@ -440,6 +440,144 @@ export async function schem(req, res) {
   }
 }
 
+export async function cred() {
+  // TESTEAR
+  try {
+    let Issuer = await ini_issuer();
+    let Holder = await ini_holder();
+
+    await Issuer.issuerFinal.agent.dids.create({
+      method: "cheqd",
+      secret: {
+        verificationMethod: {
+          id: "key-1",
+          type: "Ed25519VerificationKey2020",
+        },
+      },
+      options: {
+        network: "testnet",
+        methodSpecificIdAlgo: "uuid",
+      },
+    });
+    console.log("Issuer DID creado correctamente");
+
+    await Holder.holderFinal.agent.dids.create({
+      method: "cheqd",
+      secret: {
+        verificationMethod: {
+          id: "key-1",
+          type: "Ed25519VerificationKey2020",
+        },
+      },
+      options: {
+        network: "testnet",
+        methodSpecificIdAlgo: "uuid",
+      },
+    });
+    console.log("Holder DID creado correctamente");
+
+    let didis = await Issuer.issuerFinal.agent.dids.getCreatedDids();
+    let didho = await Holder.holderFinal.agent.dids.getCreatedDids();
+
+    await Issuer.issuerFinal.agent.dids.import({
+      did: didis[0].did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+    console.log("Issuer did importado correctamente")
+
+    await Holder.holderFinal.agent.dids.import({
+      did: didho[0].did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+    console.log("Holder did importado correctamente")
+
+    let schemaResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
+      schema: {
+        attrNames: ['name'],
+        issuerId: dids[0].did,
+        name: 'Example Schema to register',
+        version: '1.0.0',
+      },
+      options: {},
+    })
+    
+    if (schemaResult.schemaState.state === 'failed') {
+      throw new Error(`Error creating schema: ${schemaResult.schemaState.reason}`)
+    }
+
+    console.log("schemaResult:" +schemaResult)
+
+    
+    const credentialDefinitionResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition({
+      credentialDefinition: {
+        tag: 'default_tag',
+        issuerId: dids[0].did,
+        schemaId: schemaResult.schemaState.schemaId,
+      },
+      options: {},
+    })
+    
+    if (credentialDefinitionResult.credentialDefinitionState.state === 'failed') {
+      throw new Error(
+        `Error creating credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
+      )
+    }
+
+
+    console.log("crednetial:" +credentialDefinitionResult)
+
+
+    const indyCredentialExchangeRecord = await Issuer.issuerFinal.agent.credentials.offerCredential({
+      protocolVersion: 'v2',
+      connectionId: '<connection id>',
+      credentialFormats: {
+        indy: {
+          credentialDefinitionId: '<credential definition id>',
+          attributes: [
+            { name: 'name', value: 'Jane Doe' },
+            { name: 'age', value: '23' },
+          ],
+        },
+      },
+    })
+
+
+    Holder.holderFinal.agent.events.on<CredentialStateChangedEvent>(CredentialEventTypes.CredentialStateChanged, async ({ payload }) => {
+      switch (payload.credentialRecord.state) {
+        case CredentialState.OfferReceived:
+          console.log('received a credential')
+          // custom logic here
+          await Holder.holderFinal.agent.credentials.acceptOffer({ credentialRecordId: payload.credentialRecord.id })
+        case CredentialState.Done:
+          console.log(`Credential for credential id ${payload.credentialRecord.id} is accepted`)
+          // For demo purposes we exit the program here.
+          process.exit(0)
+      }
+    })
+
+    await Issuer.shutdownIssuer();
+    await Holder.shutdownHolder();
+
+    res.redirect("/");
+
+  } catch (error) {
+    console.error("Error en la inicialización:", error);
+    res.status(500).send("Error" + error);
+  }
+}
+
 export async function initial_first() {
   // TESTEAR
   try {
