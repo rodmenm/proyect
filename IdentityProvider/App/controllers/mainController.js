@@ -62,10 +62,25 @@ export const index = (req, res) => {
   });
 };
 
+export const logeo = (req, res) => {
+  res.render("login");
+};
+
+export const logeocheck = (req, res) => {
+  let wid = req.body.id;
+  let wkey = req.body.key;
+  if (wid == "agente" && wkey == "testkey") {
+    res.send("Logeado"); 
+  } else {
+    res.send("NO LOGEADO")
+  }
+};
+
 // WALLET------------------------------------------------------------------------------------------------------------->
 // Ahora mismo NO FUNCIONA LAS FUNCIONES WALLETS, ASI ES COMO SE REALIZARA EN CASO DE QUERER MODIFICAR WALLETS
 
-export async function save_wallet(req, res) { //NO SIRVE
+export async function save_wallet(req, res) {
+  //NO SIRVE
   try {
     if (req.body.id) {
       req.session.w_id = req.body.id;
@@ -83,7 +98,8 @@ export async function save_wallet(req, res) { //NO SIRVE
   }
 }
 
-export async function cre_wallet(req, res) { //
+export async function cre_wallet(req, res) {
+  //
   try {
     let Holder = await ini_holder(req.session.holder_walletConfig);
     let new_wallet_config = change(req);
@@ -352,7 +368,6 @@ export async function import_did(req, res) {
     });
     */
 
-
     console.log("DID importado correctamente");
     await Holder.shutdownHolder();
     res.send("DID importado correctamente");
@@ -395,41 +410,49 @@ export async function schem(req, res) {
       ],
     });
 
-    console.log("Issuer did importado correctamente")
+    console.log("Issuer did importado correctamente");
 
-    let schemaResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
-      schema: {
-        attrNames: ['name'],
-        issuerId: dids[0].did,
-        name: 'Example Schema to register',
-        version: '1.0.0',
-      },
-      options: {},
-    })
-    
-    if (schemaResult.schemaState.state === 'failed') {
-      throw new Error(`Error creating schema: ${schemaResult.schemaState.reason}`)
+    let schemaResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
+        schema: {
+          attrNames: ["name"],
+          issuerId: dids[0].did,
+          name: "Example Schema to register",
+          version: "1.0.0",
+        },
+        options: {},
+      });
+
+    if (schemaResult.schemaState.state === "failed") {
+      throw new Error(
+        `Error creating schema: ${schemaResult.schemaState.reason}`
+      );
     }
 
-    console.log(schemaResult)
+    console.log(schemaResult);
 
-    const credentialDefinitionResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition({
-      credentialDefinition: {
-        tag: 'default_tag',
-        issuerId: dids[0].did,
-        schemaId: schemaResult.schemaState.schemaId,
-      },
-      options: {},
-    })
-    
-    if (credentialDefinitionResult.credentialDefinitionState.state === 'failed') {
+    const credentialDefinitionResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition(
+        {
+          credentialDefinition: {
+            tag: "default_tag",
+            issuerId: dids[0].did,
+            schemaId: schemaResult.schemaState.schemaId,
+          },
+          options: {},
+        }
+      );
+
+    if (
+      credentialDefinitionResult.credentialDefinitionState.state === "failed"
+    ) {
       throw new Error(
         `Error creating credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
-      )
+      );
     }
 
-    console.log("------------------------------------")
-    console.log(credentialDefinitionResult)
+    console.log("------------------------------------");
+    console.log(credentialDefinitionResult);
 
     await Issuer.shutdownIssuer();
 
@@ -489,7 +512,7 @@ export async function cred() {
         },
       ],
     });
-    console.log("Issuer did importado correctamente")
+    console.log("Issuer did importado correctamente");
 
     await Holder.holderFinal.agent.dids.import({
       did: didho[0].did,
@@ -501,77 +524,88 @@ export async function cred() {
         },
       ],
     });
-    console.log("Holder did importado correctamente")
+    console.log("Holder did importado correctamente");
 
-    let schemaResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
-      schema: {
-        attrNames: ['name'],
-        issuerId: dids[0].did,
-        name: 'Example Schema to register',
-        version: '1.0.0',
-      },
-      options: {},
-    })
-    
-    if (schemaResult.schemaState.state === 'failed') {
-      throw new Error(`Error creating schema: ${schemaResult.schemaState.reason}`)
+    let schemaResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
+        schema: {
+          attrNames: ["name"],
+          issuerId: dids[0].did,
+          name: "Example Schema to register",
+          version: "1.0.0",
+        },
+        options: {},
+      });
+
+    if (schemaResult.schemaState.state === "failed") {
+      throw new Error(
+        `Error creating schema: ${schemaResult.schemaState.reason}`
+      );
     }
 
-    console.log("schemaResult:" +schemaResult)
+    console.log("schemaResult:" + schemaResult);
 
-    
-    const credentialDefinitionResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition({
-      credentialDefinition: {
-        tag: 'default_tag',
-        issuerId: dids[0].did,
-        schemaId: schemaResult.schemaState.schemaId,
-      },
-      options: {},
-    })
-    
-    if (credentialDefinitionResult.credentialDefinitionState.state === 'failed') {
+    const credentialDefinitionResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition(
+        {
+          credentialDefinition: {
+            tag: "default_tag",
+            issuerId: dids[0].did,
+            schemaId: schemaResult.schemaState.schemaId,
+          },
+          options: {},
+        }
+      );
+
+    if (
+      credentialDefinitionResult.credentialDefinitionState.state === "failed"
+    ) {
       throw new Error(
         `Error creating credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
-      )
+      );
     }
 
+    console.log("crednetial:" + credentialDefinitionResult);
 
-    console.log("crednetial:" +credentialDefinitionResult)
-
-
-    const indyCredentialExchangeRecord = await Issuer.issuerFinal.agent.credentials.offerCredential({
-      protocolVersion: 'v2',
-      connectionId: '<connection id>',
-      credentialFormats: {
-        indy: {
-          credentialDefinitionId: '<credential definition id>',
-          attributes: [
-            { name: 'name', value: 'Jane Doe' },
-            { name: 'age', value: '23' },
-          ],
+    const indyCredentialExchangeRecord =
+      await Issuer.issuerFinal.agent.credentials.offerCredential({
+        protocolVersion: "v2",
+        connectionId: "<connection id>",
+        credentialFormats: {
+          indy: {
+            credentialDefinitionId: "<credential definition id>",
+            attributes: [
+              { name: "name", value: "Jane Doe" },
+              { name: "age", value: "23" },
+            ],
+          },
         },
-      },
-    })
+      });
 
-
-    Holder.holderFinal.agent.events.on<CredentialStateChangedEvent>(CredentialEventTypes.CredentialStateChanged, async ({ payload }) => {
-      switch (payload.credentialRecord.state) {
-        case CredentialState.OfferReceived:
-          console.log('received a credential')
-          // custom logic here
-          await Holder.holderFinal.agent.credentials.acceptOffer({ credentialRecordId: payload.credentialRecord.id })
-        case CredentialState.Done:
-          console.log(`Credential for credential id ${payload.credentialRecord.id} is accepted`)
-          // For demo purposes we exit the program here.
-          process.exit(0)
-      }
-    })
+    Holder.holderFinal.agent.events.on <
+      CredentialStateChangedEvent >
+      (CredentialEventTypes.CredentialStateChanged,
+      async ({ payload }) => {
+        switch (payload.credentialRecord.state) {
+          case CredentialState.OfferReceived:
+            console.log("received a credential");
+            // custom logic here
+            await Holder.holderFinal.agent.credentials.acceptOffer({
+              credentialRecordId: payload.credentialRecord.id,
+            });
+          case CredentialState.Done:
+            console.log(
+              `Credential for credential id ${payload.credentialRecord.id} is accepted`
+            );
+            // For demo purposes we exit the program here.
+            process.exit(0);
+        }
+      });
 
     await Issuer.shutdownIssuer();
     await Holder.shutdownHolder();
 
     res.redirect("/");
-
   } catch (error) {
     console.error("Error en la inicialización:", error);
     res.status(500).send("Error" + error);
@@ -611,28 +645,30 @@ export async function initial_first() {
       ],
     });
 
-    console.log("Issuer did importado correctamente")
+    console.log("Issuer did importado correctamente");
 
-    let schemaResult = await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
-      schema: {
-        attrNames: ['name'],
-        issuerId: dids[0].did,
-        name: 'Example Schema to register',
-        version: '1.0.0',
-      },
-      options: {},
-    })
-    
-    if (schemaResult.schemaState.state === 'failed') {
-      throw new Error(`Error creating schema: ${schemaResult.schemaState.reason}`)
+    let schemaResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
+        schema: {
+          attrNames: ["name"],
+          issuerId: dids[0].did,
+          name: "Example Schema to register",
+          version: "1.0.0",
+        },
+        options: {},
+      });
+
+    if (schemaResult.schemaState.state === "failed") {
+      throw new Error(
+        `Error creating schema: ${schemaResult.schemaState.reason}`
+      );
     }
 
-    console.log(schemaResult)
+    console.log(schemaResult);
 
     await Issuer.shutdownIssuer();
 
     res.redirect("/");
-
   } catch (error) {
     console.error("Error en la inicialización:", error);
     res.status(500).send("Error" + error);

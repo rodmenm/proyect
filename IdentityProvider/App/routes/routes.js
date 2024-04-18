@@ -1,6 +1,8 @@
 import express from "express";
 import {
   index,
+  logeo,
+  logeocheck,
   res_did,
   crear_did,
   update_did,
@@ -24,6 +26,10 @@ import {
 const router = express.Router();
 
 router.get("/", index);
+
+router.get("/login", logeo);
+
+router.post("/login/save", logeocheck);
 
 // DIDS----------------------------------------------------------------------------------------------------
 
