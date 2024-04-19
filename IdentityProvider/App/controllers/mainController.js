@@ -3,6 +3,34 @@ import { HolderFinal } from "../../Holder/Holder.js";
 import { IssuerFinal } from "../../Issuer/Issuer.js";
 import { VerifierFinal } from "../../Verifier/Verifier.js";
 import { semilla } from "../../config.js";
+import jwt from "jsonwebtoken";
+
+const secretKey = "EstoEsParaGenerarTokensValidos";
+
+const tokengen = (user) => {
+  let token = jwt.sign(user, secretKey, {
+    algorithm: "HSS256",
+    expiresIn: "1m",
+  });
+  return token;
+};
+
+export const logeo = (req, res) => {
+  res.render("login");
+};
+
+export const logeocheck = (req, res) => {
+  let wid = req.body.id;
+  let wkey = req.body.key;
+  if (wid == "agente" && wkey == "testkey") {
+    let token = tokengen({ id: "agente" });
+    console.log(token);
+    res.send(token);
+  } else {
+    res.send("NO LOGEADO");
+  }
+};
+// A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
 
 // CONSTANTES----------------------------------------------------------------------------------------------->
 
@@ -60,20 +88,6 @@ export const index = (req, res) => {
     w_id: req.session.holder_walletConfig.id,
     w_key: req.session.holder_walletConfig.key,
   });
-};
-
-export const logeo = (req, res) => {
-  res.render("login");
-};
-
-export const logeocheck = (req, res) => {
-  let wid = req.body.id;
-  let wkey = req.body.key;
-  if (wid == "agente" && wkey == "testkey") {
-    res.send("Logeado"); 
-  } else {
-    res.send("NO LOGEADO")
-  }
 };
 
 // WALLET------------------------------------------------------------------------------------------------------------->
