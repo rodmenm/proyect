@@ -5,9 +5,9 @@ def mensaje():
     print("Para ejecutar este script escriba 'python3 auto_IP.py *NEW_IP*")
 
 directorio = os.getcwd()
-kk = directorio + "\\server\\public\\scripts\\script.py"
-pp = directorio + "\\IdentityProvider\\App\\views\\index.py"
-tt = directorio + "\\IdentityProvider\\config.py"
+kk = directorio + "/server/public/scripts/script.py"
+pp = directorio + "/IdentityProvider/App/views/index.py"
+tt = directorio + "/IdentityProvider/config.py"
 
 if len(sys.argv) >= 3:
     mensaje()
