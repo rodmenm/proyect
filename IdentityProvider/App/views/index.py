@@ -1,7 +1,7 @@
 import sys, os
 
 def mensaje():
-    print("Este script esta diseñado para modificar el fichero mainController.js.")
+    print("Este script esta diseñado para modificar el fichero index.ejs y login.ejs.")
     print("Para ejecutar este script escriba 'python3 script.py *NEW_IP* *OLD_IP*'.")
     print("NEW_IP representa la IP donde se va a ejecutanco el servidor.")
     print("OLD_IP representa la IP que anteriormente alojaba el servicio (si anteriormente nunca ha modificado script.js deje este argumento en blanco).")
@@ -9,6 +9,7 @@ def mensaje():
 directorio = os.getcwd()
 ruta = sys.argv[0]
 ruta = ruta.replace('.py','.ejs')
+ruta2 = ruta.replace('index','login')
 
 if len(sys.argv) >= 4:
     mensaje()
@@ -29,5 +30,14 @@ if len(sys.argv) >= 2:
     my_file = open(directorio + '/' + ruta,'w')
     my_file.write(my_data)
     my_file.close()
+
+    my_file = open(directorio + '/' + ruta2,'r')
+    my_data = my_file.read()
+    my_data = my_data.replace(old_ip,new_ip)
+    my_file.close()
+    my_file = open(directorio + '/' + ruta2,'w')
+    my_file.write(my_data)
+    my_file.close()
+    print("localhost cambiado por " + new_ip + "en el fichero IDP/views")
 else:
     mensaje()

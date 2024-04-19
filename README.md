@@ -50,3 +50,15 @@ sudo npm install -g node-gyp
 
 ### Identity Provider
 Las wallets creadas se encuentran en la ruta del contenedor /root/.afj/data/wallet
+Se ha de emplear el algoritmo HS256 para firmar los tokens
+
+### DIreccion IP
+
+Se ha de cambiar la direccion IP en los siguientes ficheros
+- IdentityProvider\config.js
+- IdentityProvider\App\views\index.ejs
+- IdentityProvider\App\views\login.ejs
+- server\public\scripts\script.js
+
+> [!NOTE]
+> El fichero auto_IP.py automatiza dicha tarea

@@ -1,7 +1,7 @@
 import sys, os
 
 def mensaje():
-    print("Este script esta diseñado para modificar el fichero mainController.js.")
+    print("Este script esta diseñado para modificar el fichero config.js.")
     print("Para ejecutar este script escriba 'python3 script.py *NEW_IP* *OLD_IP*'.")
     print("NEW_IP representa la IP donde se va a ejecutanco el servidor.")
     print("OLD_IP representa la IP que anteriormente alojaba el servicio (si anteriormente nunca ha modificado script.js deje este argumento en blanco).")
@@ -29,5 +29,6 @@ if len(sys.argv) >= 2:
     my_file = open(directorio + '/' + ruta,'w')
     my_file.write(my_data)
     my_file.close()
+    print("localhost cambiado por " + new_ip + "en el fichero IDP/config")
 else:
     mensaje()
