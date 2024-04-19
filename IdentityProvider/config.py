@@ -6,7 +6,6 @@ def mensaje():
     print("NEW_IP representa la IP donde se va a ejecutanco el servidor.")
     print("OLD_IP representa la IP que anteriormente alojaba el servicio (si anteriormente nunca ha modificado script.js deje este argumento en blanco).")
 
-directorio = os.getcwd()
 ruta = sys.argv[0]
 ruta = ruta.replace('.py','.js')
 
@@ -22,11 +21,11 @@ if len(sys.argv) >= 2:
     if (new_ip == 'help'):
         mensaje()
         sys.exit()
-    my_file = open(directorio + '/' + ruta,'r')
+    my_file = open(ruta,'r')
     my_data = my_file.read()
     my_data = my_data.replace(old_ip,new_ip)
     my_file.close()
-    my_file = open(directorio + '/' + ruta,'w')
+    my_file = open(ruta,'w')
     my_file.write(my_data)
     my_file.close()
     print("localhost cambiado por " + new_ip + "en el fichero IDP/config")
