@@ -18,8 +18,8 @@ elif len(sys.argv) == 2:
         mensaje()
         sys.exit()
     rutas_y_parametros = [(kk, new_ip),(pp, new_ip),(tt, new_ip)]
-    for ruta, parametros in rutas_y_parametros:
-        subprocess.run(["python3", ruta] + parametros)
+    for ruta, nueva_ip in rutas_y_parametros:
+        subprocess.run(["python", ruta, nueva_ip])
     print("Todos los archivos cambiados correctamente")
 else:
     mensaje()
