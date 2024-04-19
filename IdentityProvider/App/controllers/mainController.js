@@ -9,7 +9,7 @@ const secretKey = "EstoEsParaGenerarTokensValidos";
 
 const tokengen = (user) => {
   let token = jwt.sign(user, secretKey, {
-    algorithm: "HSS256",
+    algorithm: "HS256",
     expiresIn: "1m",
   });
   return token;
