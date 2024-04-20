@@ -3,6 +3,7 @@ import {
   index,
   logeo,
   logeocheck,
+  givtok,
   res_did,
   crear_did,
   update_did,
@@ -30,6 +31,8 @@ router.get("/", index);
 router.get("/login", logeo);
 
 router.post("/login/save", logeocheck);
+
+router.post("/login/token", givtok);
 
 // DIDS----------------------------------------------------------------------------------------------------
 

@@ -16,8 +16,9 @@ const tokengen = (user) => {
 };
 
 function codegen() {
-  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let codigo = '';
+  const caracteres =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let codigo = "";
   for (let k = 0; k < 16; k++) {
     codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
@@ -61,16 +62,32 @@ export const logeo = (req, res) => {
 };
 
 export const logeocheck = (req, res) => {
-  const { scope, state, response_type, client_id, redirect_uri, nonce } = req.session.authParams;
+  const { scope, state, response_type, client_id, redirect_uri, nonce } =
+    req.session.authParams;
   let wid = req.body.id;
   let wkey = req.body.key;
   if (wid == "agente" && wkey == "testkey") {
     let code = codegen();
+    req.session.code = code;
     let url = `${redirect_uri}?code=${code}&state=${state}`;
     res.redirect(url);
   } else {
     res.send("NO LOGEADO");
   }
+};
+
+export const givtok = (req, res) => {
+  let kk = req.query;
+  let pp = req.body;
+  console.log(kk);
+  console.log(pp);
+  let token = tokengen("agente");
+
+  res.status(200).json({
+    access_token: token,
+    token_type: 'Bearer'
+  });
+
 };
 // A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
 
