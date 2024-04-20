@@ -15,17 +15,59 @@ const tokengen = (user) => {
   return token;
 };
 
+function codegen() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let codigo = '';
+  for (let k = 0; k < 16; k++) {
+    codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return codigo;
+}
+
 export const logeo = (req, res) => {
+  const { scope, state, response_type, client_id, redirect_uri, nonce } =
+    req.query;
+
+  if (
+    !scope ||
+    !state ||
+    !response_type ||
+    !client_id ||
+    !redirect_uri ||
+    !nonce
+  ) {
+    return res
+      .status(400)
+      .send("Faltan parámetros requeridos en la solicitud.");
+  }
+
+  req.session.authParams = {
+    scope,
+    state,
+    response_type,
+    client_id,
+    redirect_uri,
+    nonce,
+  };
+
+  console.log("scope:", scope);
+  console.log("state:", state);
+  console.log("response_type:", response_type);
+  console.log("client_id:", client_id);
+  console.log("redirect_uri:", redirect_uri);
+  console.log("nonce:", nonce);
+
   res.render("login");
 };
 
 export const logeocheck = (req, res) => {
+  const { scope, state, response_type, client_id, redirect_uri, nonce } = req.session.authParams;
   let wid = req.body.id;
   let wkey = req.body.key;
   if (wid == "agente" && wkey == "testkey") {
-    let token = tokengen({ id: "agente" });
-    console.log(token);
-    res.send(token);
+    let code = codegen();
+    let url = `${redirect_uri}?code=${code}&state=${state}`;
+    res.redirect(url);
   } else {
     res.send("NO LOGEADO");
   }

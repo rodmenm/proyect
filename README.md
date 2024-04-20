@@ -51,6 +51,13 @@ sudo npm install -g node-gyp
 ### Identity Provider
 Las wallets creadas se encuentran en la ruta del contenedor /root/.afj/data/wallet
 Se ha de emplear el algoritmo HS256 para firmar los tokens
+Para vincular el IDP con keycloak hay que crear un IDP personalizado con OpenID Protocol con estos datos:
+
+- Authorization URL -> http://localhost:4000/login
+- Token URL -> ESTAPORVER
+- Client IS -> my_client_id (PROVISIONAL)
+- CLient Secret -> my_client_secret ()
+
 
 ### DIreccion IP
 
