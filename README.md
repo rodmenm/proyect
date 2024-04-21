@@ -9,7 +9,7 @@
 - Una vez cargado entrar a http://localhost:8080
 
 > [!NOTE]
-> Si el despliegue se realiza en el servidor externo entrar a http://82.223.101.114:8080
+> Si el despliegue se realiza en el servidor externo entrar a http://IP:8080
 
 - Crear un realm nuevo y dentro de ese realm realizar las siguientes modificaciones.
 - En Realm Settings poner "Require SSL" como none
@@ -19,7 +19,7 @@
     - Web origins -> "http://localhost:3000" (asi solo se puede acceder a la pagina de logueo desde nuestra web)<br>
 
 > [!NOTE]
-> Si el despliegue se realiza en el servidor externo sustituir **localhost** por **82.223.101.114**
+> Si el despliegue se realiza en el servidor externo sustituir **localhost** por **IP**
 
 - Una vez realizado esto seleccionamos nuestro cliente y le damos al boton que pone action. Luego le damos a donde pone “donwload adapter config” y copiamos todo el texto y lo pegamos en nuestra fichero keycloak.json de forma que solo aparezca lo que hemos pegado.
 - Crear un usuario y ponerle credenciales. En nuestro caso “user” y “xxxx”
@@ -53,10 +53,20 @@ Las wallets creadas se encuentran en la ruta del contenedor /root/.afj/data/wall
 Se ha de emplear el algoritmo HS256 para firmar los tokens
 Para vincular el IDP con keycloak hay que crear un IDP personalizado con OpenID Protocol con estos datos:
 
+- Alias -> LoQueSea (ES UNICO)
+- Display name -> DaIgual
 - Authorization URL -> http://localhost:4000/login
-- Token URL -> ESTAPORVER
-- Client IS -> my_client_id (PROVISIONAL)
-- CLient Secret -> my_client_secret ()
+- Token URL -> http://localhost:4000/login/token
+- Issuer -> invented
+- Client Authentication -> sent as post
+- Client ID -> myclientid  
+- CLient Secret -> myclientsecret (Con esto se firma el token)
+- Store Tokens -> ON
+- Acces Token is JWT -> ON
+
+> [!NOTE]
+> Si el despliegue se realiza en el servidor externo sustituir **localhost** por **IP**
+> Todos estos parametros influencian en el codigo, si se cambian, cambiar en el codigo también
 
 
 ### DIreccion IP

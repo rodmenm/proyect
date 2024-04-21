@@ -4,6 +4,7 @@ import {
   logeo,
   logeocheck,
   givtok,
+  userinfo,
   res_did,
   crear_did,
   update_did,
@@ -33,6 +34,8 @@ router.get("/login", logeo);
 router.post("/login/save", logeocheck);
 
 router.post("/login/token", givtok);
+
+router.get("/user/info", userinfo);
 
 // DIDS----------------------------------------------------------------------------------------------------
 
