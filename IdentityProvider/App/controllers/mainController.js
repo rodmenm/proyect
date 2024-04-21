@@ -12,8 +12,8 @@ const tokengen = (user) => {
     algorithm: "HS256", // Algoritmo de firma
     expiresIn: 3600,    // Tiempo de expiración (1 hora en este ejemplo)
     subject: "agente",  // Sujeto del token
-    audience: "mi-cliente-en-keycloak", // Audiencia del token (tu cliente en Keycloak)
-    issuer: "inventado" // Emisor del token (tu proveedor de identidad)
+    audience: "my_client_id", // Audiencia del token (tu cliente en Keycloak)
+    issuer: "invented" // Emisor del token (tu proveedor de identidad)
   });
   return token;
 };
@@ -91,12 +91,12 @@ export const givtok = (req, res) => {
   let token = tokengen(user);
   console.log(token);
   res.status(200).json({
-    access_token: token,
-    token_type: "Bearer",
-    scope: "openid",
-    id_token: "asdasdakjsdhbaksjdb"
+   "access_token": "SlAV32hkKG",
+   "token_type": "Bearer",
+   "refresh_token": "8xLOxBtZp8",
+   "expires_in": 3600,
+   "id_token": token
   });
-
 };
 
 // A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
