@@ -5,12 +5,11 @@ import { VerifierFinal } from "../../Verifier/Verifier.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
-const secretKey = "EstoEsParaGenerarTokensValidos";
+const secretKey = "myclientsecret";
 
 const tokengen = (user) => {
   let token = jwt.sign(user, secretKey, {
-    algorithm: "HS256",
-    expiresIn: "1m",
+    algorithm: "HS256"
   });
   return token;
 };
@@ -77,18 +76,25 @@ export const logeocheck = (req, res) => {
 };
 
 export const givtok = (req, res) => {
-  let kk = req.query;
   let pp = req.body;
-  console.log(kk);
   console.log(pp);
-  let token = tokengen("agente");
-
+  const user = {
+  id: 1,
+  wallet: "agente",
+  walletkey: "testkey"
+};
+  let token = tokengen(user);
+  console.log(token);
   res.status(200).json({
     access_token: token,
-    token_type: 'Bearer'
+    expires_in: 3600,
+    token_type: "Bearer",
+    scope: "openid",
+    id_token: 23
   });
 
 };
+
 // A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
 
 // CONSTANTES----------------------------------------------------------------------------------------------->
