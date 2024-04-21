@@ -5,6 +5,8 @@ import { VerifierFinal } from "../../Verifier/Verifier.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
+let kk = null;
+
 const secretKey = "myclientsecret";
 
 const generateNonce = () => {
@@ -51,6 +53,7 @@ export const logeo = (req, res) => {
       .status(400)
       .send("Faltan parámetros requeridos en la solicitud.");
   }
+  kk = nonce;
   req.session.authParams = {
     scope,
     state,
@@ -85,7 +88,7 @@ export const givtok = (req, res) => {
     wallet: "agente", // parametros provisionales
     walletkey: "testkey",
   };
-  let nonce = generateNonce();
+  let nonce = kk;
   let tokenid = tokengen(user, nonce);
 
   res.status(200).json({
@@ -94,7 +97,6 @@ export const givtok = (req, res) => {
     refresh_token: "8xLOxBtZp8", // De momento se va a devolver siempre el mismo
     expires_in: 3600,
     id_token: tokenid,
-    nonce: nonce,
   });
 };
 
