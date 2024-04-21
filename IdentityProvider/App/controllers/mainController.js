@@ -7,8 +7,16 @@ import jwt from "jsonwebtoken";
 
 const secretKey = "myclientsecret";
 
-const tokengen = (user) => {
-  let token = jwt.sign(user, secretKey, {
+const generateNonce = () => {
+  return Math.random().toString(36).substring(7);
+};
+
+const tokengen = (user, nonce) => {
+  let payload = {
+  user: user,
+  nonce: nonce
+  }
+  let token = jwt.sign(payload, secretKey, {
     algorithm: "HS256", // Algoritmo de firma
     expiresIn: 3600, // Tiempo de expiración (1 hora en este ejemplo)
     subject: "agente", // Sujeto del token
@@ -73,25 +81,27 @@ export const givtok = (req, res) => {
   let pp = req.body;
   console.log(pp);
 
-  const user = {
+  let user = {
     wallet: "agente", // parametros provisionales
     walletkey: "testkey",
   };
+  let nonce = generateNonce();
+  let tokenid = tokengen(user, nonce);
 
-  let tokenid = tokengen(user);
-  console.log(token);
   res.status(200).json({
     access_token: "SlAV32hkKG", // De momento se va a devolver siempre el mismo
     token_type: "Bearer",
     refresh_token: "8xLOxBtZp8", // De momento se va a devolver siempre el mismo
     expires_in: 3600,
     id_token: tokenid,
+    nonce: nonce,
   });
 };
 
 export const userinfo = (req, res) => {
-  console.log(req.query);
-  console.log(req.body);
+  console.log(req.headers.authorization);
+  const token = req.headers.authorization.split(' ')[1];
+  console.log(token);
   const userInfo = {
     sub: 'agente', // depende de lo de antes, y debe ser unico
     email_verified: false,
