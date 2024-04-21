@@ -9,7 +9,11 @@ const secretKey = "myclientsecret";
 
 const tokengen = (user) => {
   let token = jwt.sign(user, secretKey, {
-    algorithm: "HS256"
+    algorithm: "HS256", // Algoritmo de firma
+    expiresIn: 3600,    // Tiempo de expiración (1 hora en este ejemplo)
+    subject: "agente",  // Sujeto del token
+    audience: "mi-cliente-en-keycloak", // Audiencia del token (tu cliente en Keycloak)
+    issuer: "inventado" // Emisor del token (tu proveedor de identidad)
   });
   return token;
 };
@@ -78,19 +82,19 @@ export const logeocheck = (req, res) => {
 export const givtok = (req, res) => {
   let pp = req.body;
   console.log(pp);
+
   const user = {
-  id: 1,
-  wallet: "agente",
-  walletkey: "testkey"
+  "email": "usuario123@example.com",
+  "name": "Nombre Apellido"
 };
+
   let token = tokengen(user);
   console.log(token);
   res.status(200).json({
     access_token: token,
-    expires_in: 3600,
     token_type: "Bearer",
     scope: "openid",
-    id_token: 23
+    id_token: "asdasdakjsdhbaksjdb"
   });
 
 };
