@@ -6,7 +6,7 @@ import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
 let kk = null; // major security problem
-
+let mm = null;
 const secretKey = "myclientsecret";
 
 const generateToken = () => {
@@ -38,7 +38,7 @@ function codegen() {
   const caracteres =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let codigo = "";
-  for (let k = 0; k < 16; k++) {
+  for (let k = 0; k < 22; k++) {
     codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return codigo;
@@ -74,12 +74,16 @@ export const logeo = (req, res) => {
 export const logeocheck = (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
+  console.log(req.session.authParams);
+  console.log(redirect_uri);
   let wid = req.body.id;
   let wkey = req.body.key;
   if (wid == "agente" && wkey == "testkey") {
     let code = codegen();
-    req.session.code = code;
-    let url = `${redirect_uri}?code=${code}&state=${state}`;
+    console.log(code);
+    let redirectUrl = encodeURIComponent(redirect_uri);
+    let url = `${redirect_uri}?code=${code}&state=${state}&redirect_uri=${redirectUrl}`;
+    console.log(url);
     res.redirect(url);
   } else {
     res.send("NO LOGEADO");
@@ -107,6 +111,7 @@ export const givtok = (req, res) => {
     id_token: tokenid,
   });
 };
+
 
 export const userinfo = (req, res) => {
   console.log(req.headers.authorization);
