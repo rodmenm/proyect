@@ -5,12 +5,18 @@ import { VerifierFinal } from "../../Verifier/Verifier.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
-let kk = null;
+let kk = null; // major security problem
 
 const secretKey = "myclientsecret";
 
-const generateNonce = () => {
-  return Math.random().toString(36).substring(7);
+const generateToken = () => {
+  const caracteres =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let codigo = "";
+  for (let k = 0; k < 10; k++) {
+    codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return codigo;
 };
 
 const tokengen = (user, nonce) => {
@@ -90,11 +96,13 @@ export const givtok = (req, res) => {
   };
   let nonce = kk;
   let tokenid = tokengen(user, nonce);
+  let atoken = generateToken();
+  let rtoken = generateToken();
 
   res.status(200).json({
-    access_token: "SlAV32hkKG", // De momento se va a devolver siempre el mismo
+    access_token: atoken, 
     token_type: "Bearer",
-    refresh_token: "8xLOxBtZp8", // De momento se va a devolver siempre el mismo
+    refresh_token: rtoken, 
     expires_in: 3600,
     id_token: tokenid,
   });
