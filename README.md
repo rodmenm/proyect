@@ -58,14 +58,15 @@ Para vincular el IDP con keycloak hay que crear un IDP personalizado con OpenID 
 - Authorization URL -> http://localhost:4000/login
 - Token URL -> http://localhost:4000/login/token
 - Issuer -> invented
-- Client Authentication -> sent as post
+- Client Authentication -> Client secret sent as post
 - Client ID -> myclientid  
 - CLient Secret -> myclientsecret (Con esto se firma el token)
 - Store Tokens -> ON
-- Acces Token is JWT -> ON
+- Stored tokens readable -> ON
+- El resto OFF
 
 > [!NOTE]
-> Si el despliegue se realiza en el servidor externo sustituir **localhost** por **IP**
+> Si el despliegue se realiza en el servidor externo sustituir **localhost** por **IP** <br>
 > Todos estos parametros influencian en el codigo, si se cambian, cambiar en el codigo también
 
 
