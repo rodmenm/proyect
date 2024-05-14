@@ -1,11 +1,11 @@
 import "./../shim.js";
 import { Issuer_gen } from "./Issuer_gen.js";
 import { modules, Issuer_agentConfig } from "../config.js";
-import { HttpInboundTransport } from "@aries-framework/node";
+import { HttpInboundTransport } from "@credo-ts/node";
 import {
   WsOutboundTransport,
   HttpOutboundTransport,
-} from "@aries-framework/core";
+} from "@credo-ts/core";
 
 export class IssuerFinal {
   constructor() {

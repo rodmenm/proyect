@@ -1,6 +1,6 @@
-import { Agent } from "@aries-framework/core";
+import { Agent } from "@credo-ts/core";
 
-import { agentDependencies } from "@aries-framework/node";
+import { agentDependencies } from "@credo-ts/node";
 
 export class Agente {
   constructor(config, modules) {

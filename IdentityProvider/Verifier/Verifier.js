@@ -1,11 +1,11 @@
 import "./../shim.js";
 import { Verifier_gen } from "./Verifier_gen.js";
 import { modules, Verifier_agentConfig } from "../config.js";
-import { HttpInboundTransport } from "@aries-framework/node";
+import { HttpInboundTransport } from "@credo-ts/node";
 import {
   WsOutboundTransport,
   HttpOutboundTransport,
-} from "@aries-framework/core";
+} from "@credo-ts/core";
 
 export class VerifierFinal {
   constructor() {

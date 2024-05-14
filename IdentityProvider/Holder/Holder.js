@@ -4,7 +4,7 @@ import { modules, Holder_agentConfig } from "../config.js";
 import {
   WsOutboundTransport,
   HttpOutboundTransport,
-} from "@aries-framework/core";
+} from "@credo-ts/core";
 
 export class HolderFinal {
   constructor() {

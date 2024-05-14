@@ -1,7 +1,6 @@
 import { IssuerFinal } from "./Issuer/Issuer.js";
 import { HolderFinal } from "./Holder/Holder.js";
 import { Agente } from "./Agente.js";
-import { Agent } from "@aries-framework/core";
 const ii = "did:peer:1zQmbRBWLuhLFo4oEJ7kMTu6bAZ4ZM8AUzxt9k2PZMAppCpH";
 let kk = new HolderFinal();
 await kk.initializeHolder();

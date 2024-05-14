@@ -1,4 +1,4 @@
-import { KeyType, KeyDerivationMethod } from "@aries-framework/core";
+import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
 import { HolderFinal } from "../../Holder/Holder.js";
 import { IssuerFinal } from "../../Issuer/Issuer.js";
 import { VerifierFinal } from "../../Verifier/Verifier.js";

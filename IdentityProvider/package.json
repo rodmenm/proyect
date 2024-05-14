@@ -1,22 +1,22 @@
 {
   "dependencies": {
-    "@aries-framework/anoncreds": "^0.4.0",
-    "@aries-framework/anoncreds-rs": "^0.4.2",
-    "@aries-framework/askar": "^0.4.0",
-    "@aries-framework/cheqd": "^0.4.2",
-    "@aries-framework/core": "^0.4.2",
-    "@aries-framework/indy-vdr": "^0.4.0",
-    "@aries-framework/node": "^0.4.2",
-    "@hyperledger/anoncreds-nodejs": "^0.1.0",
-    "@hyperledger/aries-askar-nodejs": "^0.1.0",
-    "@hyperledger/indy-vdr-nodejs": "^0.1.0",
+    "@credo-ts/anoncreds": "^0.5.3",
+    "@credo-ts/askar": "^0.5.3",
+    "@credo-ts/cheqd": "^0.5.3",
+    "@credo-ts/core": "^0.5.3",
+    "@credo-ts/indy-vdr": "^0.5.3",
+    "@credo-ts/node": "^0.5.3",
+    "@hyperledger/anoncreds-nodejs": "^0.2.2",
+    "@hyperledger/aries-askar-nodejs": "^0.2.1",
+    "@hyperledger/indy-vdr-nodejs": "^0.2.2", 
     "body-parser": "^1.20.2",
     "buffer": "^6.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "nodemon": "^3.0.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "node-gyp": "^10.1.0"
   },
   "overrides": {
     "ref-napi": "npm:@2060.io/ref-napi",
