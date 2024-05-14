@@ -23,7 +23,8 @@ const tokengen = (user, nonce) => {
   let payload = {
   user: user,
   nonce: nonce
-  }
+  } // COMPLETAR
+  // QUE SE DEVUELVAN COSAS EN FUNCION DE CADA USUARIO
   let token = jwt.sign(payload, secretKey, {
     algorithm: "HS256", // Algoritmo de firma
     expiresIn: 3600, // Tiempo de expiración (1 hora en este ejemplo)
@@ -59,6 +60,8 @@ export const logeo = (req, res) => {
       .status(400)
       .send("Faltan parámetros requeridos en la solicitud.");
   }
+  // COMPLETAR
+  // COMPROBAR QUE LOS PARAMETROS RECIBIDOS SON CORRECTOS
   kk = nonce;
   req.session.authParams = {
     scope,
@@ -76,6 +79,9 @@ export const logeocheck = (req, res) => {
     req.session.authParams;
   console.log(req.session.authParams);
   console.log(redirect_uri);
+  // COMPLETAR
+  // ESTO SOLO ES SOLO PARA COMPROBAR EL CORRECTO FUNCIONAMIENTO DEL PROTOCOLO OIDC
+  // HABRA QUE ESTABLECER EL SISTEMA DE AUTENTICACiÓN CORRECTAMENTE
   let wid = req.body.id;
   let wkey = req.body.key;
   if (wid == "agente" && wkey == "testkey") {
@@ -95,8 +101,8 @@ export const givtok = (req, res) => {
   console.log(pp);
 
   let user = {
-    wallet: "agente", // parametros provisionales
-    walletkey: "testkey",
+    wallet: "agente", // COMPLETAR
+    walletkey: "testkey", // pasar datos de usuario de forma correcta
   };
   let nonce = kk;
   let tokenid = tokengen(user, nonce);
@@ -112,7 +118,9 @@ export const givtok = (req, res) => {
   });
 };
 
-
+// COMPLETAR
+// ESTO ES OPCIONAL
+// NO LO INCLUIRIA
 export const userinfo = (req, res) => {
   console.log(req.headers.authorization);
   const token = req.headers.authorization.split(' ')[1];
