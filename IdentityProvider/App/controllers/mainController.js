@@ -133,15 +133,124 @@ export const userinfo = (req, res) => {
   res.status(200).json(userInfo);
 };
 
+
+// CREADO PARA TESTEAR MAS RAPIDO
+export const pp = async (req, res) => {
+  try {
+    let Issuer = await ini_issuer();
+    let did = `did:indy:bcovrin:test:${imported_did}`
+
+    // NO VA
+    // await Issuer.issuerFinal.agent.dids.create({
+    //   method: "cheqd",
+    //   secret: {
+    //     verificationMethod: {
+    //       id: "key-1",
+    //       type: "Ed25519VerificationKey2020",
+    //     },
+    //   },
+    //   options: {
+    //     network: "testnet",
+    //     methodSpecificIdAlgo: "uuid",
+    //   },
+    // });
+
+    // ESTE TAMPOCO
+    // await Issuer.issuerFinal.agent.dids.create({
+    //   method: "indy",
+    //   secret: {
+    //     verificationMethod: {
+    //       id: "key-1",
+    //       type: "Ed25519VerificationKey2020",
+    //     },
+    //   },
+    //   options: {
+    //     network: "testnet",
+    //     methodSpecificIdAlgo: "uuid",
+    //   },
+    // });
+
+    // let dids = await Issuer.issuerFinal.agent.dids.getCreatedDids();
+
+    await Issuer.issuerFinal.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    let schemaResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
+        schema: {
+          attrNames: ["name"],
+          issuerId: did,
+          name: "Example Schema to register",
+          version: "1.0.0",
+        },
+        options: {},
+      });
+
+    if (schemaResult.schemaState.state === "failed") {
+      throw new Error(
+        `Error creating schema: ${schemaResult.schemaState.reason}`
+      );
+    }
+
+    const credentialDefinitionResult =
+      await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition(
+        {
+          credentialDefinition: {
+            tag: "default_tag",
+            issuerId: did,
+            schemaId: schemaResult.schemaState.schemaId,
+          },
+          options: {},
+        }
+      );
+
+    if (
+      credentialDefinitionResult.credentialDefinitionState.state === "failed"
+    ) {
+      throw new Error(
+        `Error creating credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
+      );
+    }
+
+    console.log(credentialDefinitionResult);
+
+    
+
+    res.send("TODO GUAY");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Issuer.shutdownIssuer();
+  }
+
+};
+
+
 // A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
 
 // CONSTANTES----------------------------------------------------------------------------------------------->
 
+// Esto son unos valores registrados en el ledger de bcovrin
+let bcovrin_did = {
+  Seed: "misemilladebemantenerseensecreto",
+  DID: "No6XpAd5Ek7CnrNJA4a4RB",
+  Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
+} 
+
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
-const unqualifiedIndyDid = `poner_aqui_parte_final_did_no_reconocido`;
+const imported_did = bcovrin_did.DID;
 
 // Construye el DID de Indy completo utilizando el DID no calificado
-const indyDid = `did:cheqd:bcovrin:test:${unqualifiedIndyDid}`;
+// const indyDid = `did:cheqd:bcovrin:test:${unqualifiedIndyDid}`;
 
 // Configuracion de la wallet
 const defaultHolder_walletConfig = {

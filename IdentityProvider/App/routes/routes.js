@@ -23,11 +23,14 @@ import {
   save_wallet,
   cre_key,
   schem,
+  pp,
 } from "../controllers/mainController.js";
 
 const router = express.Router();
 
 router.get("/", index);
+
+router.get("/kk", pp);
 
 router.get("/login", logeo);
 

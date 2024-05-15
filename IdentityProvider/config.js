@@ -64,18 +64,19 @@ export const modules = {
     ],
   }),
 
+  // NO VA CREO QUE TUMBARON LA RED
   // Configuración cheqd
-  cheqd: new CheqdModule(
-    new CheqdModuleConfig({
-      networks: [
-        {
-          network: "testnet",
-          cosmosPayerSeed:
-            "robust across amount corn curve panther opera wish toe ring bleak empower wreck party abstract glad average muffin picnic jar squeeze annual long aunt",
-        },
-      ],
-    })
-  ),
+  // cheqd: new CheqdModule(
+  //   new CheqdModuleConfig({
+  //     networks: [
+  //       {
+  //         network: "testnet",
+  //         cosmosPayerSeed:
+  //           "robust across amount corn curve panther opera wish toe ring bleak empower wreck party abstract glad average muffin picnic jar squeeze annual long aunt",
+  //       },
+  //     ],
+  //   })
+  // ),
 };
 
 // Define una semilla que se utilizará para generar claves criptográficas
