@@ -1,5 +1,5 @@
 # Usa una imagen base con Node.js
-FROM node:18.19
+FROM node:18.18
 
 # Establece el directorio de trabajo en la aplicación
 WORKDIR /usr/src/app
@@ -11,7 +11,7 @@ COPY IdentityProvider .
 RUN npm install
 
 # Expone el puerto en el que el servidor estará escuchando
-EXPOSE 4000 5000 6000
+EXPOSE 4000 4001 4002
 
 # Comando para ejecutar la aplicación
 CMD ["npm", "start"]

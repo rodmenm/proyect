@@ -17,10 +17,9 @@ export class Agente {
         dependencies: agentDependencies,
       });
 
-      console.log("Agente inicializado correctamente");
+      console.log("Agente creado correctamente");
     } catch (error) {
-      console.error("No se inizalizo correctamente. Ocurrio el error:");
-      console.error(error);
+      console.error(`Error creando agente: ${error}`)
     }
   }
 }

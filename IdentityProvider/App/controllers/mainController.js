@@ -1,7 +1,7 @@
 import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
-import { HolderFinal } from "../../Holder/Holder.js";
-import { IssuerFinal } from "../../Issuer/Issuer.js";
-import { VerifierFinal } from "../../Verifier/Verifier.js";
+import { Holder_gen } from "../../Holder/Holder_gen.js";
+import { Issuer_gen } from "../../Issuer/Issuer_gen.js";
+// import { VerifierFinal } from "../../Verifier/Verifier.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
@@ -135,18 +135,16 @@ export const userinfo = (req, res) => {
 
 // CREADO PARA TESTEAR MAS RAPIDO
 export const pp = async (req, res) => {
-  let Issuer = await ini_issuer();
+  let Issuer = new Issuer_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
   try {
-
-    if (Issuer.issuerFinal.agent._isInitialized != true) {
-      throw new Error(
-        `Error initialazing agent. It has not initialized`
-      );
+    await Issuer.initialize();
+    if (Issuer.agent._isInitialized != true) {
+      throw new Error(`Error initialazing agent. It has not initialized`);
     }
-    
-    // NO VA
-    // let did = await Issuer.issuerFinal.agent.dids.create({
+
+    // NO VA ESTO DEVUELVE UN OBJETO, NO UN STRING
+    // let did = await Issuer.issuerFinal.agent.dids.create({ 
     //   method: "cheqd",
     //   secret: {
     //     verificationMethod: {
@@ -180,8 +178,7 @@ export const pp = async (req, res) => {
     //   );
     // }
 
-
-    await Issuer.issuerFinal.agent.dids.import({
+    await Issuer.agent.dids.import({
       did: did,
       overwrite: true,
       privateKeys: [
@@ -193,16 +190,15 @@ export const pp = async (req, res) => {
     });
 
     // NO SE PUEDE CREAR UN SCHEMA 2 VECES CON LOS MISMOS PARAMETROS PASADOS AQUI DEBAJO
-    let schemaResult =
-      await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
-        schema: {
-          attrNames: ["name"],
-          issuerId: did,
-          name: "Example Schema to register",
-          version: "1.0.0",
-        },
-        options: {},
-      });
+    let schemaResult = await Issuer.agent.modules.anoncreds.registerSchema({
+      schema: {
+        attrNames: ["name"],
+        issuerId: did,
+        name: "Example Schema to register",
+        version: "1.0.0",
+      },
+      options: {},
+    });
 
     if (schemaResult.schemaState.state === "failed") {
       throw new Error(
@@ -211,16 +207,14 @@ export const pp = async (req, res) => {
     }
 
     const credentialDefinitionResult =
-      await Issuer.issuerFinal.agent.modules.anoncreds.registerCredentialDefinition(
-        {
-          credentialDefinition: {
-            tag: "default_tag",
-            issuerId: did,
-            schemaId: schemaResult.schemaState.schemaId,
-          },
-          options: {},
-        }
-      );
+      await Issuer.agent.modules.anoncreds.registerCredentialDefinition({
+        credentialDefinition: {
+          tag: "default_tag",
+          issuerId: did,
+          schemaId: schemaResult.schemaState.schemaId,
+        },
+        options: {},
+      });
 
     if (
       credentialDefinitionResult.credentialDefinitionState.state === "failed"
@@ -237,7 +231,7 @@ export const pp = async (req, res) => {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
   } finally {
-    await Issuer.shutdownIssuer();
+    await Issuer.shutdown();
   }
 };
 
@@ -247,9 +241,9 @@ export const pp = async (req, res) => {
 
 // Esto son unos valores registrados en el ledger de bcovrin
 let bcovrin_did = {
-  Seed: "misemilladebemantenerseensecreto",
-  DID: "No6XpAd5Ek7CnrNJA4a4RB",
-  Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
+  Seed: ",estoesmuyseguroynadielosabrajams",
+  DID: "JeaUS9JcfkQAxKco4cNPAK",
+  Verkey: "ActHrjdKHGu4t4DLeW1BRyj1TgatF347QgkqEijmQkVA",
 };
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
