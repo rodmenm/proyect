@@ -184,7 +184,7 @@ export const Verifier_agentConfig = {
     },
   },
   logger: new ConsoleLogger(LogLevel.info),
-  endpoints: ["http://localhost:6000"],
+  endpoints: ["http://localhost:4003"],
   didCommMimeType: DidCommMimeType.V1,
   useDidSovPrefixWhereAllowed: true,
   useDidKeyInProtocols: true,

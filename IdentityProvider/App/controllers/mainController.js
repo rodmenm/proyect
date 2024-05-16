@@ -1,7 +1,7 @@
 import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
 import { Holder_gen } from "../../Holder/Holder_gen.js";
 import { Issuer_gen } from "../../Issuer/Issuer_gen.js";
-// import { VerifierFinal } from "../../Verifier/Verifier.js";
+import { Verifier_gen } from "../../Verifier/Verifier_gen.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
 
@@ -144,7 +144,7 @@ export const pp = async (req, res) => {
     }
 
     // NO VA ESTO DEVUELVE UN OBJETO, NO UN STRING
-    // let did = await Issuer.issuerFinal.agent.dids.create({ 
+    // let did_glob = await Issuer.issuerFinal.agent.dids.create({ 
     //   method: "cheqd",
     //   secret: {
     //     verificationMethod: {
@@ -159,7 +159,7 @@ export const pp = async (req, res) => {
     // });
 
     // ESTE TAMPOCO
-    // let did = await Issuer.issuerFinal.agent.dids.create({
+    // let did_glob = await Issuer.issuerFinal.agent.dids.create({
     //   method: "indy",
     //   secret: {
     //     verificationMethod: {
@@ -172,7 +172,7 @@ export const pp = async (req, res) => {
     //     methodSpecificIdAlgo: "uuid",
     //   },
     // });
-    // if (did.didState.state === "failed") {
+    // if (did_glob.didState.state === "failed") {
     //   throw new Error(
     //     `Error creating did : ${did.didState.reason}`
     //   );
@@ -241,9 +241,9 @@ export const pp = async (req, res) => {
 
 // Esto son unos valores registrados en el ledger de bcovrin
 let bcovrin_did = {
-  Seed: ",estoesmuyseguroynadielosabrajams",
-  DID: "JeaUS9JcfkQAxKco4cNPAK",
-  Verkey: "ActHrjdKHGu4t4DLeW1BRyj1TgatF347QgkqEijmQkVA",
+  Seed: "misemilladebemantenerseensecreto",
+  DID: "No6XpAd5Ek7CnrNJA4a4RB",
+  Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
 };
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
