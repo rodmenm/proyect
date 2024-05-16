@@ -21,9 +21,9 @@ const generateToken = () => {
 
 const tokengen = (user, nonce) => {
   let payload = {
-  user: user,
-  nonce: nonce
-  } // COMPLETAR
+    user: user,
+    nonce: nonce,
+  }; // COMPLETAR
   // QUE SE DEVUELVAN COSAS EN FUNCION DE CADA USUARIO
   let token = jwt.sign(payload, secretKey, {
     algorithm: "HS256", // Algoritmo de firma
@@ -110,9 +110,9 @@ export const givtok = (req, res) => {
   let rtoken = generateToken();
 
   res.status(200).json({
-    access_token: atoken, 
+    access_token: atoken,
     token_type: "Bearer",
-    refresh_token: rtoken, 
+    refresh_token: rtoken,
     expires_in: 3600,
     id_token: tokenid,
   });
@@ -123,25 +123,30 @@ export const givtok = (req, res) => {
 // NO LO INCLUIRIA
 export const userinfo = (req, res) => {
   console.log(req.headers.authorization);
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers.authorization.split(" ")[1];
   console.log(token);
   const userInfo = {
-    sub: 'agente', // depende de lo de antes, y debe ser unico
+    sub: "agente", // depende de lo de antes, y debe ser unico
     email_verified: false,
-    preferred_username: 'agente'
+    preferred_username: "agente",
   };
   res.status(200).json(userInfo);
 };
 
-
 // CREADO PARA TESTEAR MAS RAPIDO
 export const pp = async (req, res) => {
+  let Issuer = await ini_issuer();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
   try {
-    let Issuer = await ini_issuer();
-    let did = `did:indy:bcovrin:test:${imported_did}`
 
+    if (Issuer.issuerFinal.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing agent. It has not initialized`
+      );
+    }
+    
     // NO VA
-    // await Issuer.issuerFinal.agent.dids.create({
+    // let did = await Issuer.issuerFinal.agent.dids.create({
     //   method: "cheqd",
     //   secret: {
     //     verificationMethod: {
@@ -156,7 +161,7 @@ export const pp = async (req, res) => {
     // });
 
     // ESTE TAMPOCO
-    // await Issuer.issuerFinal.agent.dids.create({
+    // let did = await Issuer.issuerFinal.agent.dids.create({
     //   method: "indy",
     //   secret: {
     //     verificationMethod: {
@@ -169,8 +174,12 @@ export const pp = async (req, res) => {
     //     methodSpecificIdAlgo: "uuid",
     //   },
     // });
+    // if (did.didState.state === "failed") {
+    //   throw new Error(
+    //     `Error creating did : ${did.didState.reason}`
+    //   );
+    // }
 
-    // let dids = await Issuer.issuerFinal.agent.dids.getCreatedDids();
 
     await Issuer.issuerFinal.agent.dids.import({
       did: did,
@@ -183,6 +192,7 @@ export const pp = async (req, res) => {
       ],
     });
 
+    // NO SE PUEDE CREAR UN SCHEMA 2 VECES CON LOS MISMOS PARAMETROS PASADOS AQUI DEBAJO
     let schemaResult =
       await Issuer.issuerFinal.agent.modules.anoncreds.registerSchema({
         schema: {
@@ -222,8 +232,6 @@ export const pp = async (req, res) => {
 
     console.log(credentialDefinitionResult);
 
-    
-
     res.send("TODO GUAY");
   } catch (error) {
     console.error("Error:", error);
@@ -231,9 +239,7 @@ export const pp = async (req, res) => {
   } finally {
     await Issuer.shutdownIssuer();
   }
-
 };
-
 
 // A PARTIR DE AQUI SE GESTIONAN CONTROLADORES QUE SIRVEN A MODO DE PRUEBA
 
@@ -244,7 +250,7 @@ let bcovrin_did = {
   Seed: "misemilladebemantenerseensecreto",
   DID: "No6XpAd5Ek7CnrNJA4a4RB",
   Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
-} 
+};
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
 const imported_did = bcovrin_did.DID;
