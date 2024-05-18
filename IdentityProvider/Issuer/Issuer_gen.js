@@ -10,7 +10,9 @@ import {
 export class Issuer_gen extends Agente {
   constructor() {
     super(Issuer_agentConfig, modules);
+    this.outOfBandId = null;
     this.add();
+     
   }
 
   initialize = async () => {
@@ -45,38 +47,54 @@ export class Issuer_gen extends Agente {
   
   // 2 maneras de establecer crear conex
   createNewInvitation = async () => {
-    const outOfBandRecord = await agent.oob.createInvitation();
-
+    const outOfBandRecord = await this.agent.oob.createInvitation();
+    this.outOfBandId = outOfBandRecord.id
     return {
       invitationUrl: outOfBandRecord.outOfBandInvitation.toUrl({
-        domain: "https://example.org",
+        domain: "http://localhost:4003",
       }),
       outOfBandRecord,
     };
   };
 
-  createLegacyInvitation = async (agent) => {
-    const { invitation } = await agent.oob.createLegacyInvitation();
+  createLegacyInvitation = async () => {
+    const { invitation } = await this.agent.oob.createLegacyInvitation();
 
-    return invitation.toUrl({ domain: "https://example.org" });
+    return invitation.toUrl({ domain: "http://localhost:4003" });
   };
 
-  setupConnectionListener = (agent, outOfBandRecord, cb) => {
-    agent.events.on("connectionstatechanged", ({ payload }) => {
-      if (payload.connectionRecord.outOfBandId !== outOfBandRecord.id) return;
-      if (payload.connectionRecord.state === "completed") {
-        // the connection is now ready for usage in other protocols!
-        console.log(
-          `Connection for out-of-band id ${outOfBandRecord.id} completed`
-        );
-        cb();
-        process.exit(0);
-      }
-    });
+  getConnectionRecord = async () => {
+    if (!this.outOfBandId) {
+      throw Error(`No hay registro de una outOfBandId`);
+    }
+
+    const [connection] = await this.agent.connections.findAllByOutOfBandId(this.outOfBandId)
+
+    if (!connection) {
+      throw Error(`No hay registro de una conexion establecida`)
+    }
+
+    return connection
+  }
+  
+
+
+  // setupConnectionListener = (agent, outOfBandRecord, cb) => {
+  //   agent.events.on("connectionstatechanged", ({ payload }) => {
+  //     if (payload.connectionRecord.outOfBandId !== outOfBandRecord.id) return;
+  //     if (payload.connectionRecord.state === "completed") {
+  //       // the connection is now ready for usage in other protocols!
+  //       console.log(
+  //         `Connection for out-of-band id ${outOfBandRecord.id} completed`
+  //       );
+  //       cb();
+  //       process.exit(0);
+  //     }
+  //   });
 
 
     
-  };
+  // };
 
   
 

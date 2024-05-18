@@ -136,15 +136,24 @@ export const userinfo = (req, res) => {
 // CREADO PARA TESTEAR MAS RAPIDO
 export const pp = async (req, res) => {
   let Issuer = new Issuer_gen();
+  let Holder = new Holder_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
   try {
     await Issuer.initialize();
     if (Issuer.agent._isInitialized != true) {
-      throw new Error(`Error initialazing agent. It has not initialized`);
+      throw new Error(
+        `Error initialazing Issuer agent. It has not initialized`
+      );
+    }
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
     }
 
     // NO VA ESTO DEVUELVE UN OBJETO, NO UN STRING
-    // let did_glob = await Issuer.issuerFinal.agent.dids.create({ 
+    // let did_glob = await Issuer.issuerFinal.agent.dids.create({
     //   method: "cheqd",
     //   secret: {
     //     verificationMethod: {
@@ -192,9 +201,9 @@ export const pp = async (req, res) => {
     // NO SE PUEDE CREAR UN SCHEMA 2 VECES CON LOS MISMOS PARAMETROS PASADOS AQUI DEBAJO
     let schemaResult = await Issuer.agent.modules.anoncreds.registerSchema({
       schema: {
-        attrNames: ["name"],
+        attrNames: ["name", "club", "date"],
         issuerId: did,
-        name: "Example Schema to register",
+        name: "Malorca teamm",
         version: "1.0.0",
       },
       options: {},
@@ -213,7 +222,11 @@ export const pp = async (req, res) => {
           issuerId: did,
           schemaId: schemaResult.schemaState.schemaId,
         },
-        options: {},
+        options: {
+          supportRevocation: false,
+          endorserMode: 'internal',
+          endorserDid: did,
+        },
       });
 
     if (
@@ -224,7 +237,34 @@ export const pp = async (req, res) => {
       );
     }
 
-    console.log(credentialDefinitionResult);
+    let invitation = await Issuer.createNewInvitation();
+    // let invitation2 = await Issuer.createLegacyInvitation();
+
+    // Se acepta una o la otra
+    // NO LAS 2 A LA VEZ
+    await Holder.acceptConnection(invitation.invitationUrl);
+    // await Holder.acceptConnection(invitation2);
+
+    const connectionRecord = await Issuer.getConnectionRecord();
+
+    let credential = await Issuer.agent.credentials.offerCredential({
+      connectionId: connectionRecord.id,
+      protocolVersion: "v2",
+      credentialFormats: {
+        anoncreds: {
+          attributes: [
+            { name: "name", value: "Muriqi" },
+            { name: "club", value: "Mallorca" },
+            { name: "date", value: "01/01/2022" },
+          ],
+          credentialDefinitionId:
+            credentialDefinitionResult.credentialDefinitionState
+              .credentialDefinitionId,
+        },
+      },
+    });
+
+    Holder.acceptCred();
 
     res.send("TODO GUAY");
   } catch (error) {
@@ -232,6 +272,154 @@ export const pp = async (req, res) => {
     res.status(500).send("Error: " + error);
   } finally {
     await Issuer.shutdown();
+    await Holder.shutdown();
+  }
+};
+
+// CREADO PARA TESTEAR MAS RAPIDO
+export const tt = async (req, res) => {
+  let Issuer = new Issuer_gen();
+  let Holder = new Holder_gen();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
+    await Issuer.initialize();
+    if (Issuer.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Issuer agent. It has not initialized`
+      );
+    }
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+
+    // NO VA ESTO DEVUELVE UN OBJETO, NO UN STRING
+    // let did_glob = await Issuer.issuerFinal.agent.dids.create({
+    //   method: "cheqd",
+    //   secret: {
+    //     verificationMethod: {
+    //       id: "key-1",
+    //       type: "Ed25519VerificationKey2020",
+    //     },
+    //   },
+    //   options: {
+    //     network: "testnet",
+    //     methodSpecificIdAlgo: "uuid",
+    //   },
+    // });
+
+    // ESTE TAMPOCO
+    // let did_glob = await Issuer.issuerFinal.agent.dids.create({
+    //   method: "indy",
+    //   secret: {
+    //     verificationMethod: {
+    //       id: "key-1",
+    //       type: "Ed25519VerificationKey2020",
+    //     },
+    //   },
+    //   options: {
+    //     network: "testnet",
+    //     methodSpecificIdAlgo: "uuid",
+    //   },
+    // });
+    // if (did_glob.didState.state === "failed") {
+    //   throw new Error(
+    //     `Error creating did : ${did.didState.reason}`
+    //   );
+    // }
+
+    await Issuer.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    // NO SE PUEDE CREAR UN SCHEMA 2 VECES CON LOS MISMOS PARAMETROS PASADOS AQUI DEBAJO
+    let schemaResult = await Issuer.agent.modules.anoncreds.registerSchema({
+      schema: {
+        attrNames: ["name", "club", "date"],
+        issuerId: did,
+        name: "Mallorca teamm",
+        version: "1.0.0",
+      },
+      options: {
+        endorserMode: 'internal',
+        endorserDid: did,
+      },
+    });
+
+    if (schemaResult.schemaState.state === "failed") {
+      throw new Error(
+        `Error creating schema: ${schemaResult.schemaState.reason}`
+      );
+    }
+
+    const credentialDefinitionResult =
+      await Issuer.agent.modules.anoncreds.registerCredentialDefinition({
+        credentialDefinition: {
+          tag: "default_tag",
+          issuerId: did,
+          schemaId: schemaResult.schemaState.schemaId,
+        },
+        options: {
+          supportRevocation: false,
+          endorserMode: 'internal',
+          endorserDid: did,
+        },
+      });
+
+    if (
+      credentialDefinitionResult.credentialDefinitionState.state === "failed"
+    ) {
+      throw new Error(
+        `Error creating credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
+      );
+    }
+
+    let invitation = await Issuer.createNewInvitation();
+    // let invitation2 = await Issuer.createLegacyInvitation();
+
+    // Se acepta una o la otra
+    // NO LAS 2 A LA VEZ
+    await Holder.acceptConnection(invitation.invitationUrl);
+    // await Holder.acceptConnection(invitation2);
+
+    const connectionRecord = await Issuer.getConnectionRecord();
+    await Issuer.agent.connections.returnWhenIsConnected(connectionRecord.id)
+
+    let credential = await Issuer.agent.credentials.offerCredential({
+      connectionId: connectionRecord.id,
+      protocolVersion: "v2",
+      credentialFormats: {
+        anoncreds: {
+          attributes: [
+            { name: "name", value: "Muriqi" },
+            { name: "club", value: "Mallorca" },
+            { name: "date", value: "01/01/2022" },
+          ],
+          credentialDefinitionId:
+            credentialDefinitionResult.credentialDefinitionState
+              .credentialDefinitionId,
+        },
+      },
+    });
+
+    Holder.acceptCredentialOffer(credential);
+
+    res.send("TODO GUAY");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Issuer.shutdown();
+    await Holder.shutdown();
   }
 };
 

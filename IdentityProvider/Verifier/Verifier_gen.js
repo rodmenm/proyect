@@ -24,7 +24,7 @@ export class Verifier_gen extends Agente {
 
       // Registra `Http` con inbound transport
       this.agent.registerInboundTransport(
-        new HttpInboundTransport({ port: 4003 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
+        new HttpInboundTransport({ port: 4004 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
       );
 
       await this.agent.initialize();
