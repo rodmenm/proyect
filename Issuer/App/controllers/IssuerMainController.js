@@ -6,9 +6,9 @@ import { issuer_semilla } from "../../config.js";
 // CONSTANTES --------------------------------------------------------------------------->
 // REGISTRAR DID EN EL LEDGER DE BCOVRIN
 let issuer_did = {
-  Seed: "misemilladebemantenerseensecreto",
-  DID: "No6XpAd5Ek7CnrNJA4a4RB",
-  Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
+  Seed: "issuersemilladebemantenersecreto",
+  DID: "7hVEkxK3356FwfmCQ9muR7",
+  Verkey: "4ejqSPdmShnQPRjdr9B9PzrQ4pP9p7FALhEyEkBYR9h5"
 };
 
 // SON EL RESULTADO PREVIO DE HABERLOS GENERADO ANTES

@@ -8,9 +8,9 @@ import axios from "axios";
 // Esto son unos valores registrados en el ledger de bcovrin
 // CAMBIAR
 let holder_did = {
-  Seed: "misemilladebemantenerseensecreto",
-  DID: "No6XpAd5Ek7CnrNJA4a4RB",
-  Verkey: "CsyYhd8KzQ6EAyt58Hfs6R984f5QpmTayUdjdTcJU47U",
+  Seed: "holdersemilladebemantenersecreto",
+  DID: "6qfdvdUv1BdUAmAmK7SVjp",
+  Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b"
 };
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin

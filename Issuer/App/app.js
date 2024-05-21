@@ -16,10 +16,6 @@ const port = 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Configuración de EJS como motor de plantillas
-app.set("view engine", "ejs");
-app.set("views", `${__dirname}/views`);
-
 // Configura a partir del fichero public
 app.use(express.static(`${__dirname}/public`));
 
