@@ -1,9 +1,8 @@
-import "./../shim.js";
-import { Agente } from "./../Agente.js";
-import { CredentialEventTypes, CredentialState } from "@credo-ts/core";
-import { modules, Holder_agentConfig } from "../config.js";
+import { WsOutboundTransport, HttpOutboundTransport, CredentialEventTypes, CredentialState} from "@credo-ts/core";
 import { HttpInboundTransport } from "@credo-ts/node";
-import { WsOutboundTransport, HttpOutboundTransport } from "@credo-ts/core";
+import { modules, Holder_agentConfig } from "./config.js";
+import { Agente } from "./Agente.js";
+import "./shim.js";
 
 export class Holder_gen extends Agente {
   constructor() {
@@ -13,6 +12,7 @@ export class Holder_gen extends Agente {
     this.add();
   }
 
+  // Inicializa el agente y establece transportes disponibles
   initialize = async () => {
     try {
       // Registra `WebSocket` con outbound transport
@@ -33,6 +33,7 @@ export class Holder_gen extends Agente {
     }
   };
 
+  // Apaga el agente
   shutdown = async () => {
     try {
       await this.agent.shutdown();
@@ -42,6 +43,7 @@ export class Holder_gen extends Agente {
     }
   };
 
+  // Maneja la solicitud de conexion y guara un registro
   receiveConnectionRequest = async (invitationUrl) => {
     const { connectionRecord } = await this.agent.oob.receiveInvitationFromUrl(
       invitationUrl
@@ -52,6 +54,7 @@ export class Holder_gen extends Agente {
     return connectionRecord;
   };
 
+  // Espera a que se establezca una conexion
   waitForConnection = async (connectionRecord) => {
     connectionRecord = await this.agent.connections.returnWhenIsConnected(
       connectionRecord.id
@@ -61,6 +64,7 @@ export class Holder_gen extends Agente {
     return connectionRecord.id;
   };
 
+  // Acepta la conexion recibida a partir de un enlace
   acceptConnection = async (invitation_url) => {
     try {
       const connectionRecord = await this.receiveConnectionRequest(
@@ -74,6 +78,7 @@ export class Holder_gen extends Agente {
     }
   };
 
+  // Escucha a las posibles credenciales que pueda recibir y LAS ACEPTA AUTOMATICAMENTE
   credentialOfferListener = async () => {
     this.agent.events.on(
       CredentialEventTypes.CredentialStateChanged,
@@ -109,7 +114,7 @@ export class Holder_gen extends Agente {
     }
   };
 
-  // ESTA TAMPOCO SE USA
+  // ESTA FUNCION TAMPOCO SE USA
   acceptCred = async () => {
     const self = this;
     this.agent.events.on(

@@ -27,5 +27,21 @@ services:
         - "4001:4001"
         - "4002:4002"
         - "4003:4003"
+    issuer:
+        build:
+            context: .
+            dockerfile: Dockerfile_issuer
+        container_name: issuer
+        ports:
+        - "5000:5000"
+        - "5001:5001"
+    holder:
+        build:
+            context: .
+            dockerfile: Dockerfile_holder
+        container_name: holder
+        ports:
+        - "4000:4000"
+        - "4001:4001"
         
         

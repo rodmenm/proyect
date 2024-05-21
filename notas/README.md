@@ -1,1 +1,0 @@
-ESte docker-compose es el que se tiene que ejecutar una vez creada la imagen a partir del keycloak.json requerido. Una vez haya sido creado y includio en el directorio "server" se ha de utilizar este docker-compose. El que se incluye inicialmente en el archivo raiz solo se utiliza hasta que se obtenga el json

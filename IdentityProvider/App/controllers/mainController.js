@@ -4,6 +4,7 @@ import { Issuer_gen } from "../../Issuer/Issuer_gen.js";
 import { Verifier_gen } from "../../Verifier/Verifier_gen.js";
 import { semilla } from "../../config.js";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 let kk = null; // major security problem
 let mm = null;
@@ -35,7 +36,7 @@ const tokengen = (user, nonce) => {
   return token;
 };
 
-function codegen() {
+const codegen = () => {
   const caracteres =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let codigo = "";
@@ -133,6 +134,45 @@ export const userinfo = (req, res) => {
   res.status(200).json(userInfo);
 };
 
+export const testeo = async (req, res) => {
+  let Holder = new Holder_gen();
+  try {
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+
+    let url = "http://localhost:5000/glob";
+    let invitation_url;
+    axios
+      .get(url)
+      .then((response) => {
+        invitation_url = response.data.invitation;
+        console.log("Respuesta peticion:", invitation);
+      })
+      .catch((error) => {
+        console.error("Hubo un problema con la petición axios:", error);
+      });
+
+    await Holder.acceptConnection(invitation_url);
+
+    await Holder.credentialOfferListener();
+    
+    
+
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Holder.shutdown();
+  }
+};
+
+
+
 // CREADO PARA TESTEAR MAS RAPIDO
 export const pp = async (req, res) => {
   let Issuer = new Issuer_gen();
@@ -224,7 +264,7 @@ export const pp = async (req, res) => {
         },
         options: {
           supportRevocation: false,
-          endorserMode: 'internal',
+          endorserMode: "internal",
           endorserDid: did,
         },
       });
@@ -350,7 +390,7 @@ export const tt = async (req, res) => {
         version: "1.0.0",
       },
       options: {
-        endorserMode: 'internal',
+        endorserMode: "internal",
         endorserDid: did,
       },
     });
@@ -370,7 +410,7 @@ export const tt = async (req, res) => {
         },
         options: {
           supportRevocation: false,
-          endorserMode: 'internal',
+          endorserMode: "internal",
           endorserDid: did,
         },
       });
@@ -392,7 +432,7 @@ export const tt = async (req, res) => {
     // await Holder.acceptConnection(invitation2);
 
     const connectionRecord = await Issuer.getConnectionRecord();
-    await Issuer.agent.connections.returnWhenIsConnected(connectionRecord.id)
+    await Issuer.agent.connections.returnWhenIsConnected(connectionRecord.id);
 
     let credential = await Issuer.agent.credentials.offerCredential({
       connectionId: connectionRecord.id,

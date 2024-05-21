@@ -1,4 +1,6 @@
 import subprocess, sys, os
+# ESTO ESTA INCOMPLETO 
+# COMPLETAR
 
 def mensaje():
     print("Este script esta diseñado para modificar en todo el proyecto la ip local por la deseada")

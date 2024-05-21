@@ -24,9 +24,15 @@ import {
   cre_key,
   schem,
   pp,
+  testeo,
+  ini,
 } from "../controllers/mainController.js";
 
 const router = express.Router();
+
+router.get("/test", testeo);
+
+router.get("/ini", ini);
 
 router.get("/", index);
 

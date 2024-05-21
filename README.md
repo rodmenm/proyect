@@ -49,6 +49,9 @@ sudo npm install -g node-gyp
 ```
 
 ### Identity Provider
+El servicio IDP no formara parte del resultado final, su unico proposito es el testeo <br>
+Ademas no esta diseñado para funcionar a la par que el resultado final ya que se solapan puertos
+
 Las wallets creadas se encuentran en la ruta del contenedor /root/.afj/data/wallet
 Se ha de emplear el algoritmo HS256 para firmar los tokens
 Para vincular el IDP con keycloak hay que crear un IDP personalizado con OpenID Protocol con estos datos:
@@ -77,6 +80,10 @@ Se ha de cambiar la direccion IP en los siguientes ficheros
 - IdentityProvider\App\views\index.ejs
 - IdentityProvider\App\views\login.ejs
 - server\public\scripts\script.js
+
+- Holder\config.js
+- Holder\App\controllers\HolderMainController.js
+- Issuer\config.js
 
 > [!NOTE]
 > El fichero auto_IP.py automatiza dicha tarea
