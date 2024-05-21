@@ -1,5 +1,5 @@
 import subprocess, sys, os
-# ESTO ESTA INCOMPLETO 
+# DEBERIA FUNCIONAR, NO ESTA TESTEADO
 # COMPLETAR
 
 def mensaje():
@@ -10,6 +10,9 @@ directorio = os.getcwd()
 kk = directorio + "/server/public/scripts/script.py"
 pp = directorio + "/IdentityProvider/App/views/index.py"
 tt = directorio + "/IdentityProvider/config.py"
+mm = directorio + "/Holder/config.py"
+rr = directorio + "/Issuer/config.py"
+qq = directorio + "Holder/App/controllers/HolderMainController.js"
 
 if len(sys.argv) >= 3:
     mensaje()
@@ -19,7 +22,7 @@ elif len(sys.argv) == 2:
     if (new_ip == 'help'):
         mensaje()
         sys.exit()
-    rutas_y_parametros = [(kk, new_ip),(pp, new_ip),(tt, new_ip)]
+    rutas_y_parametros = [(kk, new_ip),(pp, new_ip),(tt, new_ip),(mm, new_ip),(rr, new_ip),(qq, new_ip)]
     for ruta, nueva_ip in rutas_y_parametros:
         subprocess.run(["python3", ruta, nueva_ip])
     print("Todos los archivos cambiados correctamente")

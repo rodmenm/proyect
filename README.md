@@ -86,4 +86,5 @@ Se ha de cambiar la direccion IP en los siguientes ficheros
 - Issuer\config.js
 
 > [!NOTE]
-> El fichero auto_IP.py automatiza dicha tarea
+> El fichero auto_IP.py automatiza dicha tarea <br>
+> Lo unico que como se despliega en docker da igual y es recomendable utilizar los scripts dedicados a cambiarlos desde dentro del contenedor
