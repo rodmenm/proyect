@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identity Provider</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+  <div class="formita">
+    <div class="container">
+      <h1>Identity Provider</h1>
+    </div>
+    <div class="kk">Configure Agent Wallet Options</div>
+    <div class="options_flat">
+      <form action="http://localhost:4000/save" method="POST">
+        <input type="text" class="mar" name="id" placeholder=<%= w_id %> />
+        Wallet ID
+        <br />
+        <input type="text" class="mar" name="key" placeholder=<%= w_key %> />
+        Wallet key
+        <br />
+        <div class="options_flat">
+          <button type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="formita">
+    <div class="container">
+      <h2>Schema</h2>
+    </div>
+    <form action="http://localhost:4000/schema" method="POST">
+      <button type="submit">Register a Schema</button>
+    </form>
+    <form action="http://localhost:4000/cred" method="POST">
+      <button type="submit">Credential</button>
+    </form>
+  </div>
+
+
+
+  <div class="container">
+    <h2>Wallet Functions</h2>
+  </div>
+  <div class="formita">
+    <div class="options_flat">
+      <form action="http://localhost:4000/cre_wallet" method="POST">
+        <input type="text" class="mar" name="id" placeholder="Wallet distinta a la del agente" />
+        Wallet ID
+        <br />
+        <input type="text" class="mar" name="key" placeholder="Wallet distinta a la del agente" />
+        Wallet key
+        <br />
+        <button type="submit">Create Wallet</button>
+      </form>
+      <form action="http://localhost:4000/ini_wallet" method="POST">
+        <button type="submit">Initialize Wallet</button>
+      </form>
+      <form action="http://localhost:4000/cre_op_wallet" method="POST">
+        <button type="submit">Create and Ini Wallet</button>
+      </form>
+      <form action="http://localhost:4000/op_wallet" method="POST">
+        <button type="submit">Open Wallet</button>
+      </form>
+      <form action="http://localhost:4000/cl_wallet" method="POST">
+        <button type="submit">Close Wallet</button>
+      </form>
+      <form action="http://localhost:4000/gnonce" method="POST">
+        <button type="submit">Generate Nonce</button>
+      </form>
+      <form action="http://localhost:4000/del_wallet" method="POST">
+        <button type="submit">Delete Wallet</button>
+      </form>
+      <form action="http://localhost:4000/exp_wallet" method="POST">
+        <button type="submit">Export Wallet</button>
+      </form>
+      <form action="http://localhost:4000/imp_wallet" method="POST">
+        <button type="submit">Import Wallet</button>
+      </form>
+      <form action="http://localhost:4000/cre_key" method="POST">
+        <button type="submit">Create Key</button>
+      </form>
+    </div>
+
+  </div>
+
+
+  <div class="container">
+    <h2>DID options</h2>
+  </div>
+  <div class="options">
+    <div class="form">
+      <h3>Resolve Did</h3>
+      Extrae un didDocument a partir de un did
+      <form action="http://localhost:4000/resolve_did" method="POST">
+        <input type="text" class="mar" name="did_url" placeholder="did_url (essential)" />
+        <br />
+        <input type="text" class="mar" name="options" placeholder="options (optional)" />
+        <br />
+        <button type="submit">Resolve Did</button>
+      </form>
+    </div>
+
+    <div class="form">
+      <h3>Crear Did</h3>
+      <form action="http://localhost:4000/crear_did" method="POST">
+        <input type="text" class="mar" name="did_url" placeholder="did_url (optional)" />
+        <br />
+        <input type="text" class="mar" name="options" placeholder="options (optional)" />
+        <br />
+        <input type="text" class="mar" name="secret" placeholder="secret (optional)" />
+        <br />
+        <input type="text" class="mar" name="didDocument" placeholder="didDocument (optional)" />
+        <br />
+        <button type="submit">Crear Did</button>
+      </form>
+    </div>
+
+    <div class="form">
+      <h3>Actualizar Did</h3>
+      <form action="http://localhost:4000/update_did" method="POST">
+        <input type="text" class="mar" name="did_url" placeholder="did_url (essential)" />
+        <br />
+        <input type="text" class="mar" name="didDocument" placeholder="didDocument (essential)" />
+        <br />
+        <input type="text" class="mar" name="options" placeholder="options (optional)" />
+        <br />
+        <input type="text" class="mar" name="secret" placeholder="secret (optional)" />
+        <br />
+        <input type="text" class="mar" name="didDocumentOperation" placeholder="didDocumentOperation (optional)" />
+        <br />
+        <button type="submit">Actualizar Did</button>
+      </form>
+    </div>
+
+    <div class="form">
+      <h3>Desactivar Did</h3>
+      <form action="http://localhost:4000/deactivate_did" method="POST">
+        <input type="text" class="mar" name="did_url" placeholder="did_url (essential)" />
+        <br />
+        <input type="text" class="mar" name="options" placeholder="options (optional)" />
+        <br />
+        <input type="text" class="mar" name="secret" placeholder="secret (optional)" />
+        <br />
+        <button type="submit">Desactivar Did</button>
+      </form>
+    </div>
+
+    <div class="form">
+      <h3>Dids creados</h3>
+      <form action="http://localhost:4000/dids_creados" method="POST">
+        <br />
+        <button type="submit">Mostrar Dids</button>
+      </form>
+    </div>
+
+    <div class="form">
+      <h3>Importar Did</h3>
+      Importa un Did creado de manera "extraoficial"
+      <form action="http://localhost:4000/import_did" method="POST">
+        <input type="text" class="mar" name="did_url" placeholder="did_url (essential)" />
+        <br />
+        <button type="submit">Importar Did</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
