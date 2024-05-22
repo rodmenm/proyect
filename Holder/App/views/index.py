@@ -37,6 +37,6 @@ if len(sys.argv) >= 2:
     my_file = open(ruta2,'w')
     my_file.write(my_data)
     my_file.close()
-    print("localhost cambiado por " + new_ip + "en el fichero IDP/views")
+    print("localhost cambiado por " + new_ip + "en los ficheros Holder/views")
 else:
     mensaje()
