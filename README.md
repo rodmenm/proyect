@@ -59,7 +59,7 @@ Una vez realizado, establecer en los controladores (linea 8 o asi) del issuer y 
 
 <br>
 
-## GESTIONAR SCHEMA & CRED
+### GESTIONAR SCHEMA & CRED
 > [!NOTE]
 > Se recuerda que se deberia haber desplegado docker-compose ya<br>
 
