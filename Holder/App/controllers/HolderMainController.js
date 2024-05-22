@@ -10,7 +10,7 @@ import axios from "axios";
 let holder_did = {
   Seed: "holdersemilladebemantenersecreto",
   DID: "6qfdvdUv1BdUAmAmK7SVjp",
-  Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b"
+  Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b",
 };
 
 // Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
@@ -30,20 +30,9 @@ export const testeo = async (req, res) => {
       );
     }
 
-    await Holder.agent.dids.import({
-      did: did,
-      overwrite: true,
-      privateKeys: [
-        {
-          privateKey: holder_semilla,
-          keyType: KeyType.Ed25519,
-        },
-      ],
-    });
-
     let url = "http://localhost:5000/glob";
     let invitation_url;
-    axios
+    await axios
       .get(url)
       .then((response) => {
         invitation_url = response.data.invitation;

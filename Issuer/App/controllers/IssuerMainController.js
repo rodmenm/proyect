@@ -2,22 +2,24 @@ import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
 import { Issuer_gen } from "../../Issuer_gen.js";
 import { issuer_semilla } from "../../config.js";
 
-
 // CONSTANTES --------------------------------------------------------------------------->
 // REGISTRAR DID EN EL LEDGER DE BCOVRIN
 let issuer_did = {
   Seed: "issuersemilladebemantenersecreto",
   DID: "7hVEkxK3356FwfmCQ9muR7",
-  Verkey: "4ejqSPdmShnQPRjdr9B9PzrQ4pP9p7FALhEyEkBYR9h5"
+  Verkey: "4ejqSPdmShnQPRjdr9B9PzrQ4pP9p7FALhEyEkBYR9h5",
 };
 
 // SON EL RESULTADO PREVIO DE HABERLOS GENERADO ANTES
 const imported_did = issuer_did.DID;
-const schemaId = "did:indy:bcovrin:test:No6XpAd5Ek7CnrNJA4a4RB/anoncreds/v0/SCHEMA/Malorca teamm/4.1.8";
-const credentialDefId = "did:indy:bcovrin:test:No6XpAd5Ek7CnrNJA4a4RB/anoncreds/v0/CLAIM_DEF/711388/default_tag";
+const schemaId =
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";
+const credentialDefId =
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
 
 // RUTAS -------------------------------------------------------------------------------->
 
+// Sirve para crear el esquema de atributos que tendra una credencial
 export const cre_schem = async (req, res) => {
   let Issuer = new Issuer_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
@@ -29,7 +31,7 @@ export const cre_schem = async (req, res) => {
       );
     }
 
-    // HAY QUE INCLUIR DE FORMA MANUAL EN BCOVRIN
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
     await Issuer.agent.dids.import({
       did: did,
       overwrite: true,
@@ -42,7 +44,7 @@ export const cre_schem = async (req, res) => {
     });
 
     // NO SE PUEDE CREAR UN ESQUEMA IGUAL 2 VECES, CAMBIAR NOMBRE O VERSION
-    // EL ESQUEMA SIRVE PARA DEFINIR QUE TIENE LA CREDENCIAL
+    // EL ESQUEMA SIRVE PARA DEFINIR LOS ATRIBUTOS TIENE LA CREDENCIAL
     // NO ITENE PORQUE CREARSE UNO, TAMBIEN SE PUEDE IMPORTAR
     let schemaResult = await Issuer.agent.modules.anoncreds.registerSchema({
       schema: {
@@ -57,8 +59,8 @@ export const cre_schem = async (req, res) => {
       },
     });
 
-    //let schemaResult2 = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
-
+    // SOLO SE COMPRUEBA EL ESTADO CUANDO SE CREA
+    // CUANDO SE ACCEDE A UNO YA CREADO, EN CASO DE QUE SE DEVUELVA ALGO ES QUE YA ESTA HECHO
     if (schemaResult.schemaState.state === "failed") {
       throw new Error(
         `Error creating schema: ${schemaResult.schemaState.reason}`
@@ -74,6 +76,9 @@ export const cre_schem = async (req, res) => {
   }
 };
 
+// SIRVE PARA CREAR UNA CREDENCIAL A PARTIR DE UN ESQUEMA
+// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA ES CORRECTO Y HA SIDO ACTUALIZADO
+// DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA DE MANERA CORRECTA
 export const cre_cred = async (req, res) => {
   let Issuer = new Issuer_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
@@ -85,7 +90,7 @@ export const cre_cred = async (req, res) => {
       );
     }
 
-    // HAY QUE INCLUIR DE FORMA MANUAL EN BCOVRIN
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
     await Issuer.agent.dids.import({
       did: did,
       overwrite: true,
@@ -98,14 +103,24 @@ export const cre_cred = async (req, res) => {
     });
 
     let schemaResult = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
-    if (schemaResult.schemaState.state === "failed") {
-      throw new Error(
-        `Error obtaining schema: ${schemaResult.schemaState.reason}`
-      );
+    if (!schemaResult) {
+      throw new Error(`Error obtaining schema (Check logs)`);
     }
 
+    // CUANDO SE CREA EL SCHEMARESULT, LA ID ESTA EN schemaResult.schemaState.schemaId
     const credentialDefinitionResult =
-      await Issuer.agent.modules.anoncreds.getCredentialDefinition(credId);
+      await Issuer.agent.modules.anoncreds.registerCredentialDefinition({
+        credentialDefinition: {
+          tag: "default_tag",
+          issuerId: did,
+          schemaId: schemaResult.schemaId,
+        },
+        options: {
+          supportRevocation: false,
+          endorserMode: "internal",
+          endorserDid: did,
+        },
+      });
 
     if (
       credentialDefinitionResult.credentialDefinitionState.state === "failed"
@@ -124,6 +139,9 @@ export const cre_cred = async (req, res) => {
   }
 };
 
+// SERVIRA PARA ENTREGAR CREDENCIALES
+// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA Y LA CREDENCIAL ES CORRECTO Y HA SIDO ACTUALIZADO
+// DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA Y LA CREDENCIAL DE MANERA CORRECTA
 export const glob = async (req, res) => {
   let Issuer = new Issuer_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
@@ -135,7 +153,7 @@ export const glob = async (req, res) => {
       );
     }
 
-    // HAY QUE INCLUIR DE FORMA MANUAL EN BCOVRIN
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
     await Issuer.agent.dids.import({
       did: did,
       overwrite: true,
@@ -148,57 +166,51 @@ export const glob = async (req, res) => {
     });
 
     let schemaResult = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
-    if (schemaResult.schemaState.state === "failed") {
-      throw new Error(
-        `Error creating schema: ${schemaResult.schemaState.reason}`
-      );
+    if (!schemaResult) {
+      throw new Error(`Error obtaining schema (Check logs)`);
     }
 
     const credentialDefinitionResult =
       await Issuer.agent.modules.anoncreds.getCredentialDefinition(
         credentialDefId
       );
-    if (
-      credentialDefinitionResult.credentialDefinitionState.state === "failed"
-    ) {
-      throw new Error(
-        `Error importing credential definition: ${credentialDefinitionResult.credentialDefinitionState.reason}`
-      );
+    if (!credentialDefinitionResult) {
+      throw new Error(`Error importing credential definition (Check logs)`);
     }
 
     let invitation = await Issuer.createNewInvitation();
     res.json({ invitationurl: invitation });
     await Issuer.waitForConnection(); // AQUI EN TEORIA LA ACEPTA
 
-    const conrecord = await Issuer.agent.connections.findAllByOutOfBandId(Issuer.outOfBandId);
-    
-    // Estaria bien mover esto a Issuer_gen 
+    const conrecord = await Issuer.agent.connections.findAllByOutOfBandId(
+      Issuer.outOfBandId
+    );
+
+    // Estaria bien mover esto a Issuer_gen
     await this.agent.credentials.offerCredential({
-        connectionId: conrecord.id,
-        protocolVersion: 'v2',
-        credentialFormats: {
-          anoncreds: {
-            attributes: [
-              {
-                name: 'name',
-                value: 'Muriqi',
-              },
-              {
-                name: 'club',
-                value: 'Mallorca',
-              },
-              {
-                name: 'date',
-                value: '01/01/2022',
-              },
-            ],
-            credentialDefinitionId: credentialDefinitionResult.credentialDefinitionId,
-          },
+      connectionId: conrecord.id,
+      protocolVersion: "v2",
+      credentialFormats: {
+        anoncreds: {
+          attributes: [
+            {
+              name: "name",
+              value: "Muriqi",
+            },
+            {
+              name: "club",
+              value: "Mallorca",
+            },
+            {
+              name: "date",
+              value: "01/01/2022",
+            },
+          ],
+          credentialDefinitionId:
+            credentialDefinitionResult.credentialDefinitionId,
         },
-      })
-    
-
-
+      },
+    });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
