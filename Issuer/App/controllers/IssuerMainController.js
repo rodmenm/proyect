@@ -3,7 +3,8 @@ import { Issuer_gen } from "../../Issuer_gen.js";
 import { issuer_semilla } from "../../config.js";
 
 // CONSTANTES --------------------------------------------------------------------------->
-// REGISTRAR DID EN EL LEDGER DE BCOVRIN
+// Esto son unos valores registrados en el ledger de la red local
+// CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
 let issuer_did = {
   Seed: "issuersemilladebemantenersecreto",
   DID: "7hVEkxK3356FwfmCQ9muR7",
@@ -11,6 +12,7 @@ let issuer_did = {
 };
 
 // SON EL RESULTADO PREVIO DE HABERLOS GENERADO ANTES
+// CAMBIAR POR LOS OBTENIDOS AL GENERARLOS EN EL LEDGER
 const imported_did = issuer_did.DID;
 const schemaId =
   "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";

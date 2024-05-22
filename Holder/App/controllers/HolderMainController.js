@@ -5,15 +5,15 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 
 // CONSTANTES----------------------------------------------------------------------------------------------->
-// Esto son unos valores registrados en el ledger de bcovrin
-// CAMBIAR
+// Esto son unos valores registrados en el ledger de la red local
+// CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
 let holder_did = {
   Seed: "holdersemilladebemantenersecreto",
   DID: "6qfdvdUv1BdUAmAmK7SVjp",
   Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b",
 };
 
-// Define un DID de Indy no calificado que será devuelto después de registrar la semilla en bcovrin
+// Define un DID de Indy no calificado que será devuelto después de registrar la semilla en el ledger
 const imported_did = holder_did.DID;
 
 // Metodo descartado
