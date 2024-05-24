@@ -146,8 +146,8 @@ export const Holder_agentConfig = {
       database: "holder.db", // Ruta al archivo de base de datos SQLite
     },
   },
-  logger: new ConsoleLogger(LogLevel.debug),
-  endpoints: ["http://localhost:4001"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
+  logger: new ConsoleLogger(LogLevel.debug), // CAMBIAR TESTEAR EN IP PUBLICA
+  endpoints: ["http://holder:4001"], // Endpoints a través de los cuales otros agentes pueden comunicarse con este agente
   didCommMimeType: DidCommMimeType.V1, // Tipo MIME para el intercambio de mensajes
   useDidSovPrefixWhereAllowed: true, // Indicación para usar el prefijo did:sov en los mensajes si está permitido
   useDidKeyInProtocols: true,
@@ -167,7 +167,7 @@ export const Issuer_agentConfig = {
     },
   },
   logger: new ConsoleLogger(LogLevel.debug),
-  endpoints: ["http://localhost:5001"],
+  endpoints: ["http://issuer:5001"], // CAMBIAR TESTEAR EN IP PUBLICA
   didCommMimeType: DidCommMimeType.V1,
   useDidSovPrefixWhereAllowed: true,
   useDidKeyInProtocols: true,

@@ -7,6 +7,6 @@ router.get("/cre_schem", cre_schem);
 
 router.get("/cre_cred", cre_cred);
 
-router.post("/glob", glob);
+router.get("/glob", glob);
 
 export default router;

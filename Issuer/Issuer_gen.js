@@ -2,12 +2,13 @@ import "./shim.js";
 import { Agente } from "./Agente.js";
 import { modules, Issuer_agentConfig } from "./config.js";
 import { HttpInboundTransport } from "@credo-ts/node";
-import { WsOutboundTransport, HttpOutboundTransport } from "@credo-ts/core";
+import { WsOutboundTransport, HttpOutboundTransport, ConnectionEventTypes } from "@credo-ts/core";
 
 export class Issuer_gen extends Agente {
   constructor() {
     super(Issuer_agentConfig, modules);
     this.outOfBandId = null;
+    this.connectionRecord = null;
     this.add();
   }
 
@@ -22,7 +23,7 @@ export class Issuer_gen extends Agente {
 
       // Registra `Http` con inbound transport
       this.agent.registerInboundTransport(
-        new HttpInboundTransport({ port: 4002 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
+        new HttpInboundTransport({ port: 5001 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
       );
 
       await this.agent.initialize();
@@ -49,7 +50,7 @@ export class Issuer_gen extends Agente {
     this.outOfBandId = outOfBand.id;
     return {
       invitationUrl: outOfBand.outOfBandInvitation.toUrl({
-        domain: "http://localhost:5001",
+        domain: "http://issuer:5001", // CAMBIAR TESTEAR EN IP PUBLICA
       }),
       outOfBand,
     };
@@ -59,7 +60,7 @@ export class Issuer_gen extends Agente {
   createLegacyInvitation = async () => {
     const { invitation } = await this.agent.oob.createLegacyInvitation();
 
-    return invitation.toUrl({ domain: "http://localhost:4003" });
+    return invitation.toUrl({ domain: "http://issuer:5001" }); // CAMBIAR TESTEAR EN IP PUBLICA
   };
 
   // Espera a que se establezca la conexion
@@ -99,6 +100,8 @@ export class Issuer_gen extends Agente {
       });
 
     const connectionRecord = await getConnectionRecord(this.outOfBandId);
+    this.connectionRecord = connectionRecord;
+
 
     try {
       await this.agent.connections.returnWhenIsConnected(connectionRecord.id);
@@ -106,7 +109,7 @@ export class Issuer_gen extends Agente {
       console.error(`Error: ${error}`)
       return;
     }
+  console.log("Issuer conexión completada correctamente");
 
-    console.log(greenText(Output.ConnectionEstablished));
   };
 }

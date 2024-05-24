@@ -181,16 +181,13 @@ export const glob = async (req, res) => {
     }
 
     let invitation = await Issuer.createNewInvitation();
-    res.json({ invitationurl: invitation });
-    await Issuer.waitForConnection(); // AQUI EN TEORIA LA ACEPTA
 
-    const conrecord = await Issuer.agent.connections.findAllByOutOfBandId(
-      Issuer.outOfBandId
-    );
+    res.json({ invitationurl: invitation });
+    await Issuer.waitForConnection();
 
     // Estaria bien mover esto a Issuer_gen
-    await this.agent.credentials.offerCredential({
-      connectionId: conrecord.id,
+    await Issuer.agent.credentials.offerCredential({
+      connectionId: Issuer.connectionRecord.id,
       protocolVersion: "v2",
       credentialFormats: {
         anoncreds: {
@@ -213,10 +210,19 @@ export const glob = async (req, res) => {
         },
       },
     });
+    await esperar100Segundos();
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send("Error: " + error);
   } finally {
     await Issuer.shutdown();
   }
 };
+
+// ESTA FUNCION ESTA SOLO PARA QUE SE AUTOCOMPLETEN LAS PETICIONES, SINO SE APAGAN LOS AGENTES
+function esperar100Segundos() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, 100000);
+  });
+}

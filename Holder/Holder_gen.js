@@ -60,7 +60,7 @@ export class Holder_gen extends Agente {
       connectionRecord.id
     );
     this.connected = true;
-    console.log(`Conexión establecida correctamente`);
+    console.log(`Holder conexión establecida correctamente`);
     return connectionRecord.id;
   };
 
@@ -85,11 +85,8 @@ export class Holder_gen extends Agente {
       async ({ payload }) => {
         if (payload.credentialRecord.state === CredentialState.OfferReceived) {
           console.log("Aceptando la credencial con los siguientes atributos");
-          for (let att of credentialRecord.credentialAttributes) {
-            console.log(att)
-          }
           await this.agent.credentials.acceptOffer({
-            credentialRecordId: payload.credentialRecord,
+            credentialRecordId: payload.credentialRecord.id
           });
         }
       }
@@ -137,3 +134,5 @@ export class Holder_gen extends Agente {
     );
   };
 }
+
+

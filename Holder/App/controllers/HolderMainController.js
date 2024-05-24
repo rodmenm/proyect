@@ -29,22 +29,23 @@ export const testeo = async (req, res) => {
         `Error initialazing Holder agent. It has not initialized`
       );
     }
-
-    let url = "http://localhost:5000/glob";
+    // CAMBIAR TESTEAR EN IP PUBLICA
+    let url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
     let invitation_url;
     await axios
       .get(url)
       .then((response) => {
-        invitation_url = response.data.invitation;
-        console.log("Respuesta peticion:", invitation);
+        invitation_url = response.data.invitationurl.invitationUrl;
+        console.log("Respuesta peticion:", invitation_url);
       })
       .catch((error) => {
-        console.error("Hubo un problema con la petición axios:", error);
+        throw new Error(`Hubo un problema con la peticion: ${error}`);
       });
 
     await Holder.acceptConnection(invitation_url);
 
     await Holder.credentialOfferListener();
+    await esperar100Segundos();
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
@@ -167,3 +168,12 @@ export const givtok = (req, res) => {
     id_token: tokenid,
   });
 };
+
+// ESTA FUNCION ESTA SOLO PARA QUE SE AUTOCOMPLETEN LAS PETICIONES, SINO SE APAGAN LOS AGENTES
+function esperar100Segundos() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 100000);
+  });
+}
