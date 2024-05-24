@@ -6,16 +6,16 @@ services:
             dockerfile: Dockerfile_server
         container_name: server
         ports:
-        - "3000:3000"
+            - "3000:3000"
     keycloak:
         image: quay.io/keycloak/keycloak:23.0.4
         environment:
-        - KEYCLOAK_ADMIN=admin
-        - KEYCLOAK_ADMIN_PASSWORD=admin
+            - KEYCLOAK_ADMIN=admin
+            - KEYCLOAK_ADMIN_PASSWORD=admin
         ports:
-        - "8080:8080"
+            - "8080:8080"
         command:
-        - start-dev
+            - start-dev
         container_name: keycloak
     idp:
         build:
@@ -23,25 +23,32 @@ services:
             dockerfile: Dockerfile_idp
         container_name: idp
         ports:
-        - "4000:4000"
-        - "4001:4001"
-        - "4002:4002"
-        - "4003:4003"
-    issuer:
-        build:
-            context: .
-            dockerfile: Dockerfile_issuer
-        container_name: issuer
-        ports:
-        - "5000:5000"
-        - "5001:5001"
+            - "4000:4000"
+            - "4001:4001"
+            - "4002:4002"
+            - "4003:4003"
     holder:
         build:
             context: .
             dockerfile: Dockerfile_holder
         container_name: holder
         ports:
-        - "4000:4000"
-        - "4001:4001"
-        
-        
+            - "4000:4000"
+            - "4001:4001"
+    issuer:
+        build:
+            context: .
+            dockerfile: Dockerfile_issuer
+        container_name: issuer
+        ports:
+            - "5000:5000"
+            - "5001:5001"
+
+    verifier:
+        build:
+            context: .
+            dockerfile: Dockerfile_verifier
+        container_name: verifier
+        ports:
+            - "6000:6000"
+            - "6001:6001"

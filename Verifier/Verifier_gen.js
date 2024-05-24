@@ -1,12 +1,12 @@
 import "./shim.js";
 import { Agente } from "./Agente.js";
-import { modules, Issuer_agentConfig } from "./config.js";
+import { modules, Verifier_agentConfig } from "./config.js";
 import { HttpInboundTransport } from "@credo-ts/node";
 import { WsOutboundTransport, HttpOutboundTransport, ConnectionEventTypes } from "@credo-ts/core";
 
-export class Issuer_gen extends Agente {
+export class Verifier_gen extends Agente {
   constructor() {
-    super(Issuer_agentConfig, modules);
+    super(Verifier_agentConfig, modules);
     this.outOfBandId = null;
     this.connectionRecord = null;
     this.add();
@@ -23,13 +23,13 @@ export class Issuer_gen extends Agente {
 
       // Registra `Http` con inbound transport
       this.agent.registerInboundTransport(
-        new HttpInboundTransport({ port: 5001 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
+        new HttpInboundTransport({ port: 6001 }) // CAMBIAR A FUTURO, ABRIR MAS PUERTOS PARA MAS HOLDERS
       );
 
       await this.agent.initialize();
-      console.log("Issuer agent inicializado correctamente");
+      console.log("Verifier agent inicializado correctamente");
     } catch (error) {
-      console.error(`Error inicializando Issuer agent: ${error}`);
+      console.error(`Error inicializando Verifier agent: ${error}`);
     }
   };
 
@@ -37,9 +37,9 @@ export class Issuer_gen extends Agente {
   shutdown = async () => {
     try {
       await this.agent.shutdown();
-      console.log("Issuer agent finalizado correctamente");
+      console.log("Verifier agent finalizado correctamente");
     } catch (error) {
-      console.error(`Error finalizando Issuer agent; ${error}`);
+      console.error(`Error finalizando Verifier agent; ${error}`);
     }
   };
 
@@ -50,7 +50,7 @@ export class Issuer_gen extends Agente {
     this.outOfBandId = outOfBand.id;
     return {
       invitationUrl: outOfBand.outOfBandInvitation.toUrl({
-        domain: "http://issuer:5001", // CAMBIAR TESTEAR EN IP PUBLICA
+        domain: "http://verifier:5001", // CAMBIAR TESTEAR EN IP PUBLICA
       }),
       outOfBand,
     };
@@ -60,7 +60,7 @@ export class Issuer_gen extends Agente {
   createLegacyInvitation = async () => {
     const { invitation } = await this.agent.oob.createLegacyInvitation();
 
-    return invitation.toUrl({ domain: "http://issuer:5001" }); // CAMBIAR TESTEAR EN IP PUBLICA
+    return invitation.toUrl({ domain: "http://verifier:5001" }); // CAMBIAR TESTEAR EN IP PUBLICA
   };
 
   // Espera a que se establezca la conexion
@@ -109,7 +109,7 @@ export class Issuer_gen extends Agente {
       console.error(`Error: ${error}`)
       return;
     }
-  console.log("Issuer conexión completada correctamente");
+  console.log("Verifier conexión completada correctamente");
 
   };
 }

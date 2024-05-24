@@ -135,6 +135,10 @@ export const issuer_semilla = TypedArrayEncoder.fromString(
   `issuersemilladebemantenersecreto`
 );
 
+export const verifier_semilla = TypedArrayEncoder.fromString(
+  `verifisemilladebemantenersecreto`
+);
+
 export const Holder_agentConfig = {
   label: "H_agente", // Nombre del agente
   walletConfig: {
@@ -186,7 +190,7 @@ export const Verifier_agentConfig = {
     },
   },
   logger: new ConsoleLogger(LogLevel.info),
-  endpoints: ["http://localhost:6001"],
+  endpoints: ["http://verifier:6001"],
   didCommMimeType: DidCommMimeType.V1,
   useDidSovPrefixWhereAllowed: true,
   useDidKeyInProtocols: true,
