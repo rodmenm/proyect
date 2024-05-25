@@ -1,5 +1,5 @@
 {
-  "name": "tgh-holder-package",
+  "name": "tfg-holder-package",
   "version": "1.0.0",
   "description": "Paquete para realizar acciones en un holder",
   "dependencies": {

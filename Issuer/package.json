@@ -1,5 +1,5 @@
 {
-  "name": "tgh-isser-package",
+  "name": "tfg-issuer-package",
   "version": "1.0.0",
   "description": "Paquete para realizar acciones en un issuer",
   "dependencies": {

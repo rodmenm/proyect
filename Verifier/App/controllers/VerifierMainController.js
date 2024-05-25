@@ -1,11 +1,11 @@
-import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
 import { Verifier_gen } from "../../Verifier_gen.js";
 import { verifier_semilla } from "../../config.js";
+import { KeyType } from "@credo-ts/core";
 
 // CONSTANTES --------------------------------------------------------------------------->
 // Esto son unos valores registrados en el ledger de la red local
 // CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
-let verifier_did = {
+const verifier_did = {
   Seed: "verifisemilladebemantenersecreto",
   DID: "HYcZ7deXQ5nQSLKSEBf7QR",
   Verkey: "A22FzhkJ13gtCCAAbfYHy6GPbrcbRGCoVcWxJMP3ikhT"
@@ -20,12 +20,13 @@ const schemaId =
 const credentialDefId =
   "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
 
-// RUTAS -------------------------------------------------------------------------------->
 
+// CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
 
 export const testeo = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Verifier = new Verifier_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Verifier.initialize();
     if (Verifier.agent._isInitialized != true) {
@@ -47,7 +48,7 @@ export const testeo = async (req, res) => {
     });
 
     
-    let invitation = await Verifier.createNewInvitation();
+    const invitation = await Verifier.createNewInvitation();
 
     res.json({ invitationurl: invitation });
     await Verifier.waitForConnection();
@@ -84,10 +85,13 @@ export const testeo = async (req, res) => {
 };
 
 
-// SIRVE PARA SOLICITAR PRUEBAS 
+// CONTROLADORES FINALES-------------------------------------------------------------------------------------------------->
+
+// SIRVE PARA SOLICITAR PRUEBAS DE UNA CREDENCIAL 
 export const glob = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Verifier = new Verifier_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Verifier.initialize();
     if (Verifier.agent._isInitialized != true) {
@@ -109,7 +113,7 @@ export const glob = async (req, res) => {
     });
 
     
-    let invitation = await Verifier.createNewInvitation();
+    const invitation = await Verifier.createNewInvitation();
 
     res.json({ invitationurl: invitation });
     await Verifier.waitForConnection();
