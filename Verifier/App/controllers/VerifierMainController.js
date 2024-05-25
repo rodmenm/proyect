@@ -22,44 +22,6 @@ const credentialDefId =
 
 // RUTAS -------------------------------------------------------------------------------->
 
-// SIRVE PARA SOLICITAR PRUEBAS 
-export const glob = async (req, res) => {
-  let Verifier = new Verifier_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
-  try {
-    await Verifier.initialize();
-    if (Verifier.agent._isInitialized != true) {
-      throw new Error(
-        `Error initialazing Verifier agent. It has not initialized`
-      );
-    }
-
-    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
-    await Verifier.agent.dids.import({
-      did: did,
-      overwrite: true,
-      privateKeys: [
-        {
-          privateKey: verifier_semilla,
-          keyType: KeyType.Ed25519,
-        },
-      ],
-    });
-
-    
-    let invitation = await Verifier.createNewInvitation();
-
-    res.json({ invitationurl: invitation });
-    await Verifier.waitForConnection();
-
-    
-    await esperar100Segundos();
-  } catch (error) {
-    console.error("Error:", error);
-  } finally {
-    await Issuer.shutdown();
-  }
-};
 
 export const testeo = async (req, res) => {
   let Verifier = new Verifier_gen();
@@ -112,6 +74,46 @@ export const testeo = async (req, res) => {
         },
       },
     });
+    
+    await esperar100Segundos();
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    await Verifier.shutdown();
+  }
+};
+
+
+// SIRVE PARA SOLICITAR PRUEBAS 
+export const glob = async (req, res) => {
+  let Verifier = new Verifier_gen();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
+    await Verifier.initialize();
+    if (Verifier.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Verifier agent. It has not initialized`
+      );
+    }
+
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
+    await Verifier.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: verifier_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    
+    let invitation = await Verifier.createNewInvitation();
+
+    res.json({ invitationurl: invitation });
+    await Verifier.waitForConnection();
+
     
     await esperar100Segundos();
   } catch (error) {

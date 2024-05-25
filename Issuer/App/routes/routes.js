@@ -9,6 +9,6 @@ router.get("/cre_cred", cre_cred);
 
 router.get("/testeo", testeo);
 
-router.get("/glob([a-zA-Z]+)", glob);
+router.get("/glob/:name([a-zA-Z0-9]+)", glob);
 
 export default router;

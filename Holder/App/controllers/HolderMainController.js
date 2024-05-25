@@ -47,26 +47,41 @@ export const testeo = async (req, res) => {
     await Holder.credentialOfferListener();
     await esperar100Segundos();
 
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
     await Holder.shutdown();
+  }
+};
+
+export const testeo2 = async (req, res) => {
+  let Holder = new Holder_gen();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
       throw new Error(
         `Error initialazing Holder agent. It has not initialized`
       );
     }
-    let url2 = "http://verfier:5000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
-    let invitation_url2;
+    let url = "http://verifier:6000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    let invitation_url;
     await axios
-      .get(url2)
+      .get(url)
       .then((response) => {
-        invitation_url2 = response.data.invitationurl.invitationUrl;
-        console.log("Respuesta peticion:", invitation_url2);
+        invitation_url = response.data.invitationurl.invitationUrl;
+        console.log("Respuesta peticion:", invitation_url);
       })
       .catch((error) => {
         throw new Error(`Hubo un problema con la peticion: ${error}`);
       });
 
-    await Holder.acceptConnection(invitation_url2);
+    await Holder.acceptConnection(invitation_url);
+
+    await Holder.ProofRequestListener();
+
+    await esperar100Segundos();
 
 
   } catch (error) {
@@ -76,6 +91,7 @@ export const testeo = async (req, res) => {
     await Holder.shutdown();
   }
 };
+
 
 export const cred_cre = (req, res) => {
   req.session.id = req.body.id;
@@ -88,9 +104,7 @@ export const sol_cred = async  (req, res) => {
   let id = req.session.id;
   let key = req.session.key;
   let name = req.session.name;
-  // COMPLETAR
-  // HACER HOLDER WALLET CON PARAMETROS PASADOS
-  let Holder = new Holder_gen();
+  let Holder = new Holder_gen(id, key);
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -100,7 +114,7 @@ export const sol_cred = async  (req, res) => {
     }
     // CAMBIAR TESTEAR EN IP PUBLICA
     let base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
-    let url = `${base_url}?name=${name}`
+    let url = `${base_url}/${name}`
     let invitation_url;
     await axios
       .get(url)
@@ -122,7 +136,7 @@ export const sol_cred = async  (req, res) => {
   } finally {
     await Holder.shutdown();
   }
-  res.redirect("/ESTAPORVER")
+  res.redirect("/login")
 };
 
 
@@ -230,17 +244,64 @@ export const logeocheck = (req, res) => {
   }
 };
 
-export const logeocheck2 = (req, res) => {
+export const logeocheck2 = async (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
   console.log(req.session.authParams);
   console.log(redirect_uri);
   // COMPLETAR
-  // ESTO SOLO ES SOLO PARA COMPROBAR EL CORRECTO FUNCIONAMIENTO DEL PROTOCOLO OIDC
-  // HABRA QUE ESTABLECER EL SISTEMA DE AUTENTICACiÓN CORRECTAMENTE
+
   let wid = req.body.id;
   let wkey = req.body.key;
-  if (wid == "agente" && wkey == "testkey") {
+  let autenticado = null;
+  
+  
+  let Holder = new Holder_gen(wid, wkey);
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+
+    // CAMBIAR TESTEAR EN IP PUBLICA
+    let base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    // let url = `${base_url}/${name}`; // De momento solo se va a solicitar credencial, en un futuro se beria comprobar el nombre
+    let invitation_url;
+    await axios
+      .get(base_url)
+      .then((response) => {
+        invitation_url = response.data.invitationurl.invitationUrl;
+        console.log("Respuesta peticion:", invitation_url);
+      })
+      .catch((error) => {
+        throw new Error(`Hubo un problema con la peticion: ${error}`);
+      });
+
+    await Holder.acceptConnection(invitation_url);
+
+
+    await esperar100Segundos();
+
+    if (ESTAPORVER) {
+      autenticado = true;
+    }  
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Holder.shutdown();
+  }
+
+
+
+
+
+
+  
+  if (autenticado) {
     let code = codegen();
     console.log(code);
     let redirectUrl = encodeURIComponent(redirect_uri);

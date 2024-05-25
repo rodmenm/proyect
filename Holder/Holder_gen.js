@@ -1,12 +1,19 @@
-import { WsOutboundTransport, HttpOutboundTransport, CredentialEventTypes, CredentialState} from "@credo-ts/core";
+import {
+  WsOutboundTransport,
+  HttpOutboundTransport,
+  CredentialEventTypes,
+  CredentialState,
+  ProofEventTypes,
+  ProofState,
+} from "@credo-ts/core";
 import { HttpInboundTransport } from "@credo-ts/node";
 import { modules, Holder_agentConfig } from "./config.js";
 import { Agente } from "./Agente.js";
 import "./shim.js";
 
 export class Holder_gen extends Agente {
-  constructor() {
-    super(Holder_agentConfig, modules);
+  constructor(id, key) {
+    super(Holder_agentConfig, modules, id, key);
     this.connected = null;
     this.connectionRecordIssuerId = null;
     this.add();
@@ -86,7 +93,7 @@ export class Holder_gen extends Agente {
         if (payload.credentialRecord.state === CredentialState.OfferReceived) {
           console.log("Aceptando la credencial de manera automatica");
           await this.agent.credentials.acceptOffer({
-            credentialRecordId: payload.credentialRecord.id
+            credentialRecordId: payload.credentialRecord.id,
           });
         }
       }
@@ -133,6 +140,31 @@ export class Holder_gen extends Agente {
       }
     );
   };
+
+  // SIRVE PARA ACEPTAR LA PETICION DE LAS PRUEBAS
+  ProofRequestListener = async () => {
+    this.agent.events.on(
+      ProofEventTypes.ProofStateChanged,
+      async ({ payload }) => {
+        if (payload.proofRecord.state === ProofState.RequestReceived) {
+          console.log("Aceptando la peticion de la credencial")
+          if (false) {
+            // De momento siempre se va a aceptar la peticion
+            await this.agent.proofs.declineRequest({
+              proofRecordId: payload.proofRecord.id,
+            });
+          } else {
+            const requestedCredentials =
+              await this.agent.proofs.selectCredentialsForRequest({
+                proofRecordId: payload.proofRecord.id,
+              });
+            await this.agent.proofs.acceptRequest({
+              proofRecordId: payload.proofRecord.id,
+              proofFormats: requestedCredentials.proofFormats,
+            });
+          }
+        }
+      }
+    );
+  };
 }
-
-

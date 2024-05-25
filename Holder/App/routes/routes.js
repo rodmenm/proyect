@@ -4,6 +4,7 @@ import {
   logeocheck,
   givtok,
   testeo,
+  testeo2,
   crear_wall,
   crear_cred,
   cred_cre,
@@ -12,7 +13,9 @@ import {
 
 const router = express.Router();
 
-router.get("/test", testeo);
+router.get("/test", testeo); // TESTEA EMISION CREDENCIALES
+
+router.get("/testeo", testeo2); // TESTEA VERIFICACION CREDENCIALES
 
 router.get("/crear_wall", crear_wall);
 
