@@ -189,7 +189,7 @@ export const Verifier_agentConfig = {
       database: "verifier.db",
     },
   },
-  logger: new ConsoleLogger(LogLevel.info),
+  logger: new ConsoleLogger(LogLevel.debug),
   endpoints: ["http://verifier:6001"],
   didCommMimeType: DidCommMimeType.V1,
   useDidSovPrefixWhereAllowed: true,

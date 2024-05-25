@@ -1,12 +1,12 @@
+import { agentDependencies } from "@credo-ts/node";
 import { Agent } from "@credo-ts/core";
 import {
-  KeyType,
   KeyDerivationMethod,
-  ConsoleLogger,
   DidCommMimeType,
+  ConsoleLogger,
   LogLevel,
 } from "@credo-ts/core";
-import { agentDependencies } from "@credo-ts/node";
+
 
 export class Agente {
   constructor(config, modules, id, key) {

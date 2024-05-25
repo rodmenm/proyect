@@ -1,10 +1,12 @@
-import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
-import { Holder_gen } from "../../Holder_gen.js";
 import { holder_semilla } from "../../config.js";
+import { Holder_gen } from "../../Holder_gen.js";
+import { KeyType } from "@credo-ts/core";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
-// CONSTANTES----------------------------------------------------------------------------------------------->
+
+// CONSTANTES--------------------------------------------------------------------------------------------------------------->
+
 // Esto son unos valores registrados en el ledger de la red local
 // CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
 let holder_did = {
@@ -13,15 +15,20 @@ let holder_did = {
   Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b",
 };
 
-// Define un DID de Indy no calificado que será devuelto después de registrar la semilla en el ledger
+// DID de INDY (SOLO LA PARTE FINAL)
 const imported_did = holder_did.DID;
 
-// Metodo descartado
+// Metodo descartado para los dids
 // const cheqddid = `did:cheqd:${unqualifiedIndyDid}`;
 
+
+// CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
+
+// SIRVE PARA TESTEAR LA OBTENCION DE UNA CREDENCIAL
 export const testeo = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Holder = new Holder_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -29,8 +36,20 @@ export const testeo = async (req, res) => {
         `Error initialazing Holder agent. It has not initialized`
       );
     }
+
+    await Holder.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: holder_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
     // CAMBIAR TESTEAR EN IP PUBLICA
-    let url = "http://issuer:5000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    const url = "http://issuer:5000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
     let invitation_url;
     await axios
       .get(url)
@@ -46,7 +65,7 @@ export const testeo = async (req, res) => {
 
     await Holder.credentialOfferListener();
     await esperar100Segundos();
-
+    res.send("TODO GUAY!");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
@@ -55,9 +74,11 @@ export const testeo = async (req, res) => {
   }
 };
 
+// SIRVE PARA TESTER LA VERIFICACION DE UNA CREDENCIAL
 export const testeo2 = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Holder = new Holder_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -65,7 +86,19 @@ export const testeo2 = async (req, res) => {
         `Error initialazing Holder agent. It has not initialized`
       );
     }
-    let url = "http://verifier:6000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
+
+    await Holder.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: holder_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    const url = "http://verifier:6000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
     let invitation_url;
     await axios
       .get(url)
@@ -82,8 +115,7 @@ export const testeo2 = async (req, res) => {
     await Holder.ProofRequestListener();
 
     await esperar100Segundos();
-
-
+    res.send("TODO GUAY!");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
@@ -93,6 +125,9 @@ export const testeo2 = async (req, res) => {
 };
 
 
+// CONTROLADORES FINALES-------------------------------------------------------------------------------------------------->
+
+// SIRVE PARA ALMACENAR LAS VARIABLES PASADAS A LA VISTA
 export const cred_cre = (req, res) => {
   req.session.wallet_id = req.body.id;
   req.session.wallet_key = req.body.key;
@@ -100,11 +135,13 @@ export const cred_cre = (req, res) => {
   res.redirect("/solitarcred");
 };
 
-export const sol_cred = async  (req, res) => {
-  let id = req.session.wallet_id;
-  let key = req.session.wallet_key;
-  let name = req.session.wallet_name;
+// SIRVE PARA SOLICITAR UNA CREDENCIAL AL ISSUER CON EL NOMBRE PASADO ANTERIORMENTE Y GUARDARLO EN LA WALLET CREADA O ACCEDIDA ANTERIORMENTE
+export const sol_cred = async (req, res) => {
+  const name = req.session.wallet_name;
+  const key = req.session.wallet_key;
+  const id = req.session.wallet_id;
   let Holder = new Holder_gen(id, key);
+
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -112,9 +149,10 @@ export const sol_cred = async  (req, res) => {
         `Error initialazing Holder agent. It has not initialized`
       );
     }
+
     // CAMBIAR TESTEAR EN IP PUBLICA
-    let base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
-    let url = `${base_url}/${name}`
+    const base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    const url = `${base_url}/${name}`;
     let invitation_url;
     await axios
       .get(url)
@@ -128,35 +166,35 @@ export const sol_cred = async  (req, res) => {
 
     await Holder.acceptConnection(invitation_url);
 
-    await Holder.credentialOfferListener();
-    await esperar100Segundos();
+    await Holder.credentialOfferListener(); // LAS CREDENCIALES SE ACEPTAN AUTOMATICAMENTE
+
+    await esperar100Segundos(); // COMPLETAR BAJAR TIEMPO DE ESPERA
+    res.redirect("/login"); // COMPLETAR PASAR PARAMETROS PARA LA VISTA KEYCLOAK
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error: " + error);
   } finally {
     await Holder.shutdown();
   }
-  res.redirect("/login")
 };
 
-
-
+// MUESTRA LA VISTA PARA CREAR UNA WALLET Y OBTENER CREDENCIAL (AMBAS VISTAS HACEN LUEGO LO MISMO, SI NO EXISTE UNA WALLET PARA ABRIRLA, SE CRE AUTOMATICAMENTE)
 export const crear_wall = (req, res) => {
-  
   res.render("cre_wall");
 };
 
+// MUESTRA LA VISTA PARA ACCEDER A UNA WALLET Y OBTENER CREDENCIAL (AMBAS VISTAS HACEN LUEGO LO MISMO, SI NO EXISTE UNA WALLET PARA ABRIRLA, SE CRE AUTOMATICAMENTE)
 export const crear_cred = (req, res) => {
-  
   res.render("cre_cred");
 };
 
-// PROTOCOLO OIDC A PARTIR DE AQUI ------------------------------------------>
+
+// PROTOCOLO OIDC A PARTIR DE AQUI -------------------------------------------------------------------------------------------------->
 
 let kk = null; // major security problem
-let mm = null;
 const secretKey = "myclientsecret";
 
+// SIRVE PARA GENERAR UN TOKEN NORMAL DE ACCESO PARA KEYCLOAK 
 const generateToken = () => {
   const caracteres =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -167,6 +205,7 @@ const generateToken = () => {
   return codigo;
 };
 
+// SIRVE PARA GENERAR UN JWT DE ACCESO PARA KEYCLOAK 
 const tokengen = (user, nonce) => {
   let payload = {
     user: user,
@@ -183,6 +222,7 @@ const tokengen = (user, nonce) => {
   return token;
 };
 
+// GENERA UN CODIGO QUE KEYCLOAK LUEGO USA PARA SOLICITAR UN TOKEN DE ACCESO, WORKFLOW TIPICO DE OIDC
 const codegen = () => {
   const caracteres =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -193,6 +233,7 @@ const codegen = () => {
   return codigo;
 };
 
+// ATIENDE A LA RUTA PARA LOGEARSE Y **DEBERIA** COMPROBAR LOS PARAMETROS
 export const logeo = (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.query;
@@ -222,7 +263,8 @@ export const logeo = (req, res) => {
   res.render("login");
 };
 
-export const logeocheck = (req, res) => {
+// SERVIA COMO TESTEO PARA EL PROTOCOLO OIDC
+export const logeocheck2 = (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
   console.log(req.session.authParams);
@@ -244,20 +286,18 @@ export const logeocheck = (req, res) => {
   }
 };
 
-export const logeocheck2 = async (req, res) => {
+// COMPRUEBA QUE SE TENGA UNA CREDENCIAL Y REDIRIGE A KEYCLOAK DE VUELTA CON UN CODIGO 
+export const logeocheck = async (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
-  console.log(req.session.authParams);
-  console.log(redirect_uri);
-  // COMPLETAR
 
-  let wid = req.body.id;
-  let wkey = req.body.key;
+  const wid = req.body.id;
+  const wkey = req.body.key;
   let autenticado = null;
-  
-  
+
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Holder = new Holder_gen(wid, wkey);
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -266,12 +306,21 @@ export const logeocheck2 = async (req, res) => {
       );
     }
 
-    // CAMBIAR TESTEAR EN IP PUBLICA
-    let base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
-    // let url = `${base_url}/${name}`; // De momento solo se va a solicitar credencial, en un futuro se beria comprobar el nombre
+    await Holder.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: holder_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    const url = "http://verifier:6000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
     let invitation_url;
     await axios
-      .get(base_url)
+      .get(url)
       .then((response) => {
         invitation_url = response.data.invitationurl.invitationUrl;
         console.log("Respuesta peticion:", invitation_url);
@@ -282,28 +331,18 @@ export const logeocheck2 = async (req, res) => {
 
     await Holder.acceptConnection(invitation_url);
 
+    await Holder.ProofRequestListener();
 
     await esperar100Segundos();
-
-    if (ESTAPORVER) {
-      autenticado = true;
-    }  
+    autenticado = true;
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send("Error: " + error);
   } finally {
     await Holder.shutdown();
   }
 
-
-
-
-
-
-  
   if (autenticado) {
     let code = codegen();
-    console.log(code);
     let redirectUrl = encodeURIComponent(redirect_uri);
     let url = `${redirect_uri}?code=${code}&state=${state}&redirect_uri=${redirectUrl}`;
     console.log(url);
@@ -313,9 +352,10 @@ export const logeocheck2 = async (req, res) => {
   }
 };
 
+// KEYCLOAK HACE UNA PETICON AQUI CON EL CODIGO ANTERIOR PARA OBTENER UN TOKEN
 export const givtok = (req, res) => {
-  let pp = req.body;
-  console.log(pp);
+  let pp = req.body; // COMPLETAR
+  console.log(pp); // COMPROBAR CODIGO DE ACCESI
 
   let user = {
     wallet: "agente", // COMPLETAR
