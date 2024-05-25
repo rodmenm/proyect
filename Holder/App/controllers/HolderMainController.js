@@ -30,7 +30,77 @@ export const testeo = async (req, res) => {
       );
     }
     // CAMBIAR TESTEAR EN IP PUBLICA
-    let url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    let url = "http://issuer:5000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    let invitation_url;
+    await axios
+      .get(url)
+      .then((response) => {
+        invitation_url = response.data.invitationurl.invitationUrl;
+        console.log("Respuesta peticion:", invitation_url);
+      })
+      .catch((error) => {
+        throw new Error(`Hubo un problema con la peticion: ${error}`);
+      });
+
+    await Holder.acceptConnection(invitation_url);
+
+    await Holder.credentialOfferListener();
+    await esperar100Segundos();
+
+    await Holder.shutdown();
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+    let url2 = "http://verfier:5000/testeo"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    let invitation_url2;
+    await axios
+      .get(url2)
+      .then((response) => {
+        invitation_url2 = response.data.invitationurl.invitationUrl;
+        console.log("Respuesta peticion:", invitation_url2);
+      })
+      .catch((error) => {
+        throw new Error(`Hubo un problema con la peticion: ${error}`);
+      });
+
+    await Holder.acceptConnection(invitation_url2);
+
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Holder.shutdown();
+  }
+};
+
+export const cred_cre = (req, res) => {
+  req.session.id = req.body.id;
+  req.session.key = req.body.key;
+  req.session.name = req.body.name;
+  res.redirect("/solitarcred");
+};
+
+export const sol_cred = async  (req, res) => {
+  let id = req.session.id;
+  let key = req.session.key;
+  let name = req.session.name;
+  // COMPLETAR
+  // HACER HOLDER WALLET CON PARAMETROS PASADOS
+  let Holder = new Holder_gen();
+  try {
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+    // CAMBIAR TESTEAR EN IP PUBLICA
+    let base_url = "http://issuer:5000/glob"; // En teoria deberia de poner loclahost, pero entonces no funciona
+    let url = `${base_url}?name=${name}`
     let invitation_url;
     await axios
       .get(url)
@@ -52,6 +122,19 @@ export const testeo = async (req, res) => {
   } finally {
     await Holder.shutdown();
   }
+  res.redirect("/ESTAPORVER")
+};
+
+
+
+export const crear_wall = (req, res) => {
+  
+  res.render("cre_wall");
+};
+
+export const crear_cred = (req, res) => {
+  
+  res.render("cre_cred");
 };
 
 // PROTOCOLO OIDC A PARTIR DE AQUI ------------------------------------------>
@@ -126,6 +209,28 @@ export const logeo = (req, res) => {
 };
 
 export const logeocheck = (req, res) => {
+  const { scope, state, response_type, client_id, redirect_uri, nonce } =
+    req.session.authParams;
+  console.log(req.session.authParams);
+  console.log(redirect_uri);
+  // COMPLETAR
+  // ESTO SOLO ES SOLO PARA COMPROBAR EL CORRECTO FUNCIONAMIENTO DEL PROTOCOLO OIDC
+  // HABRA QUE ESTABLECER EL SISTEMA DE AUTENTICACiÓN CORRECTAMENTE
+  let wid = req.body.id;
+  let wkey = req.body.key;
+  if (wid == "agente" && wkey == "testkey") {
+    let code = codegen();
+    console.log(code);
+    let redirectUrl = encodeURIComponent(redirect_uri);
+    let url = `${redirect_uri}?code=${code}&state=${state}&redirect_uri=${redirectUrl}`;
+    console.log(url);
+    res.redirect(url);
+  } else {
+    res.send("NO LOGEADO");
+  }
+};
+
+export const logeocheck2 = (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
   console.log(req.session.authParams);

@@ -84,7 +84,7 @@ export class Holder_gen extends Agente {
       CredentialEventTypes.CredentialStateChanged,
       async ({ payload }) => {
         if (payload.credentialRecord.state === CredentialState.OfferReceived) {
-          console.log("Aceptando la credencial con los siguientes atributos");
+          console.log("Aceptando la credencial de manera automatica");
           await this.agent.credentials.acceptOffer({
             credentialRecordId: payload.credentialRecord.id
           });

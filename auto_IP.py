@@ -11,6 +11,7 @@ kk = directorio + "/server/public/scripts/script.py"
 mm = directorio + "/Holder/config.py"
 qq = directorio + "/Holder/App/controllers/HolderMainController.py"
 tt = directorio + "/Holder/App/views/index.py"
+nn = directorio + "/Holder/App/public/scripts/scripts.py"
 rr = directorio + "/Issuer/config.py"
 
 if len(sys.argv) >= 3:
@@ -21,7 +22,7 @@ elif len(sys.argv) == 2:
     if (new_ip == 'help'):
         mensaje()
         sys.exit()
-    rutas_y_parametros = [(kk, new_ip),(mm, new_ip),(qq, new_ip),(tt, new_ip),(rr, new_ip)]
+    rutas_y_parametros = [(kk, new_ip),(mm, new_ip),(qq, new_ip),(tt, new_ip),(rr, new_ip),(nn, new_ip)]
     for ruta, nueva_ip in rutas_y_parametros:
         subprocess.run(["python3", ruta, nueva_ip])
     print("Todos los archivos cambiados correctamente")

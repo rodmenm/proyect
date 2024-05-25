@@ -28,12 +28,14 @@ En el proyecto se toma por defecto la IP localhost, en caso de desplegarlo en un
 - Holder\App\controllers\HolderMainController.js
 - Holder\App\views\index.ejs
 - Holder\App\views\login.ejs
+- Holder\App\public\scripts.scripts.js
 - Issuer\config.js
 - Issuer\Issuer_gen.js
 
 > [!NOTE]
 > El fichero auto_IP.py automatiza dicha tarea (no cambia los de IDP/*) <br>
-> Lo unico que como se despliega en docker, es recomendable ejecutarlo antes de construir las imagenes
+> Lo unico que como se despliega en docker, es recomendable ejecutarlo antes de construir las imagenes <br>
+> **HAY QUE TESTEAR LAS IPS CON NOMBRES DE CONTENEDORES EN IP PUBLICA** <br>
 
 <br>
 
@@ -53,7 +55,8 @@ cd von-network
 Una vez realizados los comandos, se obtendran 5 contenedores docker, 4 nodos de una red y un servidor web donde monitorizarlos. <br>
 Antes de levantar el sistema propio, registrar estos 2 dids en el ledger desde el servidor web a partir de estas semillas:
 - issuersemilladebemantenersecreto
-- holdersemilladebemantenersecreto <br>
+- holdersemilladebemantenersecreto (no es necesario)
+- verifisemilladebemantenersecreto <br>
 
 Una vez realizado, establecer en los controladores (linea 8 o asi) del issuer y del holder los resultados obtenidos <br>
 

@@ -1,7 +1,9 @@
 import express from "express";
-import { glob } from "../controllers/VerifierMainController.js";
+import { glob, testeo } from "../controllers/VerifierMainController.js";
 
 const router = express.Router();
+
+router.get("/testeo", testeo);
 
 router.get("/glob", glob);
 

@@ -15,6 +15,11 @@ let verifier_did = {
 // CAMBIAR POR LOS OBTENIDOS AL GENERARLOS EN EL LEDGER
 const imported_did = verifier_did.DID;
 
+const schemaId =
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";
+const credentialDefId =
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
+
 // RUTAS -------------------------------------------------------------------------------->
 
 // SIRVE PARA SOLICITAR PRUEBAS 
@@ -47,6 +52,66 @@ export const glob = async (req, res) => {
     res.json({ invitationurl: invitation });
     await Verifier.waitForConnection();
 
+    
+    await esperar100Segundos();
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    await Issuer.shutdown();
+  }
+};
+
+export const testeo = async (req, res) => {
+  let Verifier = new Verifier_gen();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
+    await Verifier.initialize();
+    if (Verifier.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Verifier agent. It has not initialized`
+      );
+    }
+
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
+    await Verifier.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: verifier_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    
+    let invitation = await Verifier.createNewInvitation();
+
+    res.json({ invitationurl: invitation });
+    await Verifier.waitForConnection();
+
+    const proofAttribute = {
+      name: {
+        name: 'name',
+        restrictions: [
+          {
+            cred_def_id: credentialDefId,
+          },
+        ],
+      },
+    }
+
+    await Verifier.agent.proofs.requestProof({
+      protocolVersion: 'v2',
+      connectionId: Verifier.connectionRecord.id,
+      proofFormats: {
+        anoncreds: {
+          name: 'proof-request',
+          version: '1.0',
+          requested_attributes: proofAttribute,
+        },
+      },
+    });
     
     await esperar100Segundos();
   } catch (error) {

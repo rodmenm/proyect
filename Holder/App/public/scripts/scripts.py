@@ -7,10 +7,8 @@ def mensaje():
     print("OLD_IP representa la IP que anteriormente alojaba el servicio (si anteriormente nunca ha modificado script.js deje este argumento en blanco).")
 
 ruta = sys.argv[0]
-ruta = ruta.replace('.py','.ejs')
-ruta2 = ruta.replace('index','login')
-ruta2 = ruta.replace('index','cre_cred')
-ruta2 = ruta.replace('index','cre_wall')
+ruta = ruta.replace('.py','.js')
+
 
 if len(sys.argv) >= 4:
     mensaje()
@@ -32,29 +30,6 @@ if len(sys.argv) >= 2:
     my_file.write(my_data)
     my_file.close()
 
-    my_file = open(ruta2,'r')
-    my_data = my_file.read()
-    my_data = my_data.replace(old_ip,new_ip)
-    my_file.close()
-    my_file = open(ruta2,'w')
-    my_file.write(my_data)
-    my_file.close()
-
-    my_file = open(ruta2,'r')
-    my_data = my_file.read()
-    my_data = my_data.replace(old_ip,new_ip)
-    my_file.close()
-    my_file = open(ruta2,'w')
-    my_file.write(my_data)
-    my_file.close()
-
-    my_file = open(ruta2,'r')
-    my_data = my_file.read()
-    my_data = my_data.replace(old_ip,new_ip)
-    my_file.close()
-    my_file = open(ruta2,'w')
-    my_file.write(my_data)
-    my_file.close()
-    print("localhost cambiado por " + new_ip + "en los ficheros Holder/views")
+    print("localhost cambiado por " + new_ip + "en los ficheros Holder/scripts")
 else:
     mensaje()

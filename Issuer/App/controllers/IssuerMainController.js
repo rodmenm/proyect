@@ -140,11 +140,11 @@ export const cre_cred = async (req, res) => {
     await Issuer.shutdown();
   }
 };
-
+// SIRVE PARA TESTEAR
 // SERVIRA PARA ENTREGAR CREDENCIALES
 // ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA Y LA CREDENCIAL ES CORRECTO Y HA SIDO ACTUALIZADO
 // DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA Y LA CREDENCIAL DE MANERA CORRECTA
-export const glob = async (req, res) => {
+export const testeo = async (req, res) => {
   let Issuer = new Issuer_gen();
   let did = `did:indy:bcovrin:test:${imported_did}`;
   try {
@@ -217,6 +217,85 @@ export const glob = async (req, res) => {
     await Issuer.shutdown();
   }
 };
+
+// TESTEAR
+// SIRVE PARA ENTREGAR CREDENCIALES
+export const glob = async (req, res) => {
+  let name = req.params.name;
+  let Issuer = new Issuer_gen();
+  let did = `did:indy:bcovrin:test:${imported_did}`;
+  try {
+    await Issuer.initialize();
+    if (Issuer.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Issuer agent. It has not initialized`
+      );
+    }
+
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
+    await Issuer.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: issuer_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    let schemaResult = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
+    if (!schemaResult) {
+      throw new Error(`Error obtaining schema (Check logs)`);
+    }
+
+    const credentialDefinitionResult =
+      await Issuer.agent.modules.anoncreds.getCredentialDefinition(
+        credentialDefId
+      );
+    if (!credentialDefinitionResult) {
+      throw new Error(`Error importing credential definition (Check logs)`);
+    }
+
+    let invitation = await Issuer.createNewInvitation();
+
+    res.json({ invitationurl: invitation });
+    await Issuer.waitForConnection();
+
+    // Estaria bien mover esto a Issuer_gen
+    await Issuer.agent.credentials.offerCredential({
+      connectionId: Issuer.connectionRecord.id,
+      protocolVersion: "v2",
+      credentialFormats: {
+        anoncreds: {
+          attributes: [
+            {
+              name: "name",
+              value: name,
+            },
+            {
+              name: "club",
+              value: "Mallorca",
+            },
+            {
+              name: "date",
+              value: "01/01/2022",
+            },
+          ],
+          credentialDefinitionId:
+            credentialDefinitionResult.credentialDefinitionId,
+        },
+      },
+    });
+    await esperar100Segundos();
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    await Issuer.shutdown();
+  }
+};
+
+
 
 // ESTA FUNCION ESTA SOLO PARA QUE SE AUTOCOMPLETEN LAS PETICIONES, SINO SE APAGAN LOS AGENTES
 function esperar100Segundos() {
