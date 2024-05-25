@@ -94,16 +94,16 @@ export const testeo2 = async (req, res) => {
 
 
 export const cred_cre = (req, res) => {
-  req.session.id = req.body.id;
-  req.session.key = req.body.key;
-  req.session.name = req.body.name;
+  req.session.wallet_id = req.body.id;
+  req.session.wallet_key = req.body.key;
+  req.session.wallet_name = req.body.name;
   res.redirect("/solitarcred");
 };
 
 export const sol_cred = async  (req, res) => {
-  let id = req.session.id;
-  let key = req.session.key;
-  let name = req.session.name;
+  let id = req.session.wallet_id;
+  let key = req.session.wallet_key;
+  let name = req.session.wallet_name;
   let Holder = new Holder_gen(id, key);
   try {
     await Holder.initialize();
