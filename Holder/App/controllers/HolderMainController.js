@@ -9,7 +9,7 @@ import axios from "axios";
 
 // Esto son unos valores registrados en el ledger de la red local
 // CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
-let holder_did = {
+const holder_did = {
   Seed: "holdersemilladebemantenersecreto",
   DID: "6qfdvdUv1BdUAmAmK7SVjp",
   Verkey: "4BauU6X7K5GG7Gq6t2r5BV9gjuYoQbSRBr6MFFvXfq1b",

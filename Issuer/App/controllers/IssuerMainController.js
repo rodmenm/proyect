@@ -1,11 +1,11 @@
-import { KeyType, KeyDerivationMethod } from "@credo-ts/core";
-import { Issuer_gen } from "../../Issuer_gen.js";
 import { issuer_semilla } from "../../config.js";
+import { Issuer_gen } from "../../Issuer_gen.js";
+import { KeyType } from "@credo-ts/core";
 
 // CONSTANTES --------------------------------------------------------------------------->
 // Esto son unos valores registrados en el ledger de la red local
 // CAMBIAR POR LOS OBTENIDOS AL REGISTRARLOS EN EL LEDGER
-let issuer_did = {
+const issuer_did = {
   Seed: "issuersemilladebemantenersecreto",
   DID: "7hVEkxK3356FwfmCQ9muR7",
   Verkey: "4ejqSPdmShnQPRjdr9B9PzrQ4pP9p7FALhEyEkBYR9h5",
@@ -18,13 +18,96 @@ const schemaId =
   "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";
 const credentialDefId =
   "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
+  
+// CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
 
-// RUTAS -------------------------------------------------------------------------------->
+// SIRVE PARA TESTEAR EL ENTREGAR CREDENCIALES
+// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA Y LA CREDENCIAL ES CORRECTO Y HA SIDO ACTUALIZADO 
+// TAMBIEN QUE HAY LA CREDENCIAL HA SIDO REGISTRADA AL CREARSE EL CONTENEDOR (ruta cre_cred)
+// DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA Y LA CREDENCIAL DE MANERA CORRECTA
+export const testeo = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
+  let Issuer = new Issuer_gen();
+  
+  try {
+    await Issuer.initialize();
+    if (Issuer.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Issuer agent. It has not initialized`
+      );
+    }
+
+    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
+    await Issuer.agent.dids.import({
+      did: did,
+      overwrite: true,
+      privateKeys: [
+        {
+          privateKey: issuer_semilla,
+          keyType: KeyType.Ed25519,
+        },
+      ],
+    });
+
+    const schemaResult = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
+    if (!schemaResult) {
+      throw new Error(`Error obtaining schema (Check logs)`);
+    }
+
+    const credentialDefinitionResult =
+      await Issuer.agent.modules.anoncreds.getCredentialDefinition(
+        credentialDefId
+      );
+    if (!credentialDefinitionResult) {
+      throw new Error(`Error importing credential definition (Check logs)`);
+    }
+
+    const invitation = await Issuer.createNewInvitation();
+
+    res.json({ invitationurl: invitation });
+    await Issuer.waitForConnection();
+
+    // Estaria bien mover esto a Issuer_gen
+    await Issuer.agent.credentials.offerCredential({
+      connectionId: Issuer.connectionRecord.id,
+      protocolVersion: "v2",
+      credentialFormats: {
+        anoncreds: {
+          attributes: [
+            {
+              name: "name",
+              value: "Muriqi",
+            },
+            {
+              name: "club",
+              value: "Mallorca",
+            },
+            {
+              name: "date",
+              value: "01/01/2022",
+            },
+          ],
+          credentialDefinitionId:
+            credentialDefinitionResult.credentialDefinitionId,
+        },
+      },
+    });
+    await esperar100Segundos();
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    await Issuer.shutdown();
+  }
+};
+
+
+// CONTROLADORES FINALES-------------------------------------------------------------------------------------------------->
 
 // Sirve para crear el esquema de atributos que tendra una credencial
 export const cre_schem = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Issuer = new Issuer_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Issuer.initialize();
     if (Issuer.agent._isInitialized != true) {
@@ -79,11 +162,12 @@ export const cre_schem = async (req, res) => {
 };
 
 // SIRVE PARA CREAR UNA CREDENCIAL A PARTIR DE UN ESQUEMA
-// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA ES CORRECTO Y HA SIDO ACTUALIZADO
+// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA ES CORRECTO Y HA SIDO ACTUALIZADO Y REGISTRADO EN EL LEDGER
 // DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA DE MANERA CORRECTA
 export const cre_cred = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
   let Issuer = new Issuer_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Issuer.initialize();
     if (Issuer.agent._isInitialized != true) {
@@ -140,90 +224,14 @@ export const cre_cred = async (req, res) => {
     await Issuer.shutdown();
   }
 };
-// SIRVE PARA TESTEAR
-// SERVIRA PARA ENTREGAR CREDENCIALES
-// ANTES DE CREAR UNA CREDENCIAL, ASEGURARSE DE QUE EL ID DEL SCHEMA Y LA CREDENCIAL ES CORRECTO Y HA SIDO ACTUALIZADO
-// DESAFORTUNADAMENTE, SI SE INICIALIZA EL SISTEMA DE FORMA GLOBAL POR PRIMERA VEZ HABRA QUE TUMBAR LA IMAGEN DEL ISSUER PARA PONER EL ID DEL ESQUEMA Y LA CREDENCIAL DE MANERA CORRECTA
-export const testeo = async (req, res) => {
-  let Issuer = new Issuer_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
-  try {
-    await Issuer.initialize();
-    if (Issuer.agent._isInitialized != true) {
-      throw new Error(
-        `Error initialazing Issuer agent. It has not initialized`
-      );
-    }
 
-    // HAY QUE INCLUIR EL DID DE FORMA MANUAL EN LA TESTNET DE BCOVRIN O EN LA RED PERSONAL DE VON(RECOMENDADO)
-    await Issuer.agent.dids.import({
-      did: did,
-      overwrite: true,
-      privateKeys: [
-        {
-          privateKey: issuer_semilla,
-          keyType: KeyType.Ed25519,
-        },
-      ],
-    });
 
-    let schemaResult = await Issuer.agent.modules.anoncreds.getSchema(schemaId);
-    if (!schemaResult) {
-      throw new Error(`Error obtaining schema (Check logs)`);
-    }
-
-    const credentialDefinitionResult =
-      await Issuer.agent.modules.anoncreds.getCredentialDefinition(
-        credentialDefId
-      );
-    if (!credentialDefinitionResult) {
-      throw new Error(`Error importing credential definition (Check logs)`);
-    }
-
-    let invitation = await Issuer.createNewInvitation();
-
-    res.json({ invitationurl: invitation });
-    await Issuer.waitForConnection();
-
-    // Estaria bien mover esto a Issuer_gen
-    await Issuer.agent.credentials.offerCredential({
-      connectionId: Issuer.connectionRecord.id,
-      protocolVersion: "v2",
-      credentialFormats: {
-        anoncreds: {
-          attributes: [
-            {
-              name: "name",
-              value: "Muriqi",
-            },
-            {
-              name: "club",
-              value: "Mallorca",
-            },
-            {
-              name: "date",
-              value: "01/01/2022",
-            },
-          ],
-          credentialDefinitionId:
-            credentialDefinitionResult.credentialDefinitionId,
-        },
-      },
-    });
-    await esperar100Segundos();
-  } catch (error) {
-    console.error("Error:", error);
-  } finally {
-    await Issuer.shutdown();
-  }
-};
-
-// TESTEAR
-// SIRVE PARA ENTREGAR CREDENCIALES
+// SIRVE PARA ENTREGAR CREDENCIALES CON EL NOMBRE PASADO COMO PARAM
 export const glob = async (req, res) => {
-  let name = req.params.name;
+  const did = `did:indy:bcovrin:test:${imported_did}`;
+  const name = req.params.name;
   let Issuer = new Issuer_gen();
-  let did = `did:indy:bcovrin:test:${imported_did}`;
+  
   try {
     await Issuer.initialize();
     if (Issuer.agent._isInitialized != true) {

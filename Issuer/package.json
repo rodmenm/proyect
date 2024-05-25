@@ -1,4 +1,7 @@
 {
+  "name": "tgh-isser-package",
+  "version": "1.0.0",
+  "description": "Paquete para realizar acciones en un issuer",
   "dependencies": {
     "@credo-ts/anoncreds": "^0.5.3",
     "@credo-ts/askar": "^0.5.3",
@@ -31,7 +34,7 @@
   },
   "scripts": {
     "start": "nodemon App/app.js",
-    "prueba": "node Pruebas.js"
+    "easter_egg": "echo 'Como has llegado hasta aqui?'"
   },
   "type": "module"
 }
