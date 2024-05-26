@@ -16,6 +16,7 @@ export class Holder_gen extends Agente {
     super(Holder_agentConfig, modules, id, key);
     this.connected = null;
     this.connectionRecordIssuerId = null;
+    this.hayerror = false;
     this.add();
   }
 
@@ -154,10 +155,16 @@ export class Holder_gen extends Agente {
               proofRecordId: payload.proofRecord.id,
             });
           } else {
+            try {
             const requestedCredentials =
               await this.agent.proofs.selectCredentialsForRequest({
                 proofRecordId: payload.proofRecord.id,
               });
+            } catch (error) {
+              console.log(`Credencial invalida: ${error}`);
+              this.hayerror = true;
+              return ;
+            }
             await this.agent.proofs.acceptRequest({
               proofRecordId: payload.proofRecord.id,
               proofFormats: requestedCredentials.proofFormats,

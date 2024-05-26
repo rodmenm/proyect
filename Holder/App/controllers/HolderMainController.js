@@ -4,7 +4,6 @@ import { KeyType } from "@credo-ts/core";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
-
 // CONSTANTES--------------------------------------------------------------------------------------------------------------->
 
 // Esto son unos valores registrados en el ledger de la red local
@@ -20,7 +19,6 @@ const imported_did = holder_did.DID;
 
 // Metodo descartado para los dids
 // const cheqddid = `did:cheqd:${unqualifiedIndyDid}`;
-
 
 // CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
 
@@ -115,6 +113,10 @@ export const testeo2 = async (req, res) => {
     await Holder.ProofRequestListener();
 
     await esperar100Segundos();
+    if (Holder.hayerror) {
+      res.send("Credencial Invalida");
+      return;
+    }
     res.send("TODO GUAY!");
   } catch (error) {
     console.error("Error:", error);
@@ -123,7 +125,6 @@ export const testeo2 = async (req, res) => {
     await Holder.shutdown();
   }
 };
-
 
 // CONTROLADORES FINALES-------------------------------------------------------------------------------------------------->
 
@@ -188,13 +189,12 @@ export const crear_cred = (req, res) => {
   res.render("cre_cred");
 };
 
-
 // PROTOCOLO OIDC A PARTIR DE AQUI -------------------------------------------------------------------------------------------------->
 
 let kk = null; // major security problem
 const secretKey = "myclientsecret";
 
-// SIRVE PARA GENERAR UN TOKEN NORMAL DE ACCESO PARA KEYCLOAK 
+// SIRVE PARA GENERAR UN TOKEN NORMAL DE ACCESO PARA KEYCLOAK
 const generateToken = () => {
   const caracteres =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -205,7 +205,7 @@ const generateToken = () => {
   return codigo;
 };
 
-// SIRVE PARA GENERAR UN JWT DE ACCESO PARA KEYCLOAK 
+// SIRVE PARA GENERAR UN JWT DE ACCESO PARA KEYCLOAK
 const tokengen = (user, nonce) => {
   let payload = {
     user: user,
@@ -286,7 +286,7 @@ export const logeocheck2 = (req, res) => {
   }
 };
 
-// COMPRUEBA QUE SE TENGA UNA CREDENCIAL Y REDIRIGE A KEYCLOAK DE VUELTA CON UN CODIGO 
+// COMPRUEBA QUE SE TENGA UNA CREDENCIAL Y REDIRIGE A KEYCLOAK DE VUELTA CON UN CODIGO
 export const logeocheck = async (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.session.authParams;
@@ -297,7 +297,7 @@ export const logeocheck = async (req, res) => {
 
   const did = `did:indy:bcovrin:test:${imported_did}`;
   let Holder = new Holder_gen(wid, wkey);
-  
+
   try {
     await Holder.initialize();
     if (Holder.agent._isInitialized != true) {
@@ -334,6 +334,10 @@ export const logeocheck = async (req, res) => {
     await Holder.ProofRequestListener();
 
     await esperar100Segundos();
+    if (Holder.hayerror) {
+      res.send("Credencial Invalida");
+      return;
+    }
     autenticado = true;
   } catch (error) {
     console.error("Error:", error);
