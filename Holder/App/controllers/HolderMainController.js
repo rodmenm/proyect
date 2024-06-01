@@ -62,7 +62,7 @@ export const testeo = async (req, res) => {
     await Holder.acceptConnection(invitation_url);
 
     await Holder.credentialOfferListener();
-    await esperar100Segundos();
+    await esperar10Segundos();
     res.send("TODO GUAY!");
   } catch (error) {
     console.error("Error:", error);
@@ -112,7 +112,7 @@ export const testeo2 = async (req, res) => {
 
     await Holder.ProofRequestListener();
 
-    await esperar100Segundos();
+    await esperar10Segundos();
     if (Holder.hayerror) {
       res.send("Credencial Invalida");
       return;
@@ -169,7 +169,7 @@ export const sol_cred = async (req, res) => {
 
     await Holder.credentialOfferListener(); // LAS CREDENCIALES SE ACEPTAN AUTOMATICAMENTE
 
-    await esperar100Segundos(); // COMPLETAR BAJAR TIEMPO DE ESPERA
+    await esperar10Segundos(); // COMPLETAR BAJAR TIEMPO DE ESPERA
     res.redirect("/login"); // COMPLETAR PASAR PARAMETROS PARA LA VISTA KEYCLOAK
   } catch (error) {
     console.error("Error:", error);
@@ -216,7 +216,7 @@ const tokengen = (user, nonce) => {
     algorithm: "HS256", // Algoritmo de firma
     expiresIn: 3600, // Tiempo de expiración (1 hora en este ejemplo)
     subject: "agente", // Sujeto del token
-    audience: "my_client_id", // Audiencia del token (tu cliente en Keycloak)
+    audience: "myclientid", // Audiencia del token (tu cliente en Keycloak)
     issuer: "invented", // Emisor del token (tu proveedor de identidad)
   });
   return token;
@@ -333,7 +333,7 @@ export const logeocheck = async (req, res) => {
 
     await Holder.ProofRequestListener();
 
-    await esperar100Segundos();
+    await esperar10Segundos();
     if (Holder.hayerror) {
       res.send("Credencial Invalida");
       return;
@@ -380,10 +380,10 @@ export const givtok = (req, res) => {
 };
 
 // ESTA FUNCION ESTA SOLO PARA QUE SE AUTOCOMPLETEN LAS PETICIONES, SINO SE APAGAN LOS AGENTES
-function esperar100Segundos() {
+function esperar10Segundos() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 100000);
+    }, 10000);
   });
 }

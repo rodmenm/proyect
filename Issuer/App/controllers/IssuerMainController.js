@@ -92,7 +92,7 @@ export const testeo = async (req, res) => {
         },
       },
     });
-    await esperar100Segundos();
+    await esperar10Segundos();
   } catch (error) {
     console.error("Error:", error);
   } finally {
@@ -295,7 +295,7 @@ export const glob = async (req, res) => {
         },
       },
     });
-    await esperar100Segundos();
+    await esperar10Segundos();
   } catch (error) {
     console.error("Error:", error);
   } finally {
@@ -306,10 +306,10 @@ export const glob = async (req, res) => {
 
 
 // ESTA FUNCION ESTA SOLO PARA QUE SE AUTOCOMPLETEN LAS PETICIONES, SINO SE APAGAN LOS AGENTES
-function esperar100Segundos() {
+function esperar10Segundos() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, 100000);
+    }, 10000);
   });
 }

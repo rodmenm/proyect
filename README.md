@@ -31,10 +31,13 @@ En el proyecto se toma por defecto la IP localhost, en caso de desplegarlo en un
 - Holder\App\public\scripts.scripts.js
 - Issuer\config.js
 - Issuer\Issuer_gen.js
+- Verfier\config.js
+- Verfier\Verfier_gen.js
 
 > [!NOTE]
-> El fichero auto_IP.py automatiza dicha tarea (no cambia los de IDP/*) <br>
+> El fichero auto_IP.py automatiza dicha tarea (no cambia los de IDP/*)  **Solo funciona en linux**<br>
 > Lo unico que como se despliega en docker, es recomendable ejecutarlo antes de construir las imagenes <br>
+> Estaría bien cambiarlo y utilizar variables de entorno <br>
 > **HAY QUE TESTEAR LAS IPS CON NOMBRES DE CONTENEDORES EN IP PUBLICA** <br>
 
 <br>

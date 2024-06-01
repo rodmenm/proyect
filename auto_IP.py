@@ -13,6 +13,7 @@ qq = directorio + "/Holder/App/controllers/HolderMainController.py"
 tt = directorio + "/Holder/App/views/index.py"
 nn = directorio + "/Holder/App/public/scripts/scripts.py"
 rr = directorio + "/Issuer/config.py"
+zz = directorio + "/Verfier/config.js"
 
 if len(sys.argv) >= 3:
     mensaje()
