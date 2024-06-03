@@ -15,9 +15,9 @@ const issuer_did = {
 // CAMBIAR POR LOS OBTENIDOS AL GENERARLOS EN EL LEDGER
 const imported_did = issuer_did.DID;
 const schemaId =
-  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Identificador/1.0.0";
 const credentialDefId =
-  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/17/default_tag";
   
 // CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
 
@@ -75,12 +75,12 @@ export const testeo = async (req, res) => {
         anoncreds: {
           attributes: [
             {
-              name: "name",
-              value: "Muriqi",
+              name: "dni",
+              value: "12345678A",
             },
             {
-              name: "club",
-              value: "Mallorca",
+              name: "comunidad",
+              value: "Madrid",
             },
             {
               name: "date",
@@ -133,9 +133,9 @@ export const cre_schem = async (req, res) => {
     // NO ITENE PORQUE CREARSE UNO, TAMBIEN SE PUEDE IMPORTAR
     let schemaResult = await Issuer.agent.modules.anoncreds.registerSchema({
       schema: {
-        attrNames: ["name", "club", "date"],
+        attrNames: ["dni", "comunidad", "date"],
         issuerId: did,
-        name: "Mallorca teamm",
+        name: "Identificador",
         version: "1.0.0",
       },
       options: {
@@ -278,12 +278,12 @@ export const glob = async (req, res) => {
         anoncreds: {
           attributes: [
             {
-              name: "name",
+              name: "dni",
               value: name,
             },
             {
-              name: "club",
-              value: "Mallorca",
+              name: "comunidad",
+              value: "Madrid",
             },
             {
               name: "date",
@@ -310,6 +310,6 @@ function esperar10Segundos() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, 10000);
+    }, 20000);
   });
 }

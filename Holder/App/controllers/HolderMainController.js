@@ -126,6 +126,43 @@ export const testeo2 = async (req, res) => {
   }
 };
 
+export const testeo3 = async (req, res) => {
+  const did = `did:indy:bcovrin:test:${imported_did}`;
+  let Holder = new Holder_gen();
+
+  try {
+    await Holder.initialize();
+    if (Holder.agent._isInitialized != true) {
+      throw new Error(
+        `Error initialazing Holder agent. It has not initialized`
+      );
+    }
+
+    let did_glob = await Holder.agent.dids.create({
+        method: "indy",
+        secret: {
+          verificationMethod: {
+            id: "key-1",
+            type: "Ed25519VerificationKey2020",
+          },
+        },
+        options: {
+          network: "testnet",
+          methodSpecificIdAlgo: "uuid",
+        },
+      });
+
+
+    res.send(did_glob);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Error: " + error);
+  } finally {
+    await Holder.shutdown();
+  }
+};
+
+
 // CONTROLADORES FINALES-------------------------------------------------------------------------------------------------->
 
 // SIRVE PARA ALMACENAR LAS VARIABLES PASADAS A LA VISTA
@@ -237,18 +274,7 @@ const codegen = () => {
 export const logeo = (req, res) => {
   const { scope, state, response_type, client_id, redirect_uri, nonce } =
     req.query;
-  if (
-    !scope ||
-    !state ||
-    !response_type ||
-    !client_id ||
-    !redirect_uri ||
-    !nonce
-  ) {
-    return res
-      .status(400)
-      .send("Faltan parámetros requeridos en la solicitud.");
-  }
+
   // COMPLETAR
   // COMPROBAR QUE LOS PARAMETROS RECIBIDOS SON CORRECTOS
   kk = nonce;
@@ -384,6 +410,6 @@ function esperar10Segundos() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 10000);
+    }, 20000);
   });
 }

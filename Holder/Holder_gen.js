@@ -148,22 +148,23 @@ export class Holder_gen extends Agente {
       ProofEventTypes.ProofStateChanged,
       async ({ payload }) => {
         if (payload.proofRecord.state === ProofState.RequestReceived) {
-          console.log("Aceptando la peticion de la credencial")
+          console.log("Aceptando la peticion de la credencial");
           if (false) {
             // De momento siempre se va a aceptar la peticion
             await this.agent.proofs.declineRequest({
               proofRecordId: payload.proofRecord.id,
             });
           } else {
+            let requestedCredentials;
             try {
-            const requestedCredentials =
-              await this.agent.proofs.selectCredentialsForRequest({
-                proofRecordId: payload.proofRecord.id,
-              });
+              requestedCredentials =
+                await this.agent.proofs.selectCredentialsForRequest({
+                  proofRecordId: payload.proofRecord.id,
+                });
             } catch (error) {
               console.log(`Credencial invalida: ${error}`);
               this.hayerror = true;
-              return ;
+              return;
             }
             await this.agent.proofs.acceptRequest({
               proofRecordId: payload.proofRecord.id,

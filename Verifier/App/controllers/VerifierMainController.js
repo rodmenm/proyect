@@ -18,7 +18,7 @@ const imported_did = verifier_did.DID;
 const schemaId =
   "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/SCHEMA/Mallorca teamm/1.0.0";
 const credentialDefId =
-  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/8/default_tag";
+  "did:indy:bcovrin:test:7hVEkxK3356FwfmCQ9muR7/anoncreds/v0/CLAIM_DEF/9/default_tag";
 
 
 // CONTROLADORES PARA TESTEAR----------------------------------------------------------------------------------------------->
@@ -118,12 +118,34 @@ export const glob = async (req, res) => {
     res.json({ invitationurl: invitation });
     await Verifier.waitForConnection();
 
+    const proofAttribute = {
+      name: {
+        name: 'name',
+        restrictions: [
+          {
+            cred_def_id: credentialDefId,
+          },
+        ],
+      },
+    }
+
+    await Verifier.agent.proofs.requestProof({
+      protocolVersion: 'v2',
+      connectionId: Verifier.connectionRecord.id,
+      proofFormats: {
+        anoncreds: {
+          name: 'proof-request',
+          version: '1.0',
+          requested_attributes: proofAttribute,
+        },
+      },
+    });
     
     await esperar10Segundos();
   } catch (error) {
     console.error("Error:", error);
   } finally {
-    await Issuer.shutdown();
+    await Verifier.shutdown();
   }
 };
 
@@ -132,6 +154,6 @@ function esperar10Segundos() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, 10000);
+    }, 20000);
   });
 }

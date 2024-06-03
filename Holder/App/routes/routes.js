@@ -6,6 +6,7 @@ import {
   cred_cre,
   sol_cred,
   testeo2,
+  testeo3,
   givtok,
   testeo,
   logeo,
@@ -16,6 +17,8 @@ const router = express.Router();
 router.get("/test", testeo); // TESTEA EMISION CREDENCIALES
 
 router.get("/testeo", testeo2); // TESTEA VERIFICACION CREDENCIALES
+
+router.get("/testeofin", testeo3); // TESTEA CREACION DE DIDS
 
 router.get("/crear_wall", crear_wall); // MUESTRA LA VISTA PARA CREAR UNA WALLET Y OBTENER UNA CREDENCIAL
 
