@@ -62,7 +62,7 @@ cd von-network
 Una vez realizados los comandos, se obtendran 5 contenedores docker, 4 nodos de una red y un servidor web donde monitorizarlos. <br>
 Antes de levantar el sistema propio, registrar estos 2 dids en el ledger desde el servidor web a partir de estas semillas:
 - issuersemilladebemantenersecreto
-- holdersemilladebemantenersecreto (no es necesario)
+- holdersemilladebemantenersecreto 
 - verifisemilladebemantenersecreto <br>
 
 Una vez realizado, establecer en los controladores (linea 8 o asi) del issuer y del holder los resultados obtenidos <br>
