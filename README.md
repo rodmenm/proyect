@@ -1,6 +1,10 @@
 
-# Servidor de Autenticacion con Hyperledger
+# Servidor de Autenticacion
 <br>
+
+## IMPORTANTE
+El desarrollo de este proyecto se ha trasladado a https://github.com/ging/Autenticacion-SSI <br>
+No se continuará desarrollando en este repositorio, para acceder a las novedades acceder al enlace anterior
 
 ## PASOS A SEGUIR
 
@@ -134,10 +138,9 @@ Para vincular el IDP con keycloak hay que crear un IDP en Keycloak personalizado
 
 ### AVISOS
 
-Pese a que se ejecuta en Docker **SOLO FUNCIONA EN LINUX** (solo me va en endpoints publicos, no se porque, sino da problemas de interconexion entre Keycloak y el servidor) <br>
-
+Esta diseñado para desplegarse un Linux aunque también funciona en Windows, de tener algun problema se recomienda pasarse a Linux <br>
 HOLDER E ISSUER SOLO funciona con la version 18 de Node <br>
-En la teoria Holder e Issuer pueden funcionar con una version de node superior (no esta testeado) **NUNCA UNA INFERIOR** <br>
+En la teoria Holder e Issuer pueden funcionar con una version de node superior **NUNCA UNA INFERIOR** <br>
 La carpeta IdentityProvider actualmente no tiene ningun uso, sirve como registro <br>
 
 <br>
