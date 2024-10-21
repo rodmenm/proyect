@@ -4,7 +4,7 @@
 
 ## IMPORTANTE
 El desarrollo de este proyecto se ha trasladado a https://github.com/ging/Autenticacion-SSI <br>
-No se continuará desarrollando en este repositorio, para acceder a las novedades acceder al enlace anterior
+No se continuará desarrollando en este repositorio a pesar de haberse conseguido el objetivo inicial. Se continua desarrollando el proyecto realizando cambios en formatos y protocolos que no son optimos.
 
 ## PASOS A SEGUIR
 
